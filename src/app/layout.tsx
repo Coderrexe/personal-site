@@ -28,10 +28,10 @@ const mono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: 'Simba Shi',
-  description: 'CS + Math at Yale. Building AI systems that work in the real world.',
+  description: 'CS + Math at Yale',
   openGraph: {
     title: 'Simba Shi',
-    description: 'CS + Math at Yale. Building AI systems that work in the real world.',
+    description: 'CS + Math at Yale',
     type: 'website',
   },
 }
