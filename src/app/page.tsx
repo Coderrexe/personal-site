@@ -17,7 +17,12 @@ export default function Home() {
         <h1 className="text-fg text-[1.6rem] font-semibold tracking-[-0.01em] mb-6 overflow-hidden">
           <AnimatedName name="Simba Shi" />
         </h1>
-        <AnimatedBio text="Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots. In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work." />
+        <AnimatedBio paragraphs={[
+          "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
+          "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
+          "My current research spans multimodal foundation models and LLM mechanistic interpretability, and I'm interested broadly in intelligence in both its digital and biological forms.",
+          "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
+        ]} />
       </section>
 
       {/* ── Experience ────────────────────────────────────── */}

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 
-export default function AnimatedBio({ text }: { text: string }) {
+export default function AnimatedBio({ paragraphs }: { paragraphs: string[] }) {
   const [revealed, setRevealed] = useState(false)
 
   useEffect(() => {
@@ -10,24 +10,34 @@ export default function AnimatedBio({ text }: { text: string }) {
     return () => clearTimeout(t)
   }, [])
 
-  const words = text.split(' ')
+  let globalWordIndex = 0
 
   return (
-    <p className="text-muted text-[0.9375rem] leading-[1.9] max-w-lg" aria-label={text}>
-      {words.map((word, i) => (
-        <span
-          key={i}
-          className="animated-word"
-          style={{
-            transitionDelay: `${i * 28}ms`,
-            opacity: revealed ? 1 : 0,
-            filter: revealed ? 'blur(0px)' : 'blur(4px)',
-          }}
-        >
-          {word}
-          {i < words.length - 1 ? ' ' : ''}
-        </span>
-      ))}
-    </p>
+    <div className="space-y-4 max-w-lg">
+      {paragraphs.map((para, pi) => {
+        const words = para.split(' ')
+        const paraStart = globalWordIndex
+        globalWordIndex += words.length
+
+        return (
+          <p key={pi} className="text-muted text-[0.9375rem] leading-[1.9]">
+            {words.map((word, wi) => (
+              <span
+                key={wi}
+                className="animated-word"
+                style={{
+                  transitionDelay: `${(paraStart + wi) * 20}ms`,
+                  opacity: revealed ? 1 : 0,
+                  filter: revealed ? 'blur(0px)' : 'blur(4px)',
+                }}
+              >
+                {word}
+                {wi < words.length - 1 ? ' ' : ''}
+              </span>
+            ))}
+          </p>
+        )
+      })}
+    </div>
   )
 }
