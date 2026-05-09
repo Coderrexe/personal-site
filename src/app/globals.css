@@ -1,0 +1,209 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Light theme ──────────────────────────────────────── */
+:root {
+  --bg: #FAFAFA;
+  --surface: #F3F4F6;
+  --hover: #EAECF0;
+  --line: #E2E5EB;
+  --fg: #0A0A0A;
+  --muted: #6B7280;
+  --subtle: #C4C9D4;
+  --accent: #1D4ED8;
+  --accent-muted: #DBEAFE;
+  --nav-bg: rgba(250, 250, 250, 0.88);
+}
+
+/* ── Dark theme ───────────────────────────────────────── */
+html.dark {
+  --bg: #0A0A0A;
+  --surface: #111111;
+  --hover: #191919;
+  --line: #1F1F1F;
+  --fg: #F0F0F0;
+  --muted: #6B7280;
+  --subtle: #2E2E2E;
+  --accent: #60A5FA;
+  --accent-muted: #1E3A5F;
+  --nav-bg: rgba(10, 10, 10, 0.88);
+}
+
+/* ── Theme transition ─────────────────────────────────── */
+.theme-transitioning,
+.theme-transitioning *,
+.theme-transitioning *::before,
+.theme-transitioning *::after {
+  transition:
+    background-color 0.25s ease,
+    color 0.25s ease,
+    border-color 0.25s ease !important;
+}
+
+/* ── Base ─────────────────────────────────────────────── */
+html {
+  background-color: var(--bg);
+  color: var(--fg);
+  scroll-behavior: smooth;
+}
+
+* { box-sizing: border-box; }
+a { color: inherit; text-decoration: none; }
+::selection { background-color: var(--accent); color: #fff; }
+
+/* ── Fade-in animation ────────────────────────────────── */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.65s cubic-bezier(0.22, 1, 0.36, 1), transform 0.65s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.fade-in.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Nav blur ─────────────────────────────────────────── */
+.nav-bg {
+  background-color: var(--nav-bg);
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+}
+
+/* ── Section divider label ────────────────────────────── */
+.section-label {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 1.75rem;
+}
+.section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--line);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.7s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.section-label.line-visible::after {
+  transform: scaleX(1);
+}
+
+/* ── Custom cursor ────────────────────────────────────── */
+* { cursor: none !important; }
+@media (hover: none) {
+  * { cursor: auto !important; }
+}
+
+.cursor-dot {
+  position: fixed;
+  top: 0; left: 0;
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--fg);
+  pointer-events: none;
+  z-index: 9999;
+  will-change: transform;
+  transition: opacity 0.4s ease, background-color 0.2s ease, transform 0.15s ease;
+}
+
+.cursor-ring {
+  position: fixed;
+  top: 0; left: 0;
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
+  pointer-events: none;
+  z-index: 9998;
+  will-change: transform;
+  transition:
+    width 0.35s cubic-bezier(0.22,1,0.36,1),
+    height 0.35s cubic-bezier(0.22,1,0.36,1),
+    border-color 0.35s ease,
+    opacity 0.4s ease;
+}
+
+.cursor-ring--hover {
+  width: 48px;
+  height: 48px;
+  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
+}
+
+/* ── Film grain overlay ───────────────────────────────── */
+body::before {
+  content: '';
+  position: fixed;
+  inset: -50%;
+  width: 200%;
+  height: 200%;
+  pointer-events: none;
+  z-index: 9990;
+  opacity: 0.028;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 128px 128px;
+  animation: grain 0.8s steps(1) infinite;
+}
+
+@keyframes grain {
+  0%  { transform: translate(0, 0); }
+  10% { transform: translate(-3%, -3%); }
+  20% { transform: translate(3%, 1%); }
+  30% { transform: translate(-1%, 4%); }
+  40% { transform: translate(4%, -2%); }
+  50% { transform: translate(-2%, 3%); }
+  60% { transform: translate(3%, -4%); }
+  70% { transform: translate(-4%, 1%); }
+  80% { transform: translate(1%, -1%); }
+  90% { transform: translate(-3%, 4%); }
+ 100% { transform: translate(2%, -3%); }
+}
+
+/* ── Animated hero characters ─────────────────────────── */
+.animated-char {
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+/* ── Animated bio words ───────────────────────────────── */
+.animated-word {
+  display: inline;
+  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
+              filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: opacity, filter;
+}
+
+/* ── Stagger list items ───────────────────────────────── */
+.stagger-item {
+  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
+              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform, opacity;
+}
+
+/* ── Tag badge ────────────────────────────────────────── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-mono);
+  font-size: 0.625rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding: 0.2rem 0.5rem;
+  border-radius: 3px;
+  background-color: var(--surface);
+  color: var(--muted);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+.tag-accent {
+  background-color: var(--accent-muted);
+  color: var(--accent);
+  border-color: transparent;
+}
