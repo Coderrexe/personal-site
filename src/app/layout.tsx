@@ -3,7 +3,6 @@ import { DM_Serif_Display, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import NavClient from '@/components/NavClient'
 import Footer from '@/components/Footer'
-import Cursor from '@/components/Cursor'
 
 const dmSerif = DM_Serif_Display({
   subsets: ['latin'],
@@ -52,7 +51,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         />
       </head>
       <body className="bg-bg text-fg font-sans antialiased min-h-screen flex flex-col">
-        <Cursor />
         <NavClient />
         <main className="flex-1">{children}</main>
         <Footer />

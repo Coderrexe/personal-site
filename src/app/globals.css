@@ -95,46 +95,6 @@ a { color: inherit; text-decoration: none; }
   transform: scaleX(1);
 }
 
-/* ── Custom cursor ────────────────────────────────────── */
-* { cursor: none !important; }
-@media (hover: none) {
-  * { cursor: auto !important; }
-}
-
-.cursor-dot {
-  position: fixed;
-  top: 0; left: 0;
-  width: 4px; height: 4px;
-  border-radius: 50%;
-  background: var(--fg);
-  pointer-events: none;
-  z-index: 9999;
-  will-change: transform;
-  transition: opacity 0.4s ease, background-color 0.2s ease, transform 0.15s ease;
-}
-
-.cursor-ring {
-  position: fixed;
-  top: 0; left: 0;
-  width: 32px; height: 32px;
-  border-radius: 50%;
-  border: 1px solid color-mix(in srgb, var(--fg) 35%, transparent);
-  pointer-events: none;
-  z-index: 9998;
-  will-change: transform;
-  transition:
-    width 0.35s cubic-bezier(0.22,1,0.36,1),
-    height 0.35s cubic-bezier(0.22,1,0.36,1),
-    border-color 0.35s ease,
-    opacity 0.4s ease;
-}
-
-.cursor-ring--hover {
-  width: 48px;
-  height: 48px;
-  border-color: color-mix(in srgb, var(--accent) 60%, transparent);
-}
-
 /* ── Film grain overlay ───────────────────────────────── */
 body::before {
   content: '';
