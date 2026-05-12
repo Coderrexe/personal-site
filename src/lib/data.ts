@@ -117,12 +117,12 @@ export const workItems: WorkItem[] = [
   {
     company: "Tractable",
     role: "ML Intern",
-    tagline: "Working on MLOps and research at one of UK's top computer vision unicorns.",
+    tagline: "Working on MLOps and research for automotive insurance at one of UK's top computer vision unicorns.",
     period: "May 2026 – Present",
     note: "Series E, $1B valuation",
     location: "London, UK",
     description: [
-      "• Working on MLOps and research at one of UK's top computer vision unicorns.",
+      "• Working on MLOps and research for automotive insurance at one of UK's top computer vision unicorns.",
     ],
     links: [
       { label: "Forbes", href: "https://www.forbes.com/sites/iainmartin/2021/06/16/uk-computer-vision-startup-tractable-reaches-unicorn-status/" },
