@@ -117,7 +117,7 @@ export const workItems: WorkItem[] = [
   {
     company: "Tractable",
     role: "ML Intern",
-    tagline: "MLOps and research for automotive insurance at one of UK's top computer vision unicorns.",
+    tagline: "MLOps and research at one of UK's top computer vision unicorns.",
     period: "May 2026 – Present",
     note: "Series E, $1B valuation",
     location: "London, UK",
