@@ -29,7 +29,8 @@ export interface ResearchItem {
 export const researchItems: ResearchItem[] = [
   {
     title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
-    tag: "Research",
+    tag: "arXiv",
+    tagAccent: true,
     tagline: "Taught neural networks Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
     period: "May 2026",
     description: [
@@ -39,7 +40,7 @@ export const researchItems: ResearchItem[] = [
       "• Showed CDN outperforms the structured energy network on 2 of 3 systems under 1% state noise, and that the polynomial CDN's R² jumps from 0.78 to 0.9998 purely from extending the training schedule, revealing conservation-loss landscape sensitivity.",
     ],
     links: [
-      { label: "Paper", href: "https://github.com/Coderrexe/physics-neural-net/blob/main/final_paper.pdf" },
+      { label: "Paper (arXiv)", href: "https://arxiv.org/abs/2605.18883" },
       { label: "Repository", href: "https://github.com/Coderrexe/physics-neural-net" },
     ],
   },
