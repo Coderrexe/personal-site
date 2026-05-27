@@ -31,13 +31,13 @@ export const researchItems: ResearchItem[] = [
     title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
     tag: "arXiv",
     tagAccent: true,
-    tagline: "Taught neural networks Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
+    tagline: "Trained neural nets to discover Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
     period: "May 2026",
     description: [
-      "• Developed a Conservation Discovery Network (CDN), a black-box MLP trained with a temporal consistency loss and variance-hinge regularizer to learn scalar invariants directly from Hamiltonian trajectories, without knowing the system's physics.",
-      "• Showed that a diffusion model achieving rollout MSE ~10⁻³ simultaneously produces within-trajectory energy standard deviation 7,500–36,000× larger than ground truth, demonstrating that trajectory accuracy and conservation are orthogonal quality axes.",
-      "• Benchmarked four model classes (CDN, polynomial CDN, structured T(v)+V(q) network, diffusion baseline) across projectile, pendulum, and spring-mass systems; structured network reached R²=0.9999 on clean data, CDN-Aligned reached R²=0.996.",
-      "• Showed CDN outperforms the structured energy network on 2 of 3 systems under 1% state noise, and that the polynomial CDN's R² jumps from 0.78 to 0.9998 purely from extending the training schedule, revealing conservation-loss landscape sensitivity.",
+      "• Demonstrated that diffusion models with low prediction error (MSE near 10⁻³) can still violate fundamental physics, exhibiting energy variance up to 36,000× greater than ground-truth trajectories.",
+      "• Designed and tested three neural network architectures — Structured Energy Network, black-box Conservation Discovery Network (CDN), and Polynomial CDN — to extract globally conserved quantities directly from state observations of Hamiltonian systems.",
+      "• Revealed that while hard-coded structured models (T(v) + V(q)) achieve near-perfect accuracy (R² ≥ 0.9999) on clean data, black-box CDNs are more robust and outperform them when subjected to 1% additive Gaussian state noise.",
+      "• Proved that temporal consistency objectives require weak standardized energy alignment to reliably select true physical energy, and showed that extending training schedules can rescue models from poor optimization landscapes (improving R² from 0.78 to 0.9998).",
     ],
     links: [
       { label: "Paper (arXiv)", href: "https://arxiv.org/abs/2605.18883" },
