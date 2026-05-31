@@ -136,12 +136,11 @@ export const workItems: WorkItem[] = [
   {
     company: "Yale Graph & Geometric Learning Lab",
     role: "Undergraduate Researcher",
-    tagline: "LLM post-training and RL for multimodal time-series reasoning.",
+    tagline: "Post-training and RAG for multimodal time-series foundation models.",
     period: "Mar 2026 – Present",
     location: "New Haven, CT",
     description: [
-      "• LLM architectures and post-training/RL for multimodal time-series reasoning.",
-      "• Building data pipelines for next-gen foundation models.",
+      "• Post-training and RAG for multimodal time-series foundation models.",
     ],
     links: [
       { label: "Lab Page", href: "https://graph-and-geometric-learning.github.io/" },
