@@ -117,7 +117,7 @@ export const researchItems: ResearchItem[] = [
 export const workItems: WorkItem[] = [
   {
     company: "Tractable",
-    role: "ML Intern",
+    role: "Machine Learning Intern",
     tagline: "Scaling ML inference at one of UK's top computer vision unicorns.",
     period: "May 2026 – Present",
     note: "Series E, $1B valuation",
@@ -183,7 +183,7 @@ export const workItems: WorkItem[] = [
   },
   {
     company: "Greyparrot",
-    role: "ML Engineer Intern",
+    role: "Machine Learning Engineer Intern",
     tagline: "Computer vision and YOLOv8 inference pipelines for industrial recycling.",
     period: "Jul 2024 – Sep 2024",
     location: "London, UK",
