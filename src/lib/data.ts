@@ -201,7 +201,7 @@ export const workItems: WorkItem[] = [
   },
   {
     company: "CVSSP Lab, University of Surrey",
-    role: "ML Research Intern",
+    role: "Machine Learning Research Intern",
     tagline: "GANs for zero-shot image translation; seq2seq transformers and graph convolutional networks for audio captioning.",
     period: "Jun 2023 – Feb 2025",
     location: "Guildford, UK",
