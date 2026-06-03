@@ -149,11 +149,11 @@ export const workItems: WorkItem[] = [
   {
     company: "SPAR Research",
     role: "AI Alignment Research Fellow",
-    tagline: "Activation steering in chain-of-thought LLM obfuscation with MIT and ex-Meta researchers.",
+    tagline: "Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers.",
     period: "Feb 2026 – Present",
     location: "Berkeley, CA",
     description: [
-      "• Activation steering in chain-of-thought LLM obfuscation with MIT and ex-Meta researchers."
+      "• Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers."
     ],
   },
   {
