@@ -4,12 +4,15 @@ import { useState } from 'react'
 import { workItems, researchItems } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
 import SectionLabel from '@/components/SectionLabel'
+import { useUnlock } from '@/lib/unlock'
 
 type Tab = 'experience' | 'research'
 
 export default function Work() {
   const [tab, setTab] = useState<Tab>('experience')
   const [expandedExp, setExpandedExp] = useState<number | null>(null)
+  const { unlocked } = useUnlock()
+  const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
 
   return (
     <div className="max-w-4xl mx-auto px-6">
@@ -176,18 +179,20 @@ export default function Work() {
           <section className="pt-12 pb-24" id="research">
             <SectionLabel>Research &amp; Projects</SectionLabel>
             <div>
-              {researchItems.map((item, idx) => (
+              {visibleResearch.map((item, idx) => (
                 <article key={idx} className="py-8 border-b border-line last:border-0">
-                  <div className="flex flex-wrap items-start justify-between gap-x-8 gap-y-1 mb-2">
-                    <div className="flex items-center gap-2.5 flex-wrap">
-                      <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                  <div className="flex items-start gap-6 mb-2">
+                    <div className="flex-1 min-w-0">
+                      <div className="mb-1.5">
+                        <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                      </div>
                       {item.titleHtml ? (
                         <p className="text-fg font-medium text-sm" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
                       ) : (
                         <p className="text-fg font-medium text-sm">{item.title}</p>
                       )}
                     </div>
-                    <span className="font-mono text-xs text-muted tabular-nums flex-shrink-0 whitespace-nowrap">{item.period}</span>
+                    <span className="font-mono text-xs text-muted tabular-nums flex-shrink-0 whitespace-nowrap mt-0.5">{item.period}</span>
                   </div>
                   {item.award && (
                     <p className="font-mono text-xs text-muted mb-3">{item.award}</p>

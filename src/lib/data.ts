@@ -24,9 +24,26 @@ export interface ResearchItem {
   period: string;
   description: string[];
   links?: { label: string; href: string }[];
+  hidden?: boolean; // password-protected: only visible after Cmd+K unlock
 }
 
 export const researchItems: ResearchItem[] = [
+  {
+    title: "Selective Disclosure of Hidden Directives in Reasoning Models: Behavioral Asymmetry and Activation Steering",
+    tag: "Research",
+    tagAccent: true,
+    hidden: true,
+    tagline: "Activation steering and chain-of-thought monitoring to show reasoning models leak malign hidden system-prompt directives in chain-of-thought more than benign equivalents.",
+    period: "June 2026",
+    description: [
+      "• Found 5 models from 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden directives in chain-of-thought more than benign equivalents, with +8.2pp cross-family (n=460, p<0.0001).",
+      "• Extracted steering vectors in MiniMax-M2.5 causally inducing/suppressing CoT hiding; benign and malign vectors have cosine similarity 0.804 and converge to system-prompt tokens from layer ~30, indicating a shared hiding direction rather than valence-specific mechanisms.",
+      "• Constructed 100 benign/malign task pairs embedding hidden directives under a symmetric self-reference ban, and evaluated 8 frontier reasoning models from 5 families using K=4 samples per task via a regex-based CoT leak detector.",
+    ],
+    links: [
+      { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
+    ],
+  },
   {
     title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
     tag: "arXiv",

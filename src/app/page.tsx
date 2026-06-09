@@ -41,7 +41,7 @@ export default function Home() {
       {/* ── Research & Projects ───────────────────────────── */}
       <FadeIn delay={160}>
         <section className="pb-20">
-          <SectionLabel>Research &amp; Projects</SectionLabel>
+          <SectionLabel>Research</SectionLabel>
           <ResearchList items={researchItems} />
           <div className="mt-5">
             <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">

@@ -2,11 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { ResearchItem } from '@/lib/data'
+import { useUnlock } from '@/lib/unlock'
 
 export default function ResearchList({ items }: { items: ResearchItem[] }) {
   const [expanded, setExpanded] = useState<number | null>(null)
   const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set())
   const refs = useRef<(HTMLDivElement | null)[]>([])
+  const { unlocked } = useUnlock()
+
+  const visible = items.filter(item => !item.hidden || unlocked)
 
   useEffect(() => {
     const observers: IntersectionObserver[] = []
@@ -19,24 +23,24 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
             obs.disconnect()
           }
         },
-        { threshold: 0.08 }
+        { threshold: 0, rootMargin: '0px 0px -20px 0px' }
       )
       obs.observe(el)
       observers.push(obs)
     })
     return () => observers.forEach(o => o.disconnect())
-  }, [])
+  }, [visible.length])
 
   return (
     <div>
-      {items.map((item, idx) => {
+      {visible.map((item, idx) => {
         const hasLinks = item.links && item.links.length > 0
         const isOpen = expanded === idx
         const isVisible = visibleSet.has(idx)
 
         return (
           <div
-            key={idx}
+            key={item.title}
             ref={el => { refs.current[idx] = el }}
             className="py-4 border-b border-line last:border-0 cursor-default"
             style={{
@@ -47,28 +51,32 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
             onMouseEnter={() => hasLinks ? setExpanded(idx) : undefined}
             onMouseLeave={() => setExpanded(null)}
           >
-            <div className="flex items-start justify-between gap-4 mb-1.5">
-              {item.titleHtml ? (
-                <p className="text-[0.9375rem] text-fg font-medium leading-snug" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
-              ) : (
-                <p className="text-[0.9375rem] text-fg font-medium leading-snug">{item.title}</p>
-              )}
-              <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap ml-2">
+            {/* Tag + Title row with date pinned right */}
+            <div className="flex items-start gap-6 mb-1.5">
+              <div className="flex-1 min-w-0">
+                <div className="mb-1">
+                  <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                </div>
+                {item.titleHtml ? (
+                  <p className="text-[0.9375rem] text-fg font-medium leading-snug" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+                ) : (
+                  <p className="text-[0.9375rem] text-fg font-medium leading-snug">{item.title}</p>
+                )}
+              </div>
+              <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">
                 {item.period}
               </span>
             </div>
+
             {item.award && (
               <p className="text-sm text-muted mb-1">{item.award}</p>
             )}
             <p className="text-[0.8125rem] text-muted">{item.tagline}</p>
 
-            {/* Expand links on hover */}
             {hasLinks && (
-              <div
-                className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                  isOpen ? 'max-h-12 opacity-100 mt-2.5' : 'max-h-0 opacity-0'
-                }`}
-              >
+              <div className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                isOpen ? 'max-h-12 opacity-100 mt-2.5' : 'max-h-0 opacity-0'
+              }`}>
                 <div className="flex items-center gap-4">
                   {item.links!.map((link) => (
                     <a
