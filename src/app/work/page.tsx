@@ -12,6 +12,7 @@ export default function Work() {
   const [tab, setTab] = useState<Tab>('experience')
   const [expandedExp, setExpandedExp] = useState<number | null>(null)
   const { unlocked } = useUnlock()
+  const visibleWork = workItems.filter(item => !item.hidden || unlocked)
   const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
 
   return (
@@ -81,7 +82,7 @@ export default function Work() {
             <section className="pt-12 pb-16">
               <SectionLabel>Experience</SectionLabel>
               <div>
-                {workItems.map((item, idx) => (
+                {visibleWork.map((item, idx) => (
                   <article
                     key={item.company}
                     className="py-8 border-b border-line last:border-0 cursor-default"

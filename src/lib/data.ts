@@ -12,6 +12,7 @@ export interface WorkItem {
   note?: string;
   description: (string | { text: string; link: BulletLink })[];
   links?: { label: string; href: string }[];
+  hidden?: boolean; // password-protected: only visible after Cmd+K unlock
 }
 
 export interface ResearchItem {

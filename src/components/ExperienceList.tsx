@@ -2,11 +2,15 @@
 
 import { useEffect, useRef, useState } from 'react'
 import type { WorkItem } from '@/lib/data'
+import { useUnlock } from '@/lib/unlock'
 
 export default function ExperienceList({ items }: { items: WorkItem[] }) {
   const [expanded, setExpanded] = useState<number | null>(null)
   const [visibleSet, setVisibleSet] = useState<Set<number>>(new Set())
   const refs = useRef<(HTMLDivElement | null)[]>([])
+  const { unlocked } = useUnlock()
+
+  const visible = items.filter(item => !item.hidden || unlocked)
 
   useEffect(() => {
     const observers: IntersectionObserver[] = []
@@ -29,7 +33,7 @@ export default function ExperienceList({ items }: { items: WorkItem[] }) {
 
   return (
     <div>
-      {items.map((item, idx) => {
+      {visible.map((item, idx) => {
         const hasLinks = item.links && item.links.length > 0
         const isOpen = expanded === idx
         const isVisible = visibleSet.has(idx)
