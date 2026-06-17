@@ -178,13 +178,13 @@ export const workItems: WorkItem[] = [
     tagline: "Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers.",
     period: "Feb 2026 – Present",
     location: "Berkeley, CA",
-    links: [
-      { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
-    ],
+    // links: [
+    //   { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
+    // ],
     description: [
       "• Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers.",
-      "• Showed 5 models across 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden system prompts in chain-of-thought significantly more than benign equivalents, with +8.2pp cross-family gap (n = 460, p < 0.0001).",
-      "• Extracted causal steering vectors in MiniMax-M2.5 that reliably induce and suppress chain-of-thought disclosure.",
+      // "• Showed 5 models across 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden system prompts in chain-of-thought significantly more than benign equivalents, with +8.2pp cross-family gap (n = 460, p < 0.0001).",
+      // "• Extracted causal steering vectors in MiniMax-M2.5 that reliably induce and suppress chain-of-thought disclosure.",
     ],
   },
   {
