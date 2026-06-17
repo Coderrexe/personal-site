@@ -26,7 +26,7 @@ export default function CollectionPage({ params }: Props) {
   if (params.collection !== 'world-of-einsteins') redirect('/writing')
 
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
 
       {/* Back */}
       <FadeIn>

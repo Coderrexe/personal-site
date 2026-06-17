@@ -155,7 +155,7 @@ export const workItems: WorkItem[] = [
     company: "Yale Graph and Geometric Learning Lab",
     role: "Student Researcher",
     tagline: "Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by Rex Ying.",
-    taglineHtml: "Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by <a href=\"https://scholar.google.com/citations?user=6fqNXooAAAAJ&hl=en\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-fg underline underline-offset-2 decoration-line hover:text-accent transition-colors duration-150\">Rex Ying</a>.",
+    taglineHtml: "Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by <a href=\"https://scholar.google.com/citations?user=6fqNXooAAAAJ&hl=en\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-accent hover:opacity-75 transition-opacity duration-150\">Rex Ying</a>.",
     period: "Mar 2026 – Present",
     location: "New Haven, CT",
     description: [

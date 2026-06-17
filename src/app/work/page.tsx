@@ -16,7 +16,7 @@ export default function Work() {
   const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
 
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
 
       <FadeIn>
         <section className="pt-20 pb-14">
@@ -33,7 +33,7 @@ export default function Work() {
               <div>
                 <p className="text-fg font-medium text-sm mb-0.5">Yale University</p>
                 <p className="text-muted text-sm mb-1.5">B.S. Computer Science & Mathematics</p>
-                <p className="text-subtle text-xs leading-relaxed">
+                <p className="text-muted text-sm italic leading-relaxed">
                   Select Coursework: Deep Learning Theory (Graduate), Advances in Foundation Models (Graduate), Computational Neuroscience, Systems Programming, Data Structures, Discrete Mathematics, Probability Theory, Linear Algebra, Creative Writing, Modern Comparative Literature, Microeconomics
                 </p>
               </div>
@@ -54,7 +54,7 @@ export default function Work() {
 
       {/* ── Tab switcher ────────────────────────────────────── */}
       <FadeIn delay={120}>
-        <div className="flex items-center gap-6 pb-12">
+        <div className="flex items-center gap-6 pb-6">
           <button
             onClick={() => setTab('experience')}
             className={`text-sm pb-0.5 transition-colors duration-150 ${
@@ -82,7 +82,7 @@ export default function Work() {
         <>
           {/* ── Experience ──────────────────────────────────── */}
           <FadeIn delay={80}>
-            <section className="pt-12 pb-16">
+            <section className="pt-4 pb-16">
               <SectionLabel>Experience</SectionLabel>
               <div>
                 {visibleWork.map((item, idx) => (
@@ -97,13 +97,17 @@ export default function Work() {
                         <p className="text-fg font-medium text-sm mb-0.5">{item.company}</p>
                         <p className="text-sm">
                           <span className="text-fg">{item.role}</span>
-                          <span className="text-muted"> · {item.location}</span>
                           {item.note && <span className="text-muted"> · {item.note}</span>}
                         </p>
                       </div>
-                      <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap">
-                        {item.period}
-                      </span>
+                      <div className="flex-shrink-0 text-right">
+                        <span className="font-mono text-xs text-muted tabular-nums whitespace-nowrap block">
+                          {item.period}
+                        </span>
+                        <span className="font-mono text-xs text-muted whitespace-nowrap block mt-0.5">
+                          {item.location}
+                        </span>
+                      </div>
                     </div>
                     <ul className="space-y-2.5">
                       {item.description.map((bullet, i) => {
@@ -122,7 +126,7 @@ export default function Work() {
                               href={bullet.link.href}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="text-fg underline underline-offset-2 decoration-line hover:text-accent transition-colors duration-150"
+                              className="text-accent hover:opacity-75 transition-opacity duration-150"
                             >
                               {bullet.link.text}
                             </a>
@@ -179,7 +183,7 @@ export default function Work() {
 
       {tab === 'research' && (
         <FadeIn>
-          <section className="pt-12 pb-24" id="research">
+          <section className="pt-4 pb-24" id="research">
             <SectionLabel>Research &amp; Projects</SectionLabel>
             <div>
               {visibleResearch.map((item, idx) => (

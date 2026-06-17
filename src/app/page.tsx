@@ -10,7 +10,7 @@ import SectionLabel from '@/components/SectionLabel'
 
 export default function Home() {
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
 
       {/* ── Hero ──────────────────────────────────────────── */}
       <section className="pt-24 pb-20">

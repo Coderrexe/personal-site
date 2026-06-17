@@ -9,7 +9,7 @@ const links = [
 export default function Nav() {
   return (
     <nav className="nav-bg sticky top-0 z-50 border-b border-line">
-      <div className="max-w-4xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-[60rem] mx-auto px-6 py-4 flex items-center justify-between">
         <Link
           href="/"
           className="font-mono text-sm text-fg hover:text-accent transition-colors duration-150"

@@ -36,7 +36,7 @@ function RevealEmail() {
 
 export default function Contact() {
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
       <FadeIn>
         <section className="pt-20 pb-14">
           <h1 className="font-serif text-[2.2rem] text-fg tracking-[-0.02em] leading-tight">Contact</h1>

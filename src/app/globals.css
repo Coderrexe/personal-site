@@ -46,7 +46,7 @@ html {
   background-color: var(--bg);
   color: var(--fg);
   scroll-behavior: smooth;
-  font-size: 90%;
+  font-size: 95%;
 }
 
 * { box-sizing: border-box; }
@@ -148,23 +148,16 @@ body::before {
   will-change: transform, opacity;
 }
 
-/* ── Tag badge ────────────────────────────────────────── */
+/* ── Tag kicker ───────────────────────────────────────── */
 .tag {
   display: inline-flex;
   align-items: center;
   font-family: var(--font-mono);
-  font-size: 0.625rem;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  padding: 0.2rem 0.5rem;
-  border-radius: 3px;
-  background-color: var(--surface);
+  font-size: 0.6875rem;
+  letter-spacing: 0.02em;
   color: var(--muted);
-  border: 1px solid var(--line);
   white-space: nowrap;
 }
 .tag-accent {
-  background-color: var(--accent-muted);
   color: var(--accent);
-  border-color: transparent;
 }

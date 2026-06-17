@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 
 export default function Writing() {
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
 
       <FadeIn>
         <section className="pt-20 pb-14">

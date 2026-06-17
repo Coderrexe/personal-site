@@ -32,7 +32,7 @@ export default function EssayPage({ params }: Props) {
   if (!essay || !collection.essaySlugs.includes(essay.slug)) notFound()
 
   return (
-    <div className="max-w-4xl mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-6">
 
       {/* Back */}
       <FadeIn>
