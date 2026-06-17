@@ -68,9 +68,6 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
               </span>
             </div>
 
-            {item.award && (
-              <p className="text-sm text-muted mb-1">{item.award}</p>
-            )}
             <p className="text-[0.8125rem] text-muted">{item.tagline}</p>
 
             {hasLinks && (

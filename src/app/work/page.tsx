@@ -33,9 +33,9 @@ export default function Work() {
               <div>
                 <p className="text-fg font-medium text-sm mb-0.5">Yale University</p>
                 <p className="text-muted text-sm mb-1.5">B.S. Computer Science & Mathematics</p>
-                <p className="text-muted text-sm italic leading-relaxed">
+                {/* <p className="text-muted text-sm italic leading-relaxed">
                   Select Coursework: Deep Learning Theory (Graduate), Advances in Foundation Models (Graduate), Computational Neuroscience, Systems Programming, Data Structures, Discrete Mathematics, Probability Theory, Linear Algebra, Creative Writing, Modern Comparative Literature, Microeconomics
-                </p>
+                </p> */}
               </div>
               <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums">2025–2029</span>
             </div>
@@ -201,9 +201,6 @@ export default function Work() {
                     </div>
                     <span className="font-mono text-xs text-muted tabular-nums flex-shrink-0 whitespace-nowrap mt-0.5">{item.period}</span>
                   </div>
-                  {item.award && (
-                    <p className="font-mono text-xs text-muted mb-3">{item.award}</p>
-                  )}
                   <ul className="space-y-2.5 mt-3">
                     {item.description.map((bullet, i) => (
                       <li key={i} className="text-[0.8125rem] text-muted leading-relaxed">

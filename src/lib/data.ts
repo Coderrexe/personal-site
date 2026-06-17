@@ -114,7 +114,7 @@ export const researchItems: ResearchItem[] = [
     title: "Mycoflo: Pleurotus tuber-regium in Heavy Metal Filtration and Machine Learning for Water Potability Testing",
     titleHtml: "Mycoflo: <em>Pleurotus tuber-regium</em> in Heavy Metal Filtration and Machine Learning for Water Potability Testing",
     tag: "Research",
-    tagline: "Mycofiltration using native Nigerian fungi + XGBoost/Random Forest ensemble for water potability; 63.75% copper reduction, 94% classification accuracy.",
+    tagline: "Mycofiltration using native Nigerian fungi + XGBoost/Random Forest ensemble for water potability; 63.75% copper reduction, 94% classification accuracy. Featured by United Nations; The Earth Prize 2024 Finalist (Top 10 of 1000+).",
     period: "Feb 2024",
     award: "Featured by United Nations; The Earth Prize 2024 Finalist (Top 10 of 1000+)",
     description: [
@@ -182,7 +182,9 @@ export const workItems: WorkItem[] = [
       { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
     ],
     description: [
-      "• Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers."
+      "• Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers.",
+      "• Showed 5 models across 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden system prompts in chain-of-thought significantly more than benign equivalents, with +8.2pp cross-family gap (n = 460, p < 0.0001).",
+      "• Extracted causal steering vectors in MiniMax-M2.5 that reliably induce and suppress chain-of-thought disclosure.",
     ],
   },
   {
