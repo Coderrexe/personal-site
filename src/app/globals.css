@@ -46,6 +46,7 @@ html {
   background-color: var(--bg);
   color: var(--fg);
   scroll-behavior: smooth;
+  font-size: 90%;
 }
 
 * { box-sizing: border-box; }
