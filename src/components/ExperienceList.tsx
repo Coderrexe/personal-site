@@ -63,7 +63,11 @@ export default function ExperienceList({ items }: { items: WorkItem[] }) {
                 <span className="text-muted"> · {item.note}</span>
               )}
             </p>
-            <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+            {item.taglineHtml ? (
+              <p className="text-[0.8125rem] text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
+            ) : (
+              <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+            )}
 
             {hasLinks && (
               <div

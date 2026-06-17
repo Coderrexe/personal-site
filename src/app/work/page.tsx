@@ -32,7 +32,10 @@ export default function Work() {
             <div className="flex items-start justify-between gap-8">
               <div>
                 <p className="text-fg font-medium text-sm mb-0.5">Yale University</p>
-                <p className="text-muted text-sm">B.S. Computer Science & Mathematics</p>
+                <p className="text-muted text-sm mb-1.5">B.S. Computer Science & Mathematics</p>
+                <p className="text-subtle text-xs leading-relaxed">
+                  Select Coursework: Deep Learning Theory (Graduate), Advances in Foundation Models (Graduate), Computational Neuroscience, Systems Programming, Data Structures, Discrete Mathematics, Probability Theory, Linear Algebra, Creative Writing, Modern Comparative Literature, Microeconomics
+                </p>
               </div>
               <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums">2025–2029</span>
             </div>
@@ -51,7 +54,7 @@ export default function Work() {
 
       {/* ── Tab switcher ────────────────────────────────────── */}
       <FadeIn delay={120}>
-        <div className="flex items-center gap-6 pb-12 border-b border-line">
+        <div className="flex items-center gap-6 pb-12">
           <button
             onClick={() => setTab('experience')}
             className={`text-sm pb-0.5 transition-colors duration-150 ${
@@ -160,9 +163,8 @@ export default function Work() {
               <SectionLabel>Technical</SectionLabel>
               <div className="space-y-5">
                 {[
-                  { label: 'Languages', items: 'Python · TypeScript · JavaScript · C++ · Swift · SQL · Bash' },
-                  { label: 'ML / AI', items: 'PyTorch · TensorFlow · Scikit-Learn · HuggingFace · Pandas · NumPy · Stim' },
-                  { label: 'Web', items: 'Next.js · React · Tailwind · Supabase · PostgreSQL · MySQL · Prisma' },
+                  { label: 'Languages', items: 'Python · TypeScript · JavaScript · C++ · C · HTML · CSS · Swift · Bash · SQL' },
+                  { label: 'Frameworks', items: 'Next.js · React · Linux · Supabase · PyTorch · TensorFlow · Express · PostgreSQL · MongoDB' },
                 ].map(({ label, items }) => (
                   <div key={label} className="flex items-baseline gap-8">
                     <span className="font-mono text-xs text-muted w-20 flex-shrink-0">{label}</span>

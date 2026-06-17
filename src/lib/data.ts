@@ -7,6 +7,7 @@ export interface WorkItem {
   company: string;
   role: string;
   tagline: string;
+  taglineHtml?: string;
   period: string;
   location: string;
   note?: string;
@@ -30,16 +31,15 @@ export interface ResearchItem {
 
 export const researchItems: ResearchItem[] = [
   {
-    title: "Selective Disclosure of Hidden Directives in Reasoning Models: Behavioral Asymmetry and Activation Steering",
+    title: "Activation Steering and Chain-of-Thought Disclosure in Reasoning Models",
     tag: "Research",
-    tagAccent: true,
+    // tagAccent: true,
     hidden: true,
     tagline: "Activation steering and chain-of-thought monitoring to show reasoning models leak malign hidden system-prompt directives in chain-of-thought more than benign equivalents.",
-    period: "June 2026",
+    period: "Feb 2026 – Jun 2026",
     description: [
-      "• Found 5 models from 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden directives in chain-of-thought more than benign equivalents, with +8.2pp cross-family (n=460, p<0.0001).",
-      "• Extracted steering vectors in MiniMax-M2.5 causally inducing/suppressing CoT hiding; benign and malign vectors have cosine similarity 0.804 and converge to system-prompt tokens from layer ~30, indicating a shared hiding direction rather than valence-specific mechanisms.",
-      "• Constructed 100 benign/malign task pairs embedding hidden directives under a symmetric self-reference ban, and evaluated 8 frontier reasoning models from 5 families using K=4 samples per task via a regex-based CoT leak detector.",
+      "• Showed 5 models across 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden system prompts in chain-of-thought significantly more than benign equivalents, with +8.2pp cross-family gap (n = 460, p < 0.0001).",
+      "• Extracted causal steering vectors in MiniMax-M2.5 that reliably induce and suppress chain-of-thought disclosure.",
     ],
     links: [
       { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
@@ -48,7 +48,7 @@ export const researchItems: ResearchItem[] = [
   {
     title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
     tag: "arXiv",
-    tagAccent: true,
+    // tagAccent: true,
     tagline: "Trained neural nets to discover Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
     period: "May 2026",
     description: [
@@ -65,7 +65,7 @@ export const researchItems: ResearchItem[] = [
   {
     title: "Optimized Quantum Cat Qubit Reed-Solomon & Tornado Codes",
     tag: "MIT iQuHack 1st Place",
-    tagAccent: true,
+    // tagAccent: true,
     award: "MIT iQuHack 1st Place 2026: Alice & Bob",
     tagline: "Novel quantum error correction algorithm; Tornado architecture combining Reed-Solomon codes and repetition stabilizers for cat qubits.",
     period: "Jan 2026",
@@ -79,17 +79,15 @@ export const researchItems: ResearchItem[] = [
     ],
   },
   {
-    title: "AEGIS: Pareto-Optimal Safe Pedestrian Navigation via Heuristic NAMOA* Pathfinding",
+    title: "Safe Pedestrian Navigation App using NAMOA*",
     tag: "PennApps 1st Place",
-    tagAccent: true,
+    // tagAccent: true,
     award: "PennApps 1st Place 2025: Best Use of Statistics",
     tagline: "Reduced NAMOA* pathfinding runtime from O(N³) to O(N log N) via skyline pruning and cardinality bounding.",
     period: "Sep 2025",
     description: [
-      "• Framed pedestrian safety as a multi-objective shortest path problem: minimise travel time and darkness exposure simultaneously, with hard exclusion of crime-flagged nodes, over Philadelphia's street graph (~110k nodes, ~330k edges).",
-      "• Designed a heuristic NAMOA* variant with skyline-based dominance pruning, admissible reverse-Dijkstra dual heuristics, and a per-node cardinality cap (Kmax=3) — collapsing worst-case complexity from O(N³) to O(N log N) and achieving 5–10× faster queries vs. naive NAMOA* on city-scale graphs.",
-      "• Fused NASA VIIRS VNP46A2 nighttime light radiance (500 m resolution, BRDF-corrected) with near real-time OpenDataPhilly crime reports to score every street segment; system dynamically recomputes Pareto-optimal routes when new incidents are published.",
-      "• Built a full-stack platform (React 19 + Flask + C++/Cython algorithm core + Redis) surfacing three interpretable route choices — fastest, brightest, balanced — with on-map alerts and one-click rerouting around newly flagged zones.",
+      "• Built full-stack GPS navigation app with React frontend and Flask REST API (C++ spatial processing), routing pedestrians away from crime hotspots using real-time police reports and NASA satellite data.",
+      "• Implemented heuristic multi-objective NAMOA* pathfinding with skyline pruning and cardinality bounds.",
     ],
     links: [
       { label: "Paper", href: "https://github.com/Coderrexe/aegis-pennapps-2025/blob/main/AEGIS_Paper.pdf" },
@@ -142,6 +140,8 @@ export const workItems: WorkItem[] = [
     location: "London, UK",
     description: [
       "• Scaling ML edge inference for hardware at one of UK's top computer vision unicorns.",
+      "• Led TensorRT/Triton pipeline for computer vision models for vehicle damage assessment (Mask2Former, RAFT optical flow) on NVIDIA A10G/Jetson GPUs on Linux; achieved 100% claim completions at zero error rate.",
+      "• Validated ML inference optimizations via A/B benchmarking: Valkey distributed image cache (42% latency reduction) and asyncio batch dispatch (22.1% throughput gain)."
     ],
     links: [
       { label: "Forbes", href: "https://www.forbes.com/sites/iainmartin/2021/06/16/uk-computer-vision-startup-tractable-reaches-unicorn-status/" },
@@ -152,13 +152,21 @@ export const workItems: WorkItem[] = [
     ],
   },
   {
-    company: "Yale Graph & Geometric Learning Lab",
-    role: "Undergraduate Researcher",
-    tagline: "Post-training and RAG for multimodal time-series foundation models.",
+    company: "Yale Graph and Geometric Learning Lab",
+    role: "Student Researcher",
+    tagline: "Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by Rex Ying.",
+    taglineHtml: "Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by <a href=\"https://scholar.google.com/citations?user=6fqNXooAAAAJ&hl=en\" target=\"_blank\" rel=\"noopener noreferrer\" class=\"text-fg underline underline-offset-2 decoration-line hover:text-accent transition-colors duration-150\">Rex Ying</a>.",
     period: "Mar 2026 – Present",
     location: "New Haven, CT",
     description: [
-      "• Post-training and RAG for multimodal time-series foundation models.",
+      {
+        text: "• Researched post-training and RL for multimodal time-series LLMs for quantitative finance. Mentored by Rex Ying.",
+        link: {
+          text: "Rex Ying",
+          href: "https://scholar.google.com/citations?user=6fqNXooAAAAJ&hl=en",
+        },
+      },
+      "• Built GPT-4o-mini RAG pipeline synthesizing 12,216 structured market briefings across 524 S&P 500 tickers with 4-layer anti-leakage system; produced 9,843 clean training samples for fine-tuning.",
     ],
     links: [
       { label: "Lab Page", href: "https://graph-and-geometric-learning.github.io/" },
@@ -170,6 +178,9 @@ export const workItems: WorkItem[] = [
     tagline: "Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers.",
     period: "Feb 2026 – Present",
     location: "Berkeley, CA",
+    links: [
+      { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
+    ],
     description: [
       "• Activation steering and chain-of-thought monitorability with MIT and ex-Meta researchers."
     ],
@@ -181,16 +192,15 @@ export const workItems: WorkItem[] = [
     period: "Jul 2023 – Aug 2025",
     location: "London, UK",
     description: [
-      "• Built audio AI & underwater robotics for coral reef monitoring with 99.4% accuracy using sound recordings.",
+      "• Built audio AI & underwater robotics achieving 99.4% accuracy classifying coral reef health from underwater sound recordings via novel CNNs and gradient boosting models; deployed across 7 countries and 3 continents.",
       {
-        text: "• Scaled product to 7 countries and 3 continents; news feature by The Independent, NASA, National Geographic.",
+        text: "• Featured by The Independent, NASA, National Geographic; winner of NASA Conrad Challenge against 2000 teams.",
         link: {
           text: "The Independent",
           href: "https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html",
         },
       },
-      "• Winner of NASA Conrad Challenge (2000 teams, 50 countries); won ~$300k in scholarships.",
-      "• Researched novel CNNs + gradient boosting models; trained AI on 130+ hours of coral reef recordings.",
+      "• Trained models on 130+ hours of bioacoustic recordings using spectrogram transforms and data augmentation.",
     ],
     links: [
       { label: "The Independent", href: "https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html" },
@@ -207,9 +217,8 @@ export const workItems: WorkItem[] = [
     location: "London, UK",
     note: "Series B, $30M raised",
     description: [
-      "• Engineered PyTorch inference pipeline with test-time augmentation deployed across GPU clusters, improving F1-score while optimizing real-time processing speeds for complex computer vision tasks.",
-      "• Built YOLOv8 object detection models to accurately classify 80+ distinct classes for industrial recycling facilities.",
-      "• Worked directly with Head of Deep Learning and agile engineering teams to rapidly iterate and ship ML solutions.",
+      "• Optimized YOLOv8 object detection for real-time classification of 80+ industrial waste material types at production recycling facilities.",
+      "• Engineered PyTorch inference pipeline with test-time augmentation on GPU cluster for factory waste management.",
     ],
     links: [
       { label: "TIME", href: "https://time.com/collections/best-inventions-2025/7318490/greyparrot-analyzer/" },
@@ -225,8 +234,8 @@ export const workItems: WorkItem[] = [
     location: "Guildford, UK",
     note: "#1 ranked computer vision lab in UK",
     description: [
-      "• Researched GAN model (CycleGAN + CLIP + InceptionV3) in PyTorch to perform complex image-to-image translations from full-color to flat-color; built computational photography pipeline for unpaired datasets.",
-      "• Built novel sequence-to-sequence architectures (BART transformer + graph convolutional networks) for automated audio captioning; benchmarked on the Clotho dataset.",
+      "• Designed novel multi-loss CycleGAN (6 custom losses: adversarial, cycle consistency, CLIP semantics, MiDaS depth, sketch extractor) for unpaired full-to-flat-color image transformation, trained on 2,246 portrait images.",
+      "• Researched graph-based audio captioning model combining BART transformer with graph convolutional network and syntax-aware dependency parsing on the Clotho benchmark.",
     ],
     links: [
       { label: "Lab Page", href: "https://sketchx.ai/" },
