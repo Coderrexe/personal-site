@@ -82,7 +82,7 @@ export default function Work() {
         <>
           {/* ── Experience ──────────────────────────────────── */}
           <FadeIn delay={80}>
-            <section className="pt-4 pb-16">
+            <section className="pt-5 pb-16">
               <SectionLabel>Experience</SectionLabel>
               <div>
                 {visibleWork.map((item, idx) => (

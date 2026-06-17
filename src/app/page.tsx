@@ -29,7 +29,9 @@ export default function Home() {
       <FadeIn delay={0}>
         <section className="pb-20">
           <SectionLabel>Experience</SectionLabel>
-          <ExperienceList items={workItems} />
+          <div className="-mt-2">
+            <ExperienceList items={workItems} />
+          </div>
           <div className="mt-5">
             <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
               Learn more →
