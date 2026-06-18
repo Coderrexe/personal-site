@@ -46,7 +46,7 @@ export default function Contact() {
       <FadeIn delay={80}>
         <div className="pb-24">
 
-          <div className="flex items-baseline justify-between py-5 border-b border-line border-t">
+          <div className="flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line border-t">
             <span className="font-mono text-xs text-muted tracking-wider uppercase">Email</span>
             <RevealEmail />
           </div>
@@ -55,10 +55,10 @@ export default function Contact() {
             href="https://github.com/Coderrexe"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-baseline justify-between py-5 border-b border-line"
+            className="group flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">GitHub</span>
-            <span className="text-sm text-muted group-hover:text-fg transition-colors duration-150">
+            <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
               Coderrexe →
             </span>
           </a>
@@ -67,10 +67,10 @@ export default function Contact() {
             href="https://www.linkedin.com/in/simba-shi"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-baseline justify-between py-5 border-b border-line"
+            className="group flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">LinkedIn</span>
-            <span className="text-sm text-muted group-hover:text-fg transition-colors duration-150">
+            <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
               simba-shi →
             </span>
           </a>

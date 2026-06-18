@@ -6,20 +6,16 @@ import ExperienceList from '@/components/ExperienceList'
 import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
 import WritingList from '@/components/WritingList'
-import SectionLabel from '@/components/SectionLabel'
-import NeuralCanvas from '@/components/NeuralCanvas'
-import StatStrip from '@/components/StatStrip'
+import SectionHead from '@/components/SectionHead'
+import RobotIllustration from '@/components/RobotIllustration'
 
 export default function Home() {
   return (
     <div className="max-w-[60rem] mx-auto px-6">
 
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="relative pt-24 pb-20 overflow-hidden">
-        <div className="absolute inset-0 -mx-6">
-          <NeuralCanvas />
-        </div>
-        <div className="relative z-10">
+      <section className="grid grid-cols-1 md:grid-cols-[1fr_15rem] gap-10 items-center pt-20 pb-20">
+        <div>
           <h1 className="hero-name text-fg text-[1.85rem] font-semibold tracking-[-0.01em] mb-6 overflow-hidden">
             <AnimatedName name="Simba Shi" />
           </h1>
@@ -29,17 +25,17 @@ export default function Home() {
             "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
             "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
           ]} />
-          <StatStrip />
+        </div>
+        <div className="hidden md:block w-full h-56">
+          <RobotIllustration />
         </div>
       </section>
 
       {/* ── Experience ────────────────────────────────────── */}
       <FadeIn delay={0}>
         <section className="pb-20">
-          <SectionLabel>Experience</SectionLabel>
-          <div className="-mt-2">
-            <ExperienceList items={workItems} />
-          </div>
+          <SectionHead index="01">Experience</SectionHead>
+          <ExperienceList items={workItems} />
           <div className="mt-5">
             <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
               Learn more →
@@ -51,7 +47,7 @@ export default function Home() {
       {/* ── Research & Projects ───────────────────────────── */}
       <FadeIn delay={160}>
         <section className="pb-20">
-          <SectionLabel>Research</SectionLabel>
+          <SectionHead index="02">Research</SectionHead>
           <ResearchList items={researchItems} />
           <div className="mt-5">
             <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
@@ -64,7 +60,7 @@ export default function Home() {
       {/* ── Writing ───────────────────────────────────────── */}
       <FadeIn delay={240}>
         <section className="pb-24">
-          <SectionLabel>Writing</SectionLabel>
+          <SectionHead index="03">Writing</SectionHead>
           <WritingList essays={orderedEssays} />
         </section>
       </FadeIn>

@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { workItems, researchItems } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
-import SectionLabel from '@/components/SectionLabel'
+import SectionHead from '@/components/SectionHead'
 import { useUnlock } from '@/lib/unlock'
 
 type Tab = 'experience' | 'research'
@@ -27,7 +27,7 @@ export default function Work() {
       {/* ── Education (always visible) ──────────────────────── */}
       <FadeIn delay={80}>
         <section className="pb-14">
-          <div className="section-label">Education</div>
+          <SectionHead index="00">Education</SectionHead>
           <div className="space-y-6">
             <div className="flex items-start justify-between gap-8">
               <div>
@@ -83,15 +83,16 @@ export default function Work() {
           {/* ── Experience ──────────────────────────────────── */}
           <FadeIn delay={80}>
             <section className="pt-5 pb-16">
-              <SectionLabel>Experience</SectionLabel>
-              <div>
+              <SectionHead index="01">Experience</SectionHead>
+              <div className="circuit-list">
                 {visibleWork.map((item, idx) => (
                   <article
                     key={item.company}
-                    className="py-8 -mx-4 px-4 rounded-lg border-b border-line last:border-0 cursor-default hover:bg-hover transition-colors duration-300"
+                    className="circuit-row tilt-row relative py-8 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default"
                     onMouseEnter={() => item.links?.length ? setExpandedExp(idx) : undefined}
                     onMouseLeave={() => setExpandedExp(null)}
                   >
+                    <span className="circuit-node circuit-node-lg" />
                     <div className="flex items-start justify-between gap-8 mb-4">
                       <div>
                         <p className="text-fg font-medium text-sm mb-0.5">{item.company}</p>
@@ -164,7 +165,7 @@ export default function Work() {
           {/* ── Technical ───────────────────────────────────── */}
           <FadeIn delay={160}>
             <section className="pb-24">
-              <SectionLabel>Technical</SectionLabel>
+              <SectionHead index="02">Technical</SectionHead>
               <div className="space-y-5">
                 {[
                   { label: 'Languages', items: 'Python · TypeScript · JavaScript · C++ · C · HTML · CSS · Swift · Bash · SQL' },
@@ -184,10 +185,11 @@ export default function Work() {
       {tab === 'research' && (
         <FadeIn>
           <section className="pt-4 pb-24" id="research">
-            <SectionLabel>Research &amp; Projects</SectionLabel>
-            <div>
+            <SectionHead index="03">Research &amp; Projects</SectionHead>
+            <div className="circuit-list">
               {visibleResearch.map((item, idx) => (
-                <article key={idx} className="py-8 -mx-4 px-4 rounded-lg border-b border-line last:border-0 hover:bg-hover transition-colors duration-300">
+                <article key={idx} className="circuit-row tilt-row relative py-8 -mx-3 px-3 rounded-lg border-b border-line last:border-0">
+                  <span className="circuit-node circuit-node-lg" />
                   <div className="flex items-start gap-6 mb-2">
                     <div className="flex-1 min-w-0">
                       <div className="mb-1.5">

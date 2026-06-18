@@ -2,32 +2,34 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ── Light theme ──────────────────────────────────────── */
+/* ── Light theme: warm paper + circuit amber ─────────────── */
 :root {
-  --bg: #FAFAFA;
-  --surface: #F3F4F6;
-  --hover: #EAECF0;
-  --line: #E2E5EB;
-  --fg: #0A0A0A;
-  --muted: #6B7280;
-  --subtle: #C4C9D4;
-  --accent: #1D4ED8;
-  --accent-muted: #DBEAFE;
-  --nav-bg: rgba(250, 250, 250, 0.88);
+  --bg: #FAF8F4;
+  --surface: #F1ECE2;
+  --hover: #E9E2D3;
+  --line: #DDD4C2;
+  --fg: #161310;
+  --muted: #6B6356;
+  --subtle: #C7BCA8;
+  --accent: #B5560C;
+  --accent-2: #8A6D00;
+  --accent-muted: #F3E1C8;
+  --nav-bg: rgba(250, 248, 244, 0.85);
 }
 
-/* ── Dark theme ───────────────────────────────────────── */
+/* ── Dark theme: graphite + glowing amber circuitry ──────── */
 html.dark {
-  --bg: #0A0A0A;
-  --surface: #111111;
-  --hover: #191919;
-  --line: #1F1F1F;
-  --fg: #F0F0F0;
-  --muted: #6B7280;
-  --subtle: #2E2E2E;
-  --accent: #60A5FA;
-  --accent-muted: #1E3A5F;
-  --nav-bg: rgba(10, 10, 10, 0.88);
+  --bg: #0B0A08;
+  --surface: #161310;
+  --hover: #1F1B15;
+  --line: #2A241A;
+  --fg: #F3EEE3;
+  --muted: #8C8474;
+  --subtle: #352F22;
+  --accent: #F0A23B;
+  --accent-2: #E8C547;
+  --accent-muted: rgba(240, 162, 59, 0.14);
+  --nav-bg: rgba(11, 10, 8, 0.82);
 }
 
 /* ── Theme transition ─────────────────────────────────── */
@@ -51,7 +53,7 @@ html {
 
 * { box-sizing: border-box; }
 a { color: inherit; text-decoration: none; }
-::selection { background-color: var(--accent); color: #fff; }
+::selection { background-color: var(--accent); color: #080706; }
 
 /* ── Fade-in animation ────────────────────────────────── */
 .fade-in {
@@ -74,7 +76,7 @@ a { color: inherit; text-decoration: none; }
   opacity: 0.05;
 }
 html.dark .ambient-glow {
-  opacity: 0.09;
+  opacity: 0.10;
 }
 
 /* ── Nav blur ─────────────────────────────────────────── */
@@ -84,7 +86,41 @@ html.dark .ambient-glow {
   backdrop-filter: blur(16px);
 }
 
-/* ── Section divider label ────────────────────────────── */
+/* ── Editorial section header ────────────────────────────
+   Big serif heading + mono index number + drawing underline */
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 0.85rem;
+  margin-bottom: 2.25rem;
+}
+.section-head .index {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+  letter-spacing: 0.02em;
+}
+.section-head .title {
+  font-family: var(--font-serif);
+  font-size: 1.7rem;
+  font-style: italic;
+  color: var(--fg);
+  letter-spacing: -0.01em;
+}
+.section-head .rule {
+  flex: 1;
+  height: 1px;
+  background-color: var(--line);
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+  margin-left: 0.5rem;
+}
+.section-head.line-visible .rule {
+  transform: scaleX(1);
+}
+
+/* ── Legacy small kicker (still used in a few spots) ───── */
 .section-label {
   display: flex;
   align-items: center;
@@ -118,7 +154,7 @@ body::before {
   height: 200%;
   pointer-events: none;
   z-index: 9990;
-  opacity: 0.028;
+  opacity: 0.025;
   background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
   background-repeat: repeat;
   background-size: 128px 128px;
@@ -150,7 +186,7 @@ body::before {
   left: -150%;
   width: 60%;
   height: 100%;
-  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--fg) 35%, transparent), transparent);
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--accent) 55%, transparent), transparent);
   animation: sheen 2.2s ease-in-out 1.1s 1;
   pointer-events: none;
 }
@@ -198,4 +234,88 @@ body::before {
   background-color: var(--accent-muted);
   border-color: transparent;
   color: var(--accent);
+}
+
+/* ── Circuit timeline ─────────────────────────────────────
+   Vertical trace running down the left of a list, with a
+   node dot per row that lights up amber on hover/focus. */
+.circuit-list {
+  position: relative;
+  padding-left: 1.35rem;
+}
+.circuit-list::before {
+  content: '';
+  position: absolute;
+  left: 3px;
+  top: 0.6rem;
+  bottom: 0.6rem;
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, var(--line) 8%, var(--line) 92%, transparent);
+}
+.circuit-node {
+  position: absolute;
+  left: calc(-1.35rem + 3px);
+  top: 1.1rem;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background-color: var(--bg);
+  border: 1.5px solid var(--subtle);
+  transition: border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+}
+.circuit-node-lg {
+  top: 1.7rem;
+}
+.circuit-row:hover .circuit-node {
+  border-color: var(--accent);
+  background-color: var(--accent);
+  box-shadow: 0 0 0 4px var(--accent-muted);
+}
+
+/* ── Tilt card row ────────────────────────────────────── */
+.tilt-row {
+  transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1),
+              background-color 0.35s ease,
+              border-color 0.35s ease;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+.tilt-row:hover {
+  background-color: var(--surface);
+  border-color: var(--line);
+  transform: translateX(3px);
+}
+
+/* ── Hero illustration ────────────────────────────────── */
+.hero-illustration path,
+.hero-illustration circle,
+.hero-illustration line {
+  stroke: var(--fg);
+  fill: none;
+  vector-effect: non-scaling-stroke;
+}
+.hero-illustration .draw {
+  stroke-dasharray: 1000;
+  stroke-dashoffset: 1000;
+  animation: draw-line 2.6s cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+.hero-illustration .pulse-node {
+  fill: var(--accent);
+  stroke: none;
+  opacity: 0.85;
+  animation: node-pulse 2.6s ease-in-out infinite;
+}
+@keyframes draw-line {
+  to { stroke-dashoffset: 0; }
+}
+@keyframes node-pulse {
+  0%, 100% { opacity: 0.55; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.35); }
+}
+.hero-illustration-wrap {
+  animation: float-illustration 7s ease-in-out infinite;
+}
+@keyframes float-illustration {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-10px) rotate(0.6deg); }
 }

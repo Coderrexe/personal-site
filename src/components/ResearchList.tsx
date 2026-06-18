@@ -32,7 +32,7 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
   }, [visible.length])
 
   return (
-    <div>
+    <div className="circuit-list">
       {visible.map((item, idx) => {
         const hasLinks = item.links && item.links.length > 0
         const isOpen = expanded === idx
@@ -42,54 +42,58 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
           <div
             key={item.title}
             ref={el => { refs.current[idx] = el }}
-            className="py-4 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default hover:bg-hover transition-colors duration-300"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(12px)',
               transition: `opacity 0.55s cubic-bezier(0.22,1,0.36,1) ${idx * 55}ms, transform 0.55s cubic-bezier(0.22,1,0.36,1) ${idx * 55}ms`,
             }}
-            onMouseEnter={() => hasLinks ? setExpanded(idx) : undefined}
-            onMouseLeave={() => setExpanded(null)}
           >
-            {/* Tag + Title row with date pinned right */}
-            <div className="flex items-start gap-6 mb-1.5">
-              <div className="flex-1 min-w-0">
-                <div className="mb-1">
-                  <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+            <div
+              className="circuit-row tilt-row relative py-4 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default"
+              onMouseEnter={() => hasLinks ? setExpanded(idx) : undefined}
+              onMouseLeave={() => setExpanded(null)}
+            >
+              <span className="circuit-node" />
+              {/* Tag + Title row with date pinned right */}
+              <div className="flex items-start gap-6 mb-1.5">
+                <div className="flex-1 min-w-0">
+                  <div className="mb-1">
+                    <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                  </div>
+                  {item.titleHtml ? (
+                    <p className="text-[0.9375rem] text-fg font-medium leading-snug" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+                  ) : (
+                    <p className="text-[0.9375rem] text-fg font-medium leading-snug">{item.title}</p>
+                  )}
                 </div>
-                {item.titleHtml ? (
-                  <p className="text-[0.9375rem] text-fg font-medium leading-snug" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
-                ) : (
-                  <p className="text-[0.9375rem] text-fg font-medium leading-snug">{item.title}</p>
-                )}
+                <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">
+                  {item.period}
+                </span>
               </div>
-              <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">
-                {item.period}
-              </span>
+
+              <p className="text-[0.8125rem] text-muted">{item.tagline}</p>
+
+              {hasLinks && (
+                <div className={`overflow-hidden transition-all duration-200 ease-in-out ${
+                  isOpen ? 'max-h-12 opacity-100 mt-2.5' : 'max-h-0 opacity-0'
+                }`}>
+                  <div className="flex items-center gap-4">
+                    {item.links!.map((link) => (
+                      <a
+                        key={link.href}
+                        href={link.href}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-mono text-xs text-accent hover:underline transition-colors duration-100"
+                        onClick={(e) => e.stopPropagation()}
+                      >
+                        {link.label} ↗
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              )}
             </div>
-
-            <p className="text-[0.8125rem] text-muted">{item.tagline}</p>
-
-            {hasLinks && (
-              <div className={`overflow-hidden transition-all duration-200 ease-in-out ${
-                isOpen ? 'max-h-12 opacity-100 mt-2.5' : 'max-h-0 opacity-0'
-              }`}>
-                <div className="flex items-center gap-4">
-                  {item.links!.map((link) => (
-                    <a
-                      key={link.href}
-                      href={link.href}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="font-mono text-xs text-accent hover:underline transition-colors duration-100"
-                      onClick={(e) => e.stopPropagation()}
-                    >
-                      {link.label} ↗
-                    </a>
-                  ))}
-                </div>
-              </div>
-            )}
           </div>
         )
       })}
