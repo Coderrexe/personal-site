@@ -42,7 +42,7 @@ export default function ResearchList({ items }: { items: ResearchItem[] }) {
           <div
             key={item.title}
             ref={el => { refs.current[idx] = el }}
-            className="py-4 border-b border-line last:border-0 cursor-default"
+            className="py-4 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default hover:bg-hover transition-colors duration-300"
             style={{
               opacity: isVisible ? 1 : 0,
               transform: isVisible ? 'translateY(0)' : 'translateY(12px)',

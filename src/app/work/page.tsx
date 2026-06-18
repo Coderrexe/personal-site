@@ -88,7 +88,7 @@ export default function Work() {
                 {visibleWork.map((item, idx) => (
                   <article
                     key={item.company}
-                    className="py-8 border-b border-line last:border-0 cursor-default"
+                    className="py-8 -mx-4 px-4 rounded-lg border-b border-line last:border-0 cursor-default hover:bg-hover transition-colors duration-300"
                     onMouseEnter={() => item.links?.length ? setExpandedExp(idx) : undefined}
                     onMouseLeave={() => setExpandedExp(null)}
                   >
@@ -187,7 +187,7 @@ export default function Work() {
             <SectionLabel>Research &amp; Projects</SectionLabel>
             <div>
               {visibleResearch.map((item, idx) => (
-                <article key={idx} className="py-8 border-b border-line last:border-0">
+                <article key={idx} className="py-8 -mx-4 px-4 rounded-lg border-b border-line last:border-0 hover:bg-hover transition-colors duration-300">
                   <div className="flex items-start gap-6 mb-2">
                     <div className="flex-1 min-w-0">
                       <div className="mb-1.5">

@@ -7,22 +7,30 @@ import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
 import WritingList from '@/components/WritingList'
 import SectionLabel from '@/components/SectionLabel'
+import NeuralCanvas from '@/components/NeuralCanvas'
+import StatStrip from '@/components/StatStrip'
 
 export default function Home() {
   return (
     <div className="max-w-[60rem] mx-auto px-6">
 
       {/* ── Hero ──────────────────────────────────────────── */}
-      <section className="pt-24 pb-20">
-        <h1 className="text-fg text-[1.6rem] font-semibold tracking-[-0.01em] mb-6 overflow-hidden">
-          <AnimatedName name="Simba Shi" />
-        </h1>
-        <AnimatedBio paragraphs={[
-          "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
-          "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
-          "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
-          "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
-        ]} />
+      <section className="relative pt-24 pb-20 overflow-hidden">
+        <div className="absolute inset-0 -mx-6">
+          <NeuralCanvas />
+        </div>
+        <div className="relative z-10">
+          <h1 className="hero-name text-fg text-[1.85rem] font-semibold tracking-[-0.01em] mb-6 overflow-hidden">
+            <AnimatedName name="Simba Shi" />
+          </h1>
+          <AnimatedBio paragraphs={[
+            "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
+            "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
+            "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
+            "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
+          ]} />
+          <StatStrip />
+        </div>
       </section>
 
       {/* ── Experience ────────────────────────────────────── */}

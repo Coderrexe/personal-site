@@ -64,6 +64,19 @@ a { color: inherit; text-decoration: none; }
   transform: translateY(0);
 }
 
+/* ── Ambient cursor glow ──────────────────────────────── */
+.ambient-glow {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(680px circle at var(--mx, 50%) var(--my, 18%), var(--accent) 0%, transparent 65%);
+  opacity: 0.05;
+}
+html.dark .ambient-glow {
+  opacity: 0.09;
+}
+
 /* ── Nav blur ─────────────────────────────────────────── */
 .nav-bg {
   background-color: var(--nav-bg);
@@ -124,6 +137,25 @@ body::before {
   80% { transform: translate(1%, -1%); }
   90% { transform: translate(-3%, 4%); }
  100% { transform: translate(2%, -3%); }
+}
+
+/* ── Hero name sheen ──────────────────────────────────── */
+.hero-name {
+  position: relative;
+}
+.hero-name::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -150%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, color-mix(in srgb, var(--fg) 35%, transparent), transparent);
+  animation: sheen 2.2s ease-in-out 1.1s 1;
+  pointer-events: none;
+}
+@keyframes sheen {
+  to { left: 150%; }
 }
 
 /* ── Animated hero characters ─────────────────────────── */
