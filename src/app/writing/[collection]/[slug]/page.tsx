@@ -3,6 +3,7 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { collections, essays } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
+import RobotDockZone from '@/components/RobotDockZone'
 
 interface Props {
   params: { collection: string; slug: string }
@@ -35,6 +36,7 @@ export default function EssayPage({ params }: Props) {
     <div>
     {/* Kept small and high, out of the way of reading — a poem deserves quiet. */}
     <div className="hidden lg:block fixed top-24 right-[4%] xl:right-[8%]">
+      <RobotDockZone size={90} className="w-20 h-24" />
     </div>
     <div className="max-w-[60rem] mx-auto px-6">
 

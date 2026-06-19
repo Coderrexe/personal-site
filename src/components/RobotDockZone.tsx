@@ -1,23 +1,23 @@
 'use client'
 
 import { useEffect, useId, useRef } from 'react'
-import { useRobotDockRegistry, CompanionSlot } from '@/lib/robotDock'
+import { useRobotDockRegistry } from '@/lib/robotDock'
 
 /**
- * An invisible marker that tells one of the three companions (humanoid,
- * quadruped, arm — pick via `slot`) "you may rest here." Place one
- * anywhere in a page's layout, and that companion drifts to whichever of
- * its own zones is closest to the vertical center of the viewport as the
- * user scrolls. Different slots can have entirely different zones, which
- * is what lets the three companions end up in different parts of the page
- * at once instead of piling on top of each other.
+ * An invisible marker that tells the global robot companion "you may rest
+ * here." Place one anywhere in a page's layout — a margin column, a gap
+ * beside a paragraph, a quiet corner — and the companion will drift to
+ * whichever registered zone is closest to the vertical center of the
+ * viewport as the user scrolls.
+ *
+ * `size` is the preferred robot height (px) while resting in this zone —
+ * give the homepage's hero zone room to be large, and small page margins a
+ * smaller size so it never crowds text.
  */
 export default function RobotDockZone({
-  slot,
   size = 70,
   className = '',
 }: {
-  slot: CompanionSlot
   size?: number
   className?: string
 }) {
@@ -28,9 +28,9 @@ export default function RobotDockZone({
   useEffect(() => {
     const el = ref.current
     if (!el) return
-    registerZone(id, el, size, slot)
+    registerZone(id, el, size)
     return () => unregisterZone(id)
-  }, [id, size, slot, registerZone, unregisterZone])
+  }, [id, size, registerZone, unregisterZone])
 
   return <div ref={ref} aria-hidden className={`pointer-events-none ${className}`} />
 }

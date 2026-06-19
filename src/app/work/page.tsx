@@ -4,6 +4,7 @@ import { useState } from 'react'
 import { workItems, researchItems } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
 import SectionHead from '@/components/SectionHead'
+import RobotDockZone from '@/components/RobotDockZone'
 import { useUnlock } from '@/lib/unlock'
 
 type Tab = 'experience' | 'research'
@@ -16,7 +17,10 @@ export default function Work() {
   const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
 
   return (
-    <div>
+    <div className="relative">
+      <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
+        <RobotDockZone size={110} className="w-24 h-28" />
+      </div>
       <div className="max-w-[60rem] mx-auto px-6">
 
       <FadeIn>
