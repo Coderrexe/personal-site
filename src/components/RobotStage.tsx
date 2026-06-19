@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, useMotionValueEvent } from 'motion/react'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import Robot from './Robot'
 import { pickActiveZone, useRobotDockRegistry, DockZoneEntry } from '@/lib/robotDock'
 
@@ -32,8 +32,6 @@ function computeZoneTarget(zone: DockZoneEntry): Target {
   const vh = window.innerHeight
   const scale = zone.size / NATURAL_H
   const w = NATURAL_W * scale
-  // Rest at the right edge of the zone, vertically centered within it —
-  // works whether the zone is a tall hero column or a slim margin strip.
   const cx = Math.min(rect.right - w / 2 - 8, vw - 16 - w / 2)
   const cy = Math.min(Math.max(rect.top + rect.height / 2, vh * 0.18), vh * 0.85)
   return { dx: cx - vw / 2, dy: cy - vh / 2, scale }
@@ -63,7 +61,7 @@ export default function RobotStage() {
 
   const overlayRef = useRef<HTMLDivElement>(null)
   const revealStart = useRef(0)
-  const revealing = useRef(false)
+  const revealRaf = useRef(0)
   const settledGuard = useRef(false)
   const activeZoneId = useRef<string | null>(null)
   const trackingZones = useRef(false)
@@ -82,35 +80,6 @@ export default function RobotStage() {
       setDanceNonce(n => n + 1)
     }
   }
-
-  const updateMaskIfRevealing = () => {
-    if (!revealing.current) return
-    const overlay = overlayRef.current
-    if (!overlay) return
-
-    const elapsed = (performance.now() - revealStart.current) / 1000
-    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 0.75
-    const eased = 1 - Math.pow(1 - Math.min(elapsed / 0.75, 1), 3)
-    const radius = eased * maxRadius
-    const cx = window.innerWidth / 2 + springDx.get()
-    const cy = window.innerHeight / 2 + springDy.get()
-    const inner = Math.max(radius * 0.82, 0)
-    const grad = `radial-gradient(circle at ${cx}px ${cy}px, transparent 0px, transparent ${inner}px, black ${radius}px)`
-    overlay.style.maskImage = grad
-    overlay.style.setProperty('-webkit-mask-image', grad)
-
-    if (elapsed > 0.85 && !settledGuard.current) {
-      settledGuard.current = true
-      revealing.current = false
-      document.body.style.overflow = ''
-      setShowOverlay(false)
-      setSettled(true)
-      trackingZones.current = true
-      trackToActiveZone()
-    }
-  }
-  useMotionValueEvent(springDx, 'change', updateMaskIfRevealing)
-  useMotionValueEvent(springDy, 'change', updateMaskIfRevealing)
 
   // Scroll/resize-driven retargeting, active once the boot decision is made.
   useEffect(() => {
@@ -164,10 +133,51 @@ export default function RobotStage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // Drives the reveal independently of whether the robot's position is
+  // actually changing — a previous version hooked this to the position
+  // springs' "change" events, which silently never fired (and left the
+  // overlay permanently black) whenever the resting zone happened to be
+  // at dead-center already.
+  const runReveal = () => {
+    const overlay = overlayRef.current
+    const elapsed = (performance.now() - revealStart.current) / 1000
+    const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 0.75
+    const eased = 1 - Math.pow(1 - Math.min(elapsed / 0.75, 1), 3)
+    const radius = eased * maxRadius
+    const cx = window.innerWidth / 2 + springDx.get()
+    const cy = window.innerHeight / 2 + springDy.get()
+    const inner = Math.max(radius * 0.82, 0)
+    if (overlay) {
+      const grad = `radial-gradient(circle at ${cx}px ${cy}px, transparent 0px, transparent ${inner}px, black ${radius}px)`
+      overlay.style.maskImage = grad
+      overlay.style.setProperty('-webkit-mask-image', grad)
+    }
+
+    if (elapsed > 0.85) {
+      if (!settledGuard.current) {
+        settledGuard.current = true
+        document.body.style.overflow = ''
+        setShowOverlay(false)
+        setSettled(true)
+        trackingZones.current = true
+        trackToActiveZone()
+      }
+      return
+    }
+    revealRaf.current = requestAnimationFrame(runReveal)
+  }
+
   const handleIntroComplete = () => {
     revealStart.current = performance.now()
-    revealing.current = true
+    // Kick the position toward its real resting zone right away, so the
+    // reveal-aperture (centered on the robot's current position every
+    // frame) and the dock transition happen together, not sequentially.
+    trackingZones.current = true
+    trackToActiveZone()
+    revealRaf.current = requestAnimationFrame(runReveal)
   }
+
+  useEffect(() => () => cancelAnimationFrame(revealRaf.current), [])
 
   if (bootDecision === 'pending') return null
 
