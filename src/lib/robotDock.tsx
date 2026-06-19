@@ -40,15 +40,17 @@ export function useRobotDockRegistry() {
 }
 
 /** Picks whichever registered zone is currently closest to the viewport's
- * vertical center, among zones that are at least partially on-screen. */
+ * vertical center. Includes zones up to BUFFER px outside the viewport so
+ * the robot never loses its target during the brief gap between sections. */
 export function pickActiveZone(zones: Map<string, DockZoneEntry>): DockZoneEntry | null {
+  const BUFFER = 300
   let best: DockZoneEntry | null = null
   let bestDist = Infinity
   const viewportCenter = window.innerHeight / 2
 
   for (const entry of zones.values()) {
     const rect = entry.el.getBoundingClientRect()
-    if (rect.bottom < 0 || rect.top > window.innerHeight) continue
+    if (rect.bottom < -BUFFER || rect.top > window.innerHeight + BUFFER) continue
     const zoneCenter = rect.top + rect.height / 2
     const dist = Math.abs(zoneCenter - viewportCenter)
     if (dist < bestDist) {

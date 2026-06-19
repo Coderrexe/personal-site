@@ -77,13 +77,13 @@ export default function Robot({ playIntro, isTraveling = false, onIntroComplete 
     const timers: ReturnType<typeof setTimeout>[] = []
     if (playIntro) {
       scriptedActive.current = true
-      timers.push(setTimeout(() => gazeX.set(-MAX_OFFSET), 950))
-      timers.push(setTimeout(() => gazeX.set(MAX_OFFSET), 1180))
-      timers.push(setTimeout(() => gazeX.set(0), 1410))
+      timers.push(setTimeout(() => gazeX.set(-MAX_OFFSET), 1200))
+      timers.push(setTimeout(() => gazeX.set(MAX_OFFSET), 1700))
+      timers.push(setTimeout(() => gazeX.set(0), 2100))
       timers.push(setTimeout(() => {
         scriptedActive.current = false
         onIntroComplete?.()
-      }, 1600))
+      }, 2600))
     }
 
     return () => {

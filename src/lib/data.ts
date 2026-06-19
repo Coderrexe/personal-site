@@ -23,6 +23,7 @@ export interface ResearchItem {
   tagAccent?: boolean;
   award?: string;
   tagline: string;
+  taglineHtml?: string;
   period: string;
   description: string[];
   links?: { label: string; href: string }[];

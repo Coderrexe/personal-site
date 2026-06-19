@@ -3,7 +3,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { collections, essays } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
-import RobotDockZone from '@/components/RobotDockZone'
 
 interface Props {
   params: { collection: string; slug: string }
@@ -33,16 +32,10 @@ export default function EssayPage({ params }: Props) {
   if (!essay || !collection.essaySlugs.includes(essay.slug)) notFound()
 
   return (
-    <div>
-    {/* Kept small and high, out of the way of reading — a poem deserves quiet. */}
-    <div className="hidden lg:block fixed top-24 right-[4%] xl:right-[8%]">
-      <RobotDockZone size={90} className="w-20 h-24" />
-    </div>
-    <div className="max-w-[60rem] mx-auto px-6">
+    <div className="max-w-[38rem] mx-auto px-8 sm:px-10">
 
-      {/* Back */}
       <FadeIn>
-        <div className="pt-14 pb-12">
+        <div className="pt-20 sm:pt-22 pb-10 sm:pb-12">
           <Link
             href="/writing"
             className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150"
@@ -54,18 +47,16 @@ export default function EssayPage({ params }: Props) {
 
       <article className="pb-28">
 
-        {/* Title */}
         <FadeIn delay={80}>
-          <header className="mb-14">
-            <h1 className="font-serif text-[2rem] text-fg leading-[1.2] mb-4">
+          <header className="mb-12 sm:mb-14 text-center">
+            <h1 className="font-serif text-[1.75rem] sm:text-[2rem] text-fg leading-[1.2] mb-4">
               {essay.title}
             </h1>
             <p className="font-mono text-xs text-muted tabular-nums">{essay.displayDate}</p>
           </header>
         </FadeIn>
 
-        {/* Body */}
-        <div className="space-y-10">
+        <div className="space-y-8 sm:space-y-10">
           {essay.sections.map((section, i) => (
             <FadeIn key={i} delay={160 + i * 60}>
               <div>
@@ -88,7 +79,6 @@ export default function EssayPage({ params }: Props) {
         </div>
 
       </article>
-    </div>
     </div>
   )
 }

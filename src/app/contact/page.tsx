@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import FadeIn from '@/components/FadeIn'
-import RobotDockZone from '@/components/RobotDockZone'
 
 function RevealEmail() {
   const [revealed, setReveal] = useState(false)
@@ -37,21 +36,17 @@ function RevealEmail() {
 
 export default function Contact() {
   return (
-    <div>
-    <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
-      <RobotDockZone size={110} className="w-24 h-28" />
-    </div>
-    <div className="max-w-[60rem] mx-auto px-6">
+    <div className="max-w-[60rem] mx-auto px-8 sm:px-10">
       <FadeIn>
-        <section className="pt-20 pb-14">
-          <h1 className="font-serif text-[2.2rem] text-fg tracking-[-0.02em] leading-tight">Contact</h1>
+        <section className="pt-20 sm:pt-24 pb-10 sm:pb-14">
+          <h1 className="font-serif text-[1.9rem] sm:text-[2.2rem] text-fg tracking-[-0.02em] leading-tight">Contact</h1>
         </section>
       </FadeIn>
 
       <FadeIn delay={80}>
         <div className="pb-24">
 
-          <div className="flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line border-t">
+          <div className="flex items-center justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line border-t">
             <span className="font-mono text-xs text-muted tracking-wider uppercase">Email</span>
             <RevealEmail />
           </div>
@@ -60,7 +55,7 @@ export default function Contact() {
             href="https://github.com/Coderrexe"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
+            className="group flex items-center justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">GitHub</span>
             <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
@@ -72,7 +67,7 @@ export default function Contact() {
             href="https://www.linkedin.com/in/simba-shi"
             target="_blank"
             rel="noopener noreferrer"
-            className="group flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
+            className="group flex items-center justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">LinkedIn</span>
             <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
@@ -82,7 +77,6 @@ export default function Contact() {
 
         </div>
       </FadeIn>
-    </div>
     </div>
   )
 }

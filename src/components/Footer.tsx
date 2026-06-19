@@ -1,7 +1,7 @@
 export default function Footer() {
   return (
     <footer className="border-t border-line mt-20">
-      <div className="max-w-[60rem] mx-auto px-6 py-8 flex items-center justify-between">
+      <div className="max-w-[60rem] mx-auto px-8 sm:px-10 py-8 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 sm:gap-0">
         <span className="font-mono text-xs text-muted">© {new Date().getFullYear()} Simba Shi</span>
         <div className="flex items-center gap-5">
           <a href="mailto:simba.shi@yale.edu" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">

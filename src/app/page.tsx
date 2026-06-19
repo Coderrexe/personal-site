@@ -7,7 +7,6 @@ import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
 import Magnetic from '@/components/Magnetic'
 import RobotDockZone from '@/components/RobotDockZone'
-import RoboticArm from '@/components/RoboticArm'
 import { useUnlock } from '@/lib/unlock'
 
 export default function Home() {
@@ -21,7 +20,7 @@ export default function Home() {
     <div>
 
       {/* ── Room 1: Identity ─────────────────────────────────── */}
-      <section className="room max-w-[58rem] mx-auto px-6 pt-28 sm:pt-36">
+      <section className="room max-w-[58rem] mx-auto px-8 sm:px-12 pt-24 sm:pt-36">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_15rem] gap-10">
           <div className="max-w-[38rem]">
             <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
@@ -29,7 +28,12 @@ export default function Home() {
             </h1>
             <AnimatedBio paragraphs={[
               "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
-              "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
+              {
+                words: 32,
+                node: <>
+                  Previously, I cofounded <a href="https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:opacity-75 transition-opacity duration-150">ReefSound</a>, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.
+                </>,
+              },
               "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
               "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
             ]} />
@@ -48,7 +52,7 @@ export default function Home() {
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
-        <div className="max-w-[42rem] mx-auto px-6">
+        <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
         <p className="room-kicker">01 — where I&apos;ve built</p>
         <h2 className="room-title">Experience</h2>
         <div className="circuit-list">
@@ -109,11 +113,7 @@ export default function Home() {
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
-        {/* A second "robot" — a quiet robotic-arm accent, lab-equipment flavor */}
-        <div className="hidden xl:block absolute top-1/2 -translate-y-1/2 left-[6%] opacity-60">
-          <RoboticArm className="w-20 h-28" />
-        </div>
-        <div className="max-w-[42rem] mx-auto px-6">
+<div className="max-w-[42rem] mx-auto px-8 sm:px-10">
         <p className="room-kicker">02 — what I&apos;ve discovered</p>
         <h2 className="room-title">Research</h2>
         <div className="circuit-list">
@@ -137,7 +137,11 @@ export default function Home() {
                 ) : (
                   <p className="text-[0.9375rem] text-fg font-medium mb-1">{item.title}</p>
                 )}
-                <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                {item.taglineHtml ? (
+                  <p className="text-[0.8125rem] text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
+                ) : (
+                  <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                )}
                 {hasLinks && (
                   <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
                     <div className="flex items-center gap-4 flex-wrap">
@@ -175,7 +179,7 @@ export default function Home() {
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
-        <div className="max-w-[42rem] mx-auto px-6">
+        <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
         <p className="room-kicker">03 — what I write</p>
         <h2 className="room-title">Writing</h2>
         <div className="circuit-list border-t border-line">
