@@ -4,7 +4,7 @@ import { UnlockProvider } from '@/lib/unlock'
 import { RobotDockProvider } from '@/lib/robotDock'
 import UnlockModal from './UnlockModal'
 import AmbientGlow from './AmbientGlow'
-import RobotStage from './RobotStage'
+import CompanionStage from './CompanionStage'
 import CursorFX from './CursorFX'
 
 export default function Providers({ children }: { children: React.ReactNode }) {
@@ -15,7 +15,7 @@ export default function Providers({ children }: { children: React.ReactNode }) {
         <AmbientGlow />
         {children}
         <UnlockModal />
-        <RobotStage />
+        <CompanionStage />
       </RobotDockProvider>
     </UnlockProvider>
   )

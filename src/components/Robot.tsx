@@ -25,12 +25,15 @@ const containerVariants: Variants = {
   visible: { transition: { staggerChildren: 0.05, delayChildren: 0.05 } },
 }
 
+const STRIDE_TRANSITION = { duration: 0.5, repeat: Infinity, ease: 'easeInOut' as const }
+
 interface RobotProps {
   playIntro: boolean
+  walking?: boolean
   onIntroComplete?: () => void
 }
 
-export default function Robot({ playIntro, onIntroComplete }: RobotProps) {
+export default function Robot({ playIntro, walking = false, onIntroComplete }: RobotProps) {
   const svgRef = useRef<SVGSVGElement>(null)
   const mouse = useRef({ x: -9999, y: -9999 })
   const gazeX = useSpring(0, { stiffness: 120, damping: 14 })
@@ -86,9 +89,10 @@ export default function Robot({ playIntro, onIntroComplete }: RobotProps) {
       {/* torso */}
       <motion.rect variants={partVariants} x="39" y="82" width="62" height="76" rx="26" fill="var(--fg)" {...BODY_STROKE} />
 
-      {/* legs */}
-      <motion.rect variants={partVariants} x="46" y="156" width="22" height="60" rx="11" fill="var(--fg)" {...BODY_STROKE} />
-      <motion.rect variants={partVariants} x="72" y="156" width="22" height="60" rx="11" fill="var(--fg)" {...BODY_STROKE} />
+      {/* legs — swing in alternating phase while the companion is travelling
+          between dock zones, settle back to neutral when at rest */}
+      <WalkLeg variants={partVariants} x={46} hipX={57} hipY={156} phase={1} walking={walking} />
+      <WalkLeg variants={partVariants} x={72} hipX={83} hipY={156} phase={-1} walking={walking} />
 
       {/* feet */}
       <motion.rect variants={partVariants} x="41" y="210" width="32" height="10" rx="5" fill="var(--fg)" {...BODY_STROKE} />
@@ -119,6 +123,42 @@ export default function Robot({ playIntro, onIntroComplete }: RobotProps) {
       {/* visor — replaces dot eyes with an Iron-Man-style HUD slit */}
       <Visor playIntro={playIntro} highlightCx={highlightCx} />
     </motion.svg>
+  )
+}
+
+function WalkLeg({
+  variants,
+  x,
+  hipX,
+  hipY,
+  phase,
+  walking,
+}: {
+  variants: Variants
+  x: number
+  hipX: number
+  hipY: number
+  phase: 1 | -1
+  walking: boolean
+}) {
+  // Same split as JointGlow: the outer group owns the one-time entrance
+  // pop-in (variants), the inner rect owns the continuous walk-cycle
+  // (animate) — combining both on one element drops the inherited stagger.
+  return (
+    <motion.g variants={variants}>
+      <motion.rect
+        x={x}
+        y={hipY}
+        width="22"
+        height="60"
+        rx="11"
+        fill="var(--fg)"
+        {...BODY_STROKE}
+        style={{ transformOrigin: `${hipX}px ${hipY}px` }}
+        animate={walking ? { rotate: [12 * phase, -12 * phase, 12 * phase] } : { rotate: 0 }}
+        transition={walking ? STRIDE_TRANSITION : { duration: 0.3 }}
+      />
+    </motion.g>
   )
 }
 

@@ -36,7 +36,7 @@ export default function EssayPage({ params }: Props) {
     <div>
     {/* Kept small and high, out of the way of reading — a poem deserves quiet. */}
     <div className="hidden lg:block fixed top-24 right-[4%] xl:right-[8%]">
-      <RobotDockZone size={50} className="w-12 h-12" />
+      <RobotDockZone slot="humanoid" size={50} className="w-12 h-12" />
     </div>
     <div className="max-w-[60rem] mx-auto px-6">
 

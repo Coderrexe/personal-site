@@ -7,7 +7,6 @@ import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
 import Magnetic from '@/components/Magnetic'
 import RobotDockZone from '@/components/RobotDockZone'
-import RoboticArm from '@/components/RoboticArm'
 import { useUnlock } from '@/lib/unlock'
 
 export default function Home() {
@@ -34,11 +33,14 @@ export default function Home() {
               "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
             ]} />
           </div>
-          {/* Robot rests here, beside the intro, on screens wide enough to
-              spare the column. On narrow screens this zone doesn't render,
-              and the companion falls back to a small corner instead. */}
-          <div className="hidden lg:block">
-            <RobotDockZone size={210} className="h-[26rem] w-full" />
+          {/* All three companions rest here beside the intro on wide screens.
+              They stack vertically in the right column — humanoid up top,
+              quadruped and arm below it. On narrow screens they fall back
+              to small corners. */}
+          <div className="hidden lg:flex lg:flex-col lg:gap-3 lg:h-[26rem]">
+            <RobotDockZone slot="humanoid" size={200} className="flex-1 w-full" />
+            <RobotDockZone slot="quadruped" size={80} className="h-24 w-full" />
+            <RobotDockZone slot="arm" size={80} className="h-24 w-full" />
           </div>
         </div>
       </section>
@@ -46,7 +48,7 @@ export default function Home() {
       {/* ── Room 2: Experience ───────────────────────────────── */}
       <section className="room relative">
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone size={64} className="w-16 h-16" />
+          <RobotDockZone slot="humanoid" size={64} className="w-16 h-16" />
         </div>
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">01 — where I&apos;ve built</p>
@@ -107,11 +109,7 @@ export default function Home() {
       {/* ── Room 3: Research ─────────────────────────────────── */}
       <section className="room relative">
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone size={64} className="w-16 h-16" />
-        </div>
-        {/* A second "robot" — a quiet robotic-arm accent, lab-equipment flavor */}
-        <div className="hidden xl:block absolute top-1/2 -translate-y-1/2 left-[6%] opacity-60">
-          <RoboticArm className="w-20 h-28" />
+          <RobotDockZone slot="arm" size={64} className="w-16 h-16" />
         </div>
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">02 — what I&apos;ve discovered</p>
@@ -173,7 +171,7 @@ export default function Home() {
       {/* ── Room 4: Writing ──────────────────────────────────── */}
       <section className="room relative pb-32">
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone size={64} className="w-16 h-16" />
+          <RobotDockZone slot="quadruped" size={64} className="w-16 h-16" />
         </div>
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">03 — what I write</p>

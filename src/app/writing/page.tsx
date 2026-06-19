@@ -12,7 +12,7 @@ export default function Writing() {
   return (
     <div>
     <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
-      <RobotDockZone size={68} className="w-16 h-16" />
+      <RobotDockZone slot="humanoid" size={68} className="w-16 h-16" />
     </div>
     <div className="max-w-[60rem] mx-auto px-6">
 
