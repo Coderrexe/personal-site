@@ -3,6 +3,7 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { collections } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
+import RobotDockZone from '@/components/RobotDockZone'
 
 interface Props {
   params: { collection: string }
@@ -26,6 +27,10 @@ export default function CollectionPage({ params }: Props) {
   if (params.collection !== 'world-of-einsteins') redirect('/writing')
 
   return (
+    <div>
+    <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
+      <RobotDockZone size={68} className="w-16 h-16" />
+    </div>
     <div className="max-w-[60rem] mx-auto px-6">
 
       {/* Back */}
@@ -70,6 +75,7 @@ export default function CollectionPage({ params }: Props) {
         <p className="font-mono text-xs text-muted mt-4 pb-28">coming soon</p>
       </FadeIn>
 
+    </div>
     </div>
   )
 }

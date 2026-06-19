@@ -71,17 +71,7 @@ a { color: inherit; text-decoration: none; }
   position: fixed;
   inset: 0;
   z-index: 999999;
-  background: #07060500;
-  background-color: var(--boot-bg, #060503);
-  animation: boot-flicker 0.5s steps(3) both;
-}
-@keyframes boot-flicker {
-  0%   { opacity: 0; }
-  20%  { opacity: 1; }
-  35%  { opacity: 0.15; }
-  55%  { opacity: 1; }
-  70%  { opacity: 0.25; }
-  100% { opacity: 1; }
+  background-color: #07060a;
 }
 
 /* ── Robot wrapper (boot stage owns its transform) ───────── */

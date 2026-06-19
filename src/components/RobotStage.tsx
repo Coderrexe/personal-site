@@ -3,49 +3,40 @@
 import { useEffect, useRef, useState } from 'react'
 import { motion, useMotionValue, useSpring, useMotionValueEvent } from 'motion/react'
 import Robot from './Robot'
+import { pickActiveZone, useRobotDockRegistry, DockZoneEntry } from '@/lib/robotDock'
 
 const NATURAL_W = 140
 const NATURAL_H = 232
-const CONTENT_COLUMN_PX = 690 // approx outer width of the max-w-[42rem] column + padding
-const GUTTER_NEEDED_PX = 110
-const DOCK_MARGIN = 20
+const FALLBACK_DOCK_HEIGHT = 56
+const FALLBACK_MARGIN = 20
 
-interface DockTarget {
+interface Target {
   dx: number
   dy: number
   scale: number
-  opacity: number
 }
 
-function computeDockTarget(): DockTarget {
+function computeFallbackTarget(): Target {
   const vw = window.innerWidth
   const vh = window.innerHeight
-  const gutter = (vw - CONTENT_COLUMN_PX) / 2
-  const hasGutter = gutter >= GUTTER_NEEDED_PX
+  const scale = FALLBACK_DOCK_HEIGHT / NATURAL_H
+  const w = NATURAL_W * scale
+  const cx = vw - FALLBACK_MARGIN - w / 2
+  const cy = vh - FALLBACK_MARGIN - FALLBACK_DOCK_HEIGHT / 2
+  return { dx: cx - vw / 2, dy: cy - vh / 2, scale }
+}
 
-  const dockHeight = hasGutter ? 66 : 46
-  const scale = dockHeight / NATURAL_H
-  const dockedW = NATURAL_W * scale
-
-  let dockedCenterX: number
-  let dockedCenterY: number
-
-  if (hasGutter) {
-    // Live in the dead margin beside the text column — never over content.
-    dockedCenterX = vw - gutter / 2
-    dockedCenterY = Math.max(vh * 0.5, 220)
-  } else {
-    // No margin to live in — tuck small into a corner, out of the way.
-    dockedCenterX = vw - DOCK_MARGIN - dockedW / 2
-    dockedCenterY = vh - DOCK_MARGIN - dockHeight / 2
-  }
-
-  return {
-    dx: dockedCenterX - vw / 2,
-    dy: dockedCenterY - vh / 2,
-    scale,
-    opacity: hasGutter ? 1 : 0.88,
-  }
+function computeZoneTarget(zone: DockZoneEntry): Target {
+  const rect = zone.el.getBoundingClientRect()
+  const vw = window.innerWidth
+  const vh = window.innerHeight
+  const scale = zone.size / NATURAL_H
+  const w = NATURAL_W * scale
+  // Rest at the right edge of the zone, vertically centered within it —
+  // works whether the zone is a tall hero column or a slim margin strip.
+  const cx = Math.min(rect.right - w / 2 - 8, vw - 16 - w / 2)
+  const cy = Math.min(Math.max(rect.top + rect.height / 2, vh * 0.18), vh * 0.85)
+  return { dx: cx - vw / 2, dy: cy - vh / 2, scale }
 }
 
 function computeBootScale(): number {
@@ -54,30 +45,43 @@ function computeBootScale(): number {
   return capped / NATURAL_H
 }
 
+type BootDecision = 'pending' | 'play' | 'skip'
+
 export default function RobotStage() {
-  const [playIntro, setPlayIntro] = useState(false)
+  const [bootDecision, setBootDecision] = useState<BootDecision>('pending')
   const [showOverlay, setShowOverlay] = useState(false)
   const [settled, setSettled] = useState(false)
+  const [danceNonce, setDanceNonce] = useState(0)
+  const { zones } = useRobotDockRegistry()
 
   const dx = useMotionValue(0)
   const dy = useMotionValue(0)
   const scaleMv = useMotionValue(0.5)
-  const opacityMv = useMotionValue(1)
-  const springDx = useSpring(dx, { stiffness: 90, damping: 17 })
-  const springDy = useSpring(dy, { stiffness: 90, damping: 17 })
-  const springScale = useSpring(scaleMv, { stiffness: 90, damping: 17 })
+  const springDx = useSpring(dx, { stiffness: 85, damping: 17 })
+  const springDy = useSpring(dy, { stiffness: 85, damping: 17 })
+  const springScale = useSpring(scaleMv, { stiffness: 85, damping: 17 })
 
   const overlayRef = useRef<HTMLDivElement>(null)
-  const dockTarget = useRef<DockTarget>({ dx: 0, dy: 0, scale: 0.28, opacity: 1 })
   const revealStart = useRef(0)
   const revealing = useRef(false)
-  // One-time guard for the reveal-complete check below — distinct from the
-  // `settled` state, which exists purely to retrigger a render so the idle
-  // float animation can turn on.
   const settledGuard = useRef(false)
+  const activeZoneId = useRef<string | null>(null)
+  const trackingZones = useRef(false)
 
-  useMotionValueEvent(springDx, 'change', () => updateMaskIfRevealing())
-  useMotionValueEvent(springDy, 'change', () => updateMaskIfRevealing())
+  const trackToActiveZone = () => {
+    if (!trackingZones.current) return
+    const zone = pickActiveZone(zones)
+    const t = zone ? computeZoneTarget(zone) : computeFallbackTarget()
+    dx.set(t.dx)
+    dy.set(t.dy)
+    scaleMv.set(t.scale)
+
+    const newId = zone ? [...zones.entries()].find(([, e]) => e === zone)?.[0] ?? null : null
+    if (newId !== activeZoneId.current) {
+      activeZoneId.current = newId
+      setDanceNonce(n => n + 1)
+    }
+  }
 
   const updateMaskIfRevealing = () => {
     if (!revealing.current) return
@@ -88,10 +92,8 @@ export default function RobotStage() {
     const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 0.75
     const eased = 1 - Math.pow(1 - Math.min(elapsed / 0.75, 1), 3)
     const radius = eased * maxRadius
-    const vw = window.innerWidth
-    const vh = window.innerHeight
-    const cx = vw / 2 + springDx.get()
-    const cy = vh / 2 + springDy.get()
+    const cx = window.innerWidth / 2 + springDx.get()
+    const cy = window.innerHeight / 2 + springDy.get()
     const inner = Math.max(radius * 0.82, 0)
     const grad = `radial-gradient(circle at ${cx}px ${cy}px, transparent 0px, transparent ${inner}px, black ${radius}px)`
     overlay.style.maskImage = grad
@@ -103,83 +105,89 @@ export default function RobotStage() {
       document.body.style.overflow = ''
       setShowOverlay(false)
       setSettled(true)
+      trackingZones.current = true
+      trackToActiveZone()
     }
   }
+  useMotionValueEvent(springDx, 'change', updateMaskIfRevealing)
+  useMotionValueEvent(springDy, 'change', updateMaskIfRevealing)
 
+  // Scroll/resize-driven retargeting, active once the boot decision is made.
+  useEffect(() => {
+    if (bootDecision === 'pending') return
+    let raf = 0
+    const onScroll = () => {
+      cancelAnimationFrame(raf)
+      raf = requestAnimationFrame(trackToActiveZone)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      cancelAnimationFrame(raf)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bootDecision])
+
+  // One-time boot decision. Robot is not rendered at all until this
+  // resolves — Motion's `initial` prop only evaluates at first mount, so
+  // rendering with a placeholder `playIntro` value and changing it later
+  // would silently bake in the wrong entrance state.
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     const alreadyBooted = sessionStorage.getItem('booted')
-    dockTarget.current = computeDockTarget()
-
-    const onResize = () => {
-      dockTarget.current = computeDockTarget()
-      if (!playIntro || settledGuard.current) {
-        dx.set(dockTarget.current.dx)
-        dy.set(dockTarget.current.dy)
-        scaleMv.set(dockTarget.current.scale)
-        opacityMv.set(dockTarget.current.opacity)
-      }
-    }
-    window.addEventListener('resize', onResize)
 
     if (reduceMotion || alreadyBooted) {
       sessionStorage.setItem('booted', '1')
-      // Jump the springs themselves — jumping the base values would still
-      // leave the derived springs animating from their defaults to the
-      // new target, producing an unwanted glide-in for repeat visitors.
-      dx.set(dockTarget.current.dx)
-      dy.set(dockTarget.current.dy)
-      scaleMv.set(dockTarget.current.scale)
-      opacityMv.jump(dockTarget.current.opacity)
-      springDx.jump(dockTarget.current.dx)
-      springDy.jump(dockTarget.current.dy)
-      springScale.jump(dockTarget.current.scale)
+      trackingZones.current = true
+      const zone = pickActiveZone(zones)
+      const t = zone ? computeZoneTarget(zone) : computeFallbackTarget()
+      dx.set(t.dx)
+      dy.set(t.dy)
+      scaleMv.set(t.scale)
+      springDx.jump(t.dx)
+      springDy.jump(t.dy)
+      springScale.jump(t.scale)
       settledGuard.current = true
       setSettled(true)
-      return () => window.removeEventListener('resize', onResize)
+      setBootDecision('skip')
+      return
     }
 
     sessionStorage.setItem('booted', '1')
     scaleMv.set(computeBootScale())
     springScale.jump(computeBootScale())
-    setPlayIntro(true)
     setShowOverlay(true)
     document.body.style.overflow = 'hidden'
-
-    return () => window.removeEventListener('resize', onResize)
+    setBootDecision('play')
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleIntroComplete = () => {
-    const t = dockTarget.current
     revealStart.current = performance.now()
     revealing.current = true
-    dx.set(t.dx)
-    dy.set(t.dy)
-    scaleMv.set(t.scale)
-    opacityMv.set(t.opacity)
   }
+
+  if (bootDecision === 'pending') return null
 
   return (
     <>
       {showOverlay && <div ref={overlayRef} className="boot-overlay" aria-hidden />}
-      <motion.div
-        className="robot-wrap"
-        style={{
-          x: springDx,
-          y: springDy,
-          scale: springScale,
-          opacity: opacityMv,
-        }}
-      >
-        {/* Idle float lives on a nested element so it doesn't fight the
-            spring-driven position/scale on the outer wrapper. */}
+      <motion.div className="robot-wrap" style={{ x: springDx, y: springDy, scale: springScale }}>
         <motion.div
+          key={danceNonce}
           className="w-full h-full"
-          animate={settled ? { y: [0, -6, 0] } : undefined}
-          transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+          animate={danceNonce > 0 ? { rotate: [0, -7, 7, -3, 3, 0] } : undefined}
+          transition={{ duration: 0.7, ease: 'easeInOut' }}
         >
-          <Robot playIntro={playIntro} onIntroComplete={handleIntroComplete} />
+          <motion.div
+            className="w-full h-full"
+            animate={settled ? { y: [0, -6, 0] } : undefined}
+            transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+          >
+            <Robot key={bootDecision} playIntro={bootDecision === 'play'} onIntroComplete={handleIntroComplete} />
+          </motion.div>
         </motion.div>
       </motion.div>
     </>
