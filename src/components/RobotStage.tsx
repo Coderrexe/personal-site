@@ -4,16 +4,22 @@ import { useEffect, useRef, useState } from 'react'
 import Robot from './Robot'
 import { springStep, SpringState } from '@/lib/spring'
 
-const DOCK_MARGIN = 22
-const DOCK_HEIGHT = 92 // px, final companion height
-const NATURAL_W = 200
-const NATURAL_H = 420
-const BOOT_SCALE = 0.82
+const DOCK_MARGIN = 20
+const DOCK_HEIGHT = 64 // px, final companion height — small, a corner presence
+const NATURAL_W = 140
+const NATURAL_H = 250
+const BOOT_HEIGHT_CAP_RATIO = 0.32 // boot figure never exceeds ~1/3 of viewport height
 
 interface DockTarget {
   dx: number
   dy: number
   scale: number
+}
+
+function computeBootScale(): number {
+  const vh = window.innerHeight
+  const capped = Math.max(120, Math.min(NATURAL_H, vh * BOOT_HEIGHT_CAP_RATIO))
+  return capped / NATURAL_H
 }
 
 function computeDockTarget(): DockTarget {
@@ -36,11 +42,11 @@ export default function RobotStage() {
   const [idle, setIdle] = useState(false)
   const wrapRef = useRef<HTMLDivElement>(null)
   const overlayRef = useRef<HTMLDivElement>(null)
-  const dockTarget = useRef<DockTarget>({ dx: 0, dy: 0, scale: BOOT_SCALE })
+  const dockTarget = useRef<DockTarget>({ dx: 0, dy: 0, scale: 0.5 })
   const current = useRef<{ dx: SpringState; dy: SpringState; scale: SpringState }>({
     dx: { value: 0, velocity: 0 },
     dy: { value: 0, velocity: 0 },
-    scale: { value: BOOT_SCALE, velocity: 0 },
+    scale: { value: 0.5, velocity: 0 },
   })
   const revealProgress = useRef(0)
   const docking = useRef(false)
@@ -73,6 +79,7 @@ export default function RobotStage() {
     }
 
     sessionStorage.setItem('booted', '1')
+    current.current.scale.value = computeBootScale()
     setPlayIntro(true)
     setShowOverlay(true)
     document.body.style.overflow = 'hidden'
@@ -85,9 +92,9 @@ export default function RobotStage() {
 
       if (docking.current) {
         const t = dockTarget.current
-        current.current.dx = springStep(current.current.dx, t.dx, dt, 90, 16)
-        current.current.dy = springStep(current.current.dy, t.dy, dt, 90, 16)
-        current.current.scale = springStep(current.current.scale, t.scale, dt, 90, 16)
+        current.current.dx = springStep(current.current.dx, t.dx, dt, 120, 17)
+        current.current.dy = springStep(current.current.dy, t.dy, dt, 120, 17)
+        current.current.scale = springStep(current.current.scale, t.scale, dt, 120, 17)
         applyTransform()
 
         revealProgress.current += dt
@@ -95,7 +102,7 @@ export default function RobotStage() {
         if (overlay) {
           const elapsed = revealProgress.current
           const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 0.75
-          const eased = 1 - Math.pow(1 - Math.min(elapsed / 1.0, 1), 3)
+          const eased = 1 - Math.pow(1 - Math.min(elapsed / 0.7, 1), 3)
           const radius = eased * maxRadius
           const vw = window.innerWidth
           const vh = window.innerHeight
@@ -109,7 +116,7 @@ export default function RobotStage() {
 
         const dxDist = Math.abs(current.current.dx.value - t.dx)
         const dyDist = Math.abs(current.current.dy.value - t.dy)
-        if (dxDist < 1 && dyDist < 1 && revealProgress.current > 1.05) {
+        if (dxDist < 1 && dyDist < 1 && revealProgress.current > 0.75) {
           document.body.style.overflow = ''
           setShowOverlay(false)
           setIdle(true)

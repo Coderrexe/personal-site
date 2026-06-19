@@ -1,18 +1,22 @@
+'use client'
+
 import Link from 'next/link'
 import { orderedEssays, workItems, researchItems } from '@/lib/data'
 import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
-import HorizontalRail from '@/components/HorizontalRail'
-import MosaicGrid from '@/components/MosaicGrid'
-import ScatteredWriting from '@/components/ScatteredWriting'
 import Magnetic from '@/components/Magnetic'
+import { useUnlock } from '@/lib/unlock'
 
 export default function Home() {
+  const { unlocked } = useUnlock()
+  const visibleWork = workItems.filter(item => !item.hidden || unlocked)
+  const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
+
   return (
     <div>
 
       {/* ── Room 1: Identity ─────────────────────────────────── */}
-      <section className="room max-w-[60rem] mx-auto px-6">
+      <section className="room max-w-[42rem] mx-auto px-6">
         <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
           <AnimatedName name="Simba Shi" />
         </h1>
@@ -22,19 +26,29 @@ export default function Home() {
           "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
           "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
         ]} />
-        <div className="font-mono text-xs text-subtle mt-12 animate-pulse">scroll ↓</div>
       </section>
 
       {/* ── Room 2: Experience ───────────────────────────────── */}
-      <section className="room">
-        <div className="max-w-[60rem] mx-auto px-6 w-full">
-          <p className="room-kicker">01 — where I&apos;ve built</p>
-          <h2 className="room-title">Experience</h2>
+      <section className="room max-w-[42rem] mx-auto px-6">
+        <p className="room-kicker">01 — where I&apos;ve built</p>
+        <h2 className="room-title">Experience</h2>
+        <div className="circuit-list">
+          {visibleWork.map(item => (
+            <div key={item.company} className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0">
+              <span className="circuit-node" />
+              <div className="flex items-baseline justify-between gap-4 mb-1">
+                <p className="text-[0.9375rem] text-fg font-medium">{item.company}</p>
+                <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap">{item.period}</span>
+              </div>
+              <p className="text-sm mb-1">
+                <span className="text-fg">{item.role}</span>
+                {item.note && <span className="text-muted"> · {item.note}</span>}
+              </p>
+              <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+            </div>
+          ))}
         </div>
-        <div className="px-6">
-          <HorizontalRail items={workItems} />
-        </div>
-        <div className="max-w-[60rem] mx-auto px-6 w-full mt-6">
+        <div className="mt-6">
           <Magnetic strength={0.25}>
             <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
               Full history →
@@ -44,10 +58,26 @@ export default function Home() {
       </section>
 
       {/* ── Room 3: Research ─────────────────────────────────── */}
-      <section className="room max-w-[60rem] mx-auto px-6">
+      <section className="room max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">02 — what I&apos;ve discovered</p>
         <h2 className="room-title">Research</h2>
-        <MosaicGrid items={researchItems} />
+        <div className="circuit-list">
+          {visibleResearch.map(item => (
+            <div key={item.title} className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0">
+              <span className="circuit-node" />
+              <div className="flex items-start justify-between gap-4 mb-1">
+                <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">{item.period}</span>
+              </div>
+              {item.titleHtml ? (
+                <p className="text-[0.9375rem] text-fg font-medium mb-1" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+              ) : (
+                <p className="text-[0.9375rem] text-fg font-medium mb-1">{item.title}</p>
+              )}
+              <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+            </div>
+          ))}
+        </div>
         <div className="mt-6">
           <Magnetic strength={0.25}>
             <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
@@ -58,10 +88,36 @@ export default function Home() {
       </section>
 
       {/* ── Room 4: Writing ──────────────────────────────────── */}
-      <section className="room max-w-[60rem] mx-auto px-6 pb-32">
+      <section className="room max-w-[42rem] mx-auto px-6 pb-32">
         <p className="room-kicker">03 — what I write</p>
         <h2 className="room-title">Writing</h2>
-        <ScatteredWriting essays={orderedEssays} />
+        <div className="circuit-list border-t border-line">
+          {orderedEssays.map(essay => {
+            const href = essay.comingSoon
+              ? `/writing/${essay.collectionSlug}`
+              : `/writing/${essay.collectionSlug}/${essay.slug}`
+            return (
+              <Link
+                key={essay.slug}
+                href={href}
+                className="circuit-row tilt-row group relative flex items-baseline justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line"
+              >
+                <span className="circuit-node" />
+                <div>
+                  <span className="text-fg text-sm group-hover:text-accent transition-colors duration-150">{essay.title}</span>
+                  {essay.description && <p className="text-xs text-muted mt-0.5">{essay.description}</p>}
+                </div>
+                {essay.comingSoon ? (
+                  <span className="font-mono text-xs text-muted flex-shrink-0 ml-8">coming soon</span>
+                ) : (
+                  <span className="font-mono text-xs text-muted group-hover:text-accent transition-colors duration-150 flex-shrink-0 ml-8 tabular-nums">
+                    {essay.displayDate}
+                  </span>
+                )}
+              </Link>
+            )
+          })}
+        </div>
       </section>
 
     </div>
