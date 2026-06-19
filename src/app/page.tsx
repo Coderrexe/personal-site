@@ -1,5 +1,6 @@
 'use client'
 
+import { useState } from 'react'
 import Link from 'next/link'
 import { orderedEssays, workItems, researchItems } from '@/lib/data'
 import AnimatedName from '@/components/AnimatedName'
@@ -11,12 +12,14 @@ export default function Home() {
   const { unlocked } = useUnlock()
   const visibleWork = workItems.filter(item => !item.hidden || unlocked)
   const visibleResearch = researchItems.filter(item => !item.hidden || unlocked)
+  const [expandedWork, setExpandedWork] = useState<number | null>(null)
+  const [expandedResearch, setExpandedResearch] = useState<number | null>(null)
 
   return (
     <div>
 
       {/* ── Room 1: Identity ─────────────────────────────────── */}
-      <section className="room max-w-[42rem] mx-auto px-6">
+      <section className="room max-w-[42rem] mx-auto px-6 pt-28 sm:pt-36">
         <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
           <AnimatedName name="Simba Shi" />
         </h1>
@@ -33,20 +36,47 @@ export default function Home() {
         <p className="room-kicker">01 — where I&apos;ve built</p>
         <h2 className="room-title">Experience</h2>
         <div className="circuit-list">
-          {visibleWork.map(item => (
-            <div key={item.company} className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0">
-              <span className="circuit-node" />
-              <div className="flex items-baseline justify-between gap-4 mb-1">
-                <p className="text-[0.9375rem] text-fg font-medium">{item.company}</p>
-                <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap">{item.period}</span>
+          {visibleWork.map((item, idx) => {
+            const hasLinks = item.links && item.links.length > 0
+            const isOpen = expandedWork === idx
+            return (
+              <div
+                key={item.company}
+                className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default"
+                onMouseEnter={() => hasLinks ? setExpandedWork(idx) : undefined}
+                onMouseLeave={() => setExpandedWork(null)}
+              >
+                <span className="circuit-node" />
+                <div className="flex items-baseline justify-between gap-4 mb-1">
+                  <p className="text-[0.9375rem] text-fg font-medium">{item.company}</p>
+                  <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap">{item.period}</span>
+                </div>
+                <p className="text-sm mb-1">
+                  <span className="text-fg">{item.role}</span>
+                  {item.note && <span className="text-muted"> · {item.note}</span>}
+                </p>
+                <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                {hasLinks && (
+                  <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
+                    <div className="flex items-center gap-4 flex-wrap">
+                      {item.links!.map(link => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-xs text-accent hover:underline"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          {link.label} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-              <p className="text-sm mb-1">
-                <span className="text-fg">{item.role}</span>
-                {item.note && <span className="text-muted"> · {item.note}</span>}
-              </p>
-              <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
-            </div>
-          ))}
+            )
+          })}
         </div>
         <div className="mt-6">
           <Magnetic strength={0.25}>
@@ -62,21 +92,48 @@ export default function Home() {
         <p className="room-kicker">02 — what I&apos;ve discovered</p>
         <h2 className="room-title">Research</h2>
         <div className="circuit-list">
-          {visibleResearch.map(item => (
-            <div key={item.title} className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0">
-              <span className="circuit-node" />
-              <div className="flex items-start justify-between gap-4 mb-1">
-                <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
-                <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">{item.period}</span>
+          {visibleResearch.map((item, idx) => {
+            const hasLinks = item.links && item.links.length > 0
+            const isOpen = expandedResearch === idx
+            return (
+              <div
+                key={item.title}
+                className="circuit-row tilt-row relative py-5 -mx-3 px-3 rounded-lg border-b border-line last:border-0 cursor-default"
+                onMouseEnter={() => hasLinks ? setExpandedResearch(idx) : undefined}
+                onMouseLeave={() => setExpandedResearch(null)}
+              >
+                <span className="circuit-node" />
+                <div className="flex items-start justify-between gap-4 mb-1">
+                  <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
+                  <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">{item.period}</span>
+                </div>
+                {item.titleHtml ? (
+                  <p className="text-[0.9375rem] text-fg font-medium mb-1" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+                ) : (
+                  <p className="text-[0.9375rem] text-fg font-medium mb-1">{item.title}</p>
+                )}
+                <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                {hasLinks && (
+                  <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
+                    <div className="flex items-center gap-4 flex-wrap">
+                      {item.links!.map(link => (
+                        <a
+                          key={link.href}
+                          href={link.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="font-mono text-xs text-accent hover:underline"
+                          onClick={e => e.stopPropagation()}
+                        >
+                          {link.label} ↗
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
-              {item.titleHtml ? (
-                <p className="text-[0.9375rem] text-fg font-medium mb-1" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
-              ) : (
-                <p className="text-[0.9375rem] text-fg font-medium mb-1">{item.title}</p>
-              )}
-              <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
-            </div>
-          ))}
+            )
+          })}
         </div>
         <div className="mt-6">
           <Magnetic strength={0.25}>
