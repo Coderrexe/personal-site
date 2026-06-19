@@ -1,7 +1,78 @@
+'use client'
+
+import { useEffect, useRef } from 'react'
+import { springStep, SpringState } from '@/lib/spring'
+
+const EYE_L = { cx: 125, cy: 140 }
+const EYE_R = { cx: 195, cy: 140 }
+const MAX_OFFSET = 5
+
 export default function RobotIllustration() {
+  const svgRef = useRef<SVGSVGElement>(null)
+  const pupilLRef = useRef<SVGCircleElement>(null)
+  const pupilRRef = useRef<SVGCircleElement>(null)
+  const mouse = useRef({ x: -9999, y: -9999 })
+  const gaze = useRef<{ x: SpringState; y: SpringState }>({
+    x: { value: 0, velocity: 0 },
+    y: { value: 0, velocity: 0 },
+  })
+  const raf = useRef<number>(0)
+  const last = useRef(performance.now())
+
+  useEffect(() => {
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return
+
+    const onMove = (e: MouseEvent) => {
+      mouse.current = { x: e.clientX, y: e.clientY }
+    }
+    window.addEventListener('mousemove', onMove)
+
+    const tick = () => {
+      const svg = svgRef.current
+      const pupilL = pupilLRef.current
+      const pupilR = pupilRRef.current
+      if (svg && pupilL && pupilR) {
+        const rect = svg.getBoundingClientRect()
+        const scaleX = 320 / rect.width
+        const scaleY = 320 / rect.height
+        const sx = (mouse.current.x - rect.left) * scaleX
+        const sy = (mouse.current.y - rect.top) * scaleY
+
+        const cx = (EYE_L.cx + EYE_R.cx) / 2
+        const cy = (EYE_L.cy + EYE_R.cy) / 2
+        const dx = sx - cx
+        const dy = sy - cy
+        const dist = Math.min(Math.sqrt(dx * dx + dy * dy), MAX_OFFSET)
+        const angle = Math.atan2(dy, dx)
+        const targetX = Math.cos(angle) * dist
+        const targetY = Math.sin(angle) * dist
+
+        const now = performance.now()
+        const dt = Math.min((now - last.current) / 1000, 0.05)
+        last.current = now
+
+        gaze.current.x = springStep(gaze.current.x, targetX, dt, 140, 18)
+        gaze.current.y = springStep(gaze.current.y, targetY, dt, 140, 18)
+
+        pupilL.setAttribute('cx', String(EYE_L.cx + gaze.current.x.value))
+        pupilL.setAttribute('cy', String(EYE_L.cy + gaze.current.y.value))
+        pupilR.setAttribute('cx', String(EYE_R.cx + gaze.current.x.value))
+        pupilR.setAttribute('cy', String(EYE_R.cy + gaze.current.y.value))
+      }
+      raf.current = requestAnimationFrame(tick)
+    }
+    raf.current = requestAnimationFrame(tick)
+
+    return () => {
+      window.removeEventListener('mousemove', onMove)
+      cancelAnimationFrame(raf.current)
+    }
+  }, [])
+
   return (
     <div className="hero-illustration-wrap w-full h-full">
       <svg
+        ref={svgRef}
         className="hero-illustration w-full h-full"
         viewBox="0 0 320 320"
         fill="none"
@@ -18,10 +89,10 @@ export default function RobotIllustration() {
         <circle cx="205" cy="22" r="5" className="pulse-node" style={{ animationDelay: '0.5s' }} />
 
         {/* eyes */}
-        <circle cx="125" cy="140" r="16" className="draw" style={{ animationDelay: '0.5s' }} />
-        <circle cx="195" cy="140" r="16" className="draw" style={{ animationDelay: '0.6s' }} />
-        <circle cx="125" cy="140" r="4" className="pulse-node" style={{ animationDelay: '0.2s' }} />
-        <circle cx="195" cy="140" r="4" className="pulse-node" style={{ animationDelay: '0.5s' }} />
+        <circle cx={EYE_L.cx} cy={EYE_L.cy} r="16" className="draw" style={{ animationDelay: '0.5s' }} />
+        <circle cx={EYE_R.cx} cy={EYE_R.cy} r="16" className="draw" style={{ animationDelay: '0.6s' }} />
+        <circle ref={pupilLRef} cx={EYE_L.cx} cy={EYE_L.cy} r="4" className="pulse-node" style={{ animationDelay: '0.2s' }} />
+        <circle ref={pupilRRef} cx={EYE_R.cx} cy={EYE_R.cy} r="4" className="pulse-node" style={{ animationDelay: '0.5s' }} />
 
         {/* neural brain trace */}
         <line x1="125" y1="140" x2="160" y2="100" className="draw" style={{ animationDelay: '0.7s' }} />

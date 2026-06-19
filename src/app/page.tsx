@@ -8,6 +8,7 @@ import AnimatedBio from '@/components/AnimatedBio'
 import WritingList from '@/components/WritingList'
 import SectionHead from '@/components/SectionHead'
 import RobotIllustration from '@/components/RobotIllustration'
+import Magnetic from '@/components/Magnetic'
 
 export default function Home() {
   return (
@@ -37,9 +38,11 @@ export default function Home() {
           <SectionHead index="01">Experience</SectionHead>
           <ExperienceList items={workItems} />
           <div className="mt-5">
-            <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
-              Learn more →
-            </Link>
+            <Magnetic strength={0.25}>
+              <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
+                Learn more →
+              </Link>
+            </Magnetic>
           </div>
         </section>
       </FadeIn>
@@ -50,9 +53,11 @@ export default function Home() {
           <SectionHead index="02">Research</SectionHead>
           <ResearchList items={researchItems} />
           <div className="mt-5">
-            <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
-              Learn more →
-            </Link>
+            <Magnetic strength={0.25}>
+              <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
+                Learn more →
+              </Link>
+            </Magnetic>
           </div>
         </section>
       </FadeIn>
