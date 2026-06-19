@@ -3,7 +3,6 @@ import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { collections } from '@/lib/data'
 import FadeIn from '@/components/FadeIn'
-import RobotDockZone from '@/components/RobotDockZone'
 
 interface Props {
   params: { collection: string }
@@ -29,7 +28,6 @@ export default function CollectionPage({ params }: Props) {
   return (
     <div>
     <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
-      <RobotDockZone slot="humanoid" size={68} className="w-16 h-16" />
     </div>
     <div className="max-w-[60rem] mx-auto px-6">
 

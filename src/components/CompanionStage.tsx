@@ -1,120 +1,62 @@
 'use client'
 
 import { useEffect, useRef, useState } from 'react'
-import { motion, useMotionValue, useSpring, MotionValue } from 'motion/react'
+import { motion, useMotionValue, useSpring } from 'motion/react'
 import Robot from './Robot'
-import Quadruped from './Quadruped'
-import RoboticArm from './RoboticArm'
-import { pickActiveZone, useRobotDockRegistry, DockZoneEntry, CompanionSlot } from '@/lib/robotDock'
 
-interface Sizing {
-  naturalW: number
-  naturalH: number
-  fallbackDockHeight: number
-}
+const NATURAL_W = 140
+const NATURAL_H = 232
+const DISPLAY_SCALE = 0.65      // ~151px tall at rest
+const DEFAULT_Y_FRAC = 0.42     // y on non-homepage pages
+const WIDE_BREAKPOINT = 1180    // px — narrower uses corner fallback
+const SETTLE_DEBOUNCE_MS = 320
+const WALK_DURATION_MS = 950
+const WALK_THRESHOLD_PX = 40
 
-const SIZING: Record<CompanionSlot, Sizing> = {
-  humanoid: { naturalW: 140, naturalH: 232, fallbackDockHeight: 56 },
-  quadruped: { naturalW: 200, naturalH: 110, fallbackDockHeight: 46 },
-  arm: { naturalW: 120, naturalH: 160, fallbackDockHeight: 50 },
-}
+// y-fraction of viewport height for each homepage .room section (by index)
+const ROOM_Y_FRACS = [0.38, 0.46, 0.52, 0.58]
 
-const FALLBACK_MARGIN = 20
-const SETTLE_DEBOUNCE_MS = 220
-const WALK_DURATION_MS = 750
+interface Target { dx: number; dy: number; scale: number }
 
-interface Target {
-  dx: number
-  dy: number
-  scale: number
-}
+const SPRING_CFG = { stiffness: 190, damping: 28 }
 
-function computeFallbackTarget(slot: CompanionSlot, index: number): Target {
-  const { naturalW, naturalH, fallbackDockHeight } = SIZING[slot]
+function computeTarget(yFrac: number): Target {
   const vw = window.innerWidth
   const vh = window.innerHeight
-  const scale = fallbackDockHeight / naturalH
-  const w = naturalW * scale
-  const cx = vw - FALLBACK_MARGIN - w / 2
-  const cy = vh - FALLBACK_MARGIN - fallbackDockHeight / 2 - index * (fallbackDockHeight + 14)
-  return { dx: cx - vw / 2, dy: cy - vh / 2, scale }
-}
 
-function computeZoneTarget(slot: CompanionSlot, zone: DockZoneEntry): Target {
-  const { naturalW, naturalH } = SIZING[slot]
-  const rect = zone.el.getBoundingClientRect()
-  const vw = window.innerWidth
-  const vh = window.innerHeight
-  const scale = zone.size / naturalH
-  const w = naturalW * scale
-  const cx = Math.min(rect.right - w / 2 - 8, vw - 16 - w / 2)
-  const cy = Math.min(Math.max(rect.top + rect.height / 2, vh * 0.18), vh * 0.85)
-  return { dx: cx - vw / 2, dy: cy - vh / 2, scale }
-}
-
-function computeBootScale(): number {
-  const vh = window.innerHeight
-  const capped = Math.max(110, Math.min(SIZING.humanoid.naturalH, vh * 0.3))
-  return capped / SIZING.humanoid.naturalH
-}
-
-/** One companion's spring-driven position/scale + walk/trot gating. */
-function useCompanion(slot: CompanionSlot, fallbackIndex: number) {
-  const { zones } = useRobotDockRegistry()
-  const dx = useMotionValue(0)
-  const dy = useMotionValue(0)
-  const scaleMv = useMotionValue(0.5)
-  const springDx = useSpring(dx, { stiffness: 85, damping: 17 })
-  const springDy = useSpring(dy, { stiffness: 85, damping: 17 })
-  const springScale = useSpring(scaleMv, { stiffness: 85, damping: 17 })
-  const [walking, setWalking] = useState(false)
-  const walkTimer = useRef<ReturnType<typeof setTimeout>>()
-  const trackingRef = useRef(false)
-
-  const retarget = () => {
-    if (!trackingRef.current) return
-    const zone = pickActiveZone(zones, slot)
-    const t = zone ? computeZoneTarget(slot, zone) : computeFallbackTarget(slot, fallbackIndex)
-    const moved = Math.abs(t.dx - dx.get()) > 4 || Math.abs(t.dy - dy.get()) > 4
-    dx.set(t.dx)
-    dy.set(t.dy)
-    scaleMv.set(t.scale)
-    if (moved) {
-      setWalking(true)
-      clearTimeout(walkTimer.current)
-      walkTimer.current = setTimeout(() => setWalking(false), WALK_DURATION_MS)
+  if (vw < WIDE_BREAKPOINT) {
+    // Corner fallback: small icon, bottom-right
+    const scale = 0.22
+    const rw = NATURAL_W * scale
+    const rh = NATURAL_H * scale
+    return {
+      dx: vw / 2 - 12 - rw / 2,
+      dy: vh / 2 - 16 - rh / 2,
+      scale,
     }
   }
 
-  const snapInstantly = () => {
-    trackingRef.current = true
-    const zone = pickActiveZone(zones, slot)
-    const t = zone ? computeZoneTarget(slot, zone) : computeFallbackTarget(slot, fallbackIndex)
-    dx.set(t.dx)
-    dy.set(t.dy)
-    scaleMv.set(t.scale)
-    springDx.jump(t.dx)
-    springDy.jump(t.dy)
-    springScale.jump(t.scale)
-  }
+  const scale = DISPLAY_SCALE
+  const rw = NATURAL_W * scale
 
-  const beginTracking = () => {
-    trackingRef.current = true
-    retarget()
-  }
+  // Right edge of the 58rem (928px) content column, centered in viewport
+  const maxContentPx = 928
+  const contentRight = (vw + Math.min(maxContentPx, vw - 48)) / 2
+  // Robot center: just right of content, clamped to never overflow viewport
+  let cx = contentRight + 14 + rw / 2
+  cx = Math.min(cx, vw - 8 - rw / 2)
 
-  /** Instant, un-sprung placement — used to arrange the trio during boot,
-   * while they're still hidden behind full darkness. */
-  const jumpTo = (t: Target) => {
-    dx.set(t.dx)
-    dy.set(t.dy)
-    scaleMv.set(t.scale)
-    springDx.jump(t.dx)
-    springDy.jump(t.dy)
-    springScale.jump(t.scale)
+  return {
+    dx: cx - vw / 2,
+    dy: vh * yFrac - vh / 2,
+    scale,
   }
+}
 
-  return { springDx, springDy, springScale, dx, dy, scaleMv, walking, retarget, snapInstantly, beginTracking, jumpTo }
+function computeBootTarget(): Target {
+  const vh = window.innerHeight
+  const scale = Math.min(1, (vh * 0.28) / NATURAL_H)
+  return { dx: 0, dy: 0, scale }
 }
 
 type BootDecision = 'pending' | 'play' | 'skip'
@@ -123,62 +65,112 @@ export default function CompanionStage() {
   const [bootDecision, setBootDecision] = useState<BootDecision>('pending')
   const [showOverlay, setShowOverlay] = useState(false)
   const [settled, setSettled] = useState(false)
+  const [walking, setWalking] = useState(false)
 
-  const humanoid = useCompanion('humanoid', 0)
-  const quadruped = useCompanion('quadruped', 1)
-  const arm = useCompanion('arm', 2)
+  const dxMv = useMotionValue(0)
+  const dyMv = useMotionValue(0)
+  const scaleMv = useMotionValue(0.5)
+  const springDx = useSpring(dxMv, SPRING_CFG)
+  const springDy = useSpring(dyMv, SPRING_CFG)
+  const springScale = useSpring(scaleMv, SPRING_CFG)
 
+  const walkTimer = useRef<ReturnType<typeof setTimeout>>()
+  const trackingRef = useRef(false)
+  const activeRoomRef = useRef(-1)
   const overlayRef = useRef<HTMLDivElement>(null)
   const revealStart = useRef(0)
   const revealRaf = useRef(0)
   const settledGuard = useRef(false)
   const settleTimer = useRef<ReturnType<typeof setTimeout>>()
+  const reduceMotionRef = useRef(false)
 
-  // Debounced scroll/resize retargeting — only re-evaluate once scrolling
-  // has actually paused, so the companions settle deliberately into a spot
-  // rather than chasing the viewport on every pixel of scroll.
+  const moveTo = (t: Target, triggerWalk = true) => {
+    const moved =
+      !reduceMotionRef.current &&
+      triggerWalk &&
+      (Math.abs(t.dx - dxMv.get()) > WALK_THRESHOLD_PX ||
+        Math.abs(t.dy - dyMv.get()) > WALK_THRESHOLD_PX)
+    dxMv.set(t.dx)
+    dyMv.set(t.dy)
+    scaleMv.set(t.scale)
+    if (moved) {
+      setWalking(true)
+      clearTimeout(walkTimer.current)
+      walkTimer.current = setTimeout(() => setWalking(false), WALK_DURATION_MS)
+    }
+  }
+
+  const jumpTo = (t: Target) => {
+    dxMv.set(t.dx); dyMv.set(t.dy); scaleMv.set(t.scale)
+    springDx.jump(t.dx); springDy.jump(t.dy); springScale.jump(t.scale)
+  }
+
+  // IntersectionObserver: watch .room sections, move on section change
   useEffect(() => {
     if (bootDecision === 'pending') return
-    const onScroll = () => {
+
+    const rooms = Array.from(document.querySelectorAll<HTMLElement>('.room'))
+
+    if (rooms.length === 0) {
+      if (trackingRef.current) moveTo(computeTarget(DEFAULT_Y_FRAC))
+      return
+    }
+
+    const ratios = new Map<Element, number>()
+
+    const pick = () => {
+      let bestIdx = 0
+      let bestRatio = -1
+      rooms.forEach((el, i) => {
+        const r = ratios.get(el) ?? 0
+        if (r > bestRatio) { bestRatio = r; bestIdx = i }
+      })
+      activeRoomRef.current = bestIdx
+      if (!trackingRef.current) return
       clearTimeout(settleTimer.current)
       settleTimer.current = setTimeout(() => {
-        humanoid.retarget()
-        quadruped.retarget()
-        arm.retarget()
+        if (!trackingRef.current) return
+        moveTo(computeTarget(ROOM_Y_FRACS[bestIdx] ?? DEFAULT_Y_FRAC))
       }, SETTLE_DEBOUNCE_MS)
     }
-    window.addEventListener('scroll', onScroll, { passive: true })
-    window.addEventListener('resize', onScroll)
-    return () => {
-      window.removeEventListener('scroll', onScroll)
-      window.removeEventListener('resize', onScroll)
-      clearTimeout(settleTimer.current)
-    }
+
+    const observer = new IntersectionObserver(
+      entries => { entries.forEach(e => ratios.set(e.target, e.intersectionRatio)); pick() },
+      { threshold: [0, 0.1, 0.25, 0.5, 0.75] }
+    )
+
+    rooms.forEach(el => observer.observe(el))
+    return () => { observer.disconnect(); clearTimeout(settleTimer.current) }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [bootDecision])
 
+  // Resize: reposition without triggering walk animation
+  useEffect(() => {
+    if (bootDecision === 'pending') return
+    const onResize = () => {
+      if (!trackingRef.current) return
+      const idx = activeRoomRef.current
+      moveTo(computeTarget(idx >= 0 ? (ROOM_Y_FRACS[idx] ?? DEFAULT_Y_FRAC) : DEFAULT_Y_FRAC), false)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [bootDecision])
+
+  // Boot decision
   useEffect(() => {
     const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    reduceMotionRef.current = reduceMotion
 
     if (reduceMotion) {
-      humanoid.snapInstantly()
-      quadruped.snapInstantly()
-      arm.snapInstantly()
+      trackingRef.current = true
+      jumpTo(computeTarget(DEFAULT_Y_FRAC))
       setSettled(true)
       setBootDecision('skip')
       return
     }
 
-    // Arrange the trio in a small cluster for the reveal — humanoid front
-    // and center, quadruped and arm just behind/beside it — instead of all
-    // three defaulting to the same (0,0) and rendering stacked on top of
-    // each other. Hidden behind full darkness until the reveal begins, so
-    // no animation is needed here, just correct starting positions.
-    const bootScale = computeBootScale()
-    humanoid.jumpTo({ dx: 0, dy: 0, scale: bootScale })
-    quadruped.jumpTo({ dx: -95, dy: 118, scale: bootScale * 0.62 })
-    arm.jumpTo({ dx: 88, dy: 100, scale: bootScale * 0.58 })
-
+    jumpTo(computeBootTarget())
     setShowOverlay(true)
     document.body.style.overflow = 'hidden'
     setBootDecision('play')
@@ -191,24 +183,24 @@ export default function CompanionStage() {
     const maxRadius = Math.hypot(window.innerWidth, window.innerHeight) * 0.75
     const eased = 1 - Math.pow(1 - Math.min(elapsed / 0.75, 1), 3)
     const radius = eased * maxRadius
-    const cx = window.innerWidth / 2 + humanoid.springDx.get()
-    const cy = window.innerHeight / 2 + humanoid.springDy.get()
+    const cx = window.innerWidth / 2 + springDx.get()
+    const cy = window.innerHeight / 2 + springDy.get()
     const inner = Math.max(radius * 0.82, 0)
     if (overlay) {
       const grad = `radial-gradient(circle at ${cx}px ${cy}px, transparent 0px, transparent ${inner}px, black ${radius}px)`
       overlay.style.maskImage = grad
       overlay.style.setProperty('-webkit-mask-image', grad)
     }
-
     if (elapsed > 0.85) {
       if (!settledGuard.current) {
         settledGuard.current = true
         document.body.style.overflow = ''
         setShowOverlay(false)
         setSettled(true)
-        humanoid.beginTracking()
-        quadruped.beginTracking()
-        arm.beginTracking()
+        trackingRef.current = true
+        // Walk from center to resting position beside the hero
+        const roomIdx = Math.max(activeRoomRef.current, 0)
+        moveTo(computeTarget(ROOM_Y_FRACS[roomIdx] ?? DEFAULT_Y_FRAC))
       }
       return
     }
@@ -217,7 +209,6 @@ export default function CompanionStage() {
 
   const handleIntroComplete = () => {
     revealStart.current = performance.now()
-    humanoid.beginTracking()
     revealRaf.current = requestAnimationFrame(runReveal)
   }
 
@@ -228,59 +219,31 @@ export default function CompanionStage() {
   return (
     <>
       {showOverlay && <div ref={overlayRef} className="boot-overlay" aria-hidden />}
-
-      <CompanionWrap x={humanoid.springDx} y={humanoid.springDy} scale={humanoid.springScale} settled={settled} naturalW={140} naturalH={232}>
-        <Robot key={bootDecision} playIntro={bootDecision === 'play'} walking={humanoid.walking} onIntroComplete={handleIntroComplete} />
-      </CompanionWrap>
-
-      <CompanionWrap x={quadruped.springDx} y={quadruped.springDy} scale={quadruped.springScale} settled={settled} naturalW={200} naturalH={110}>
-        <Quadruped playIntro={bootDecision === 'play'} walking={quadruped.walking} />
-      </CompanionWrap>
-
-      <CompanionWrap x={arm.springDx} y={arm.springDy} scale={arm.springScale} settled={settled} naturalW={120} naturalH={160}>
-        <RoboticArm playIntro={bootDecision === 'play'} />
-      </CompanionWrap>
-    </>
-  )
-}
-
-function CompanionWrap({
-  x,
-  y,
-  scale,
-  settled,
-  naturalW,
-  naturalH,
-  children,
-}: {
-  x: MotionValue<number>
-  y: MotionValue<number>
-  scale: MotionValue<number>
-  settled: boolean
-  naturalW: number
-  naturalH: number
-  children: React.ReactNode
-}) {
-  return (
-    <motion.div
-      className="companion-wrap"
-      style={{
-        x,
-        y,
-        scale,
-        width: naturalW,
-        height: naturalH,
-        marginLeft: -naturalW / 2,
-        marginTop: -naturalH / 2,
-      }}
-    >
       <motion.div
-        className="w-full h-full"
-        animate={settled ? { y: [0, -6, 0] } : undefined}
-        transition={{ duration: 5.5, repeat: Infinity, ease: 'easeInOut' }}
+        className="companion-wrap"
+        style={{
+          x: springDx,
+          y: springDy,
+          scale: springScale,
+          width: NATURAL_W,
+          height: NATURAL_H,
+          marginLeft: -NATURAL_W / 2,
+          marginTop: -NATURAL_H / 2,
+        }}
       >
-        {children}
+        <motion.div
+          className="w-full h-full"
+          animate={settled ? { y: [0, -5, 0] } : undefined}
+          transition={{ duration: 4.5, repeat: Infinity, ease: 'easeInOut' }}
+        >
+          <Robot
+            key={bootDecision}
+            playIntro={bootDecision === 'play'}
+            walking={walking}
+            onIntroComplete={handleIntroComplete}
+          />
+        </motion.div>
       </motion.div>
-    </motion.div>
+    </>
   )
 }

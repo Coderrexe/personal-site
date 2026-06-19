@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 import FadeIn from '@/components/FadeIn'
-import RobotDockZone from '@/components/RobotDockZone'
 
 function RevealEmail() {
   const [revealed, setReveal] = useState(false)
@@ -38,9 +37,6 @@ function RevealEmail() {
 export default function Contact() {
   return (
     <div>
-    <div className="hidden lg:block fixed top-1/3 right-[4%] xl:right-[8%]">
-      <RobotDockZone slot="humanoid" size={68} className="w-16 h-16" />
-    </div>
     <div className="max-w-[60rem] mx-auto px-6">
       <FadeIn>
         <section className="pt-20 pb-14">

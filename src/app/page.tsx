@@ -6,7 +6,6 @@ import { orderedEssays, workItems, researchItems } from '@/lib/data'
 import AnimatedName from '@/components/AnimatedName'
 import AnimatedBio from '@/components/AnimatedBio'
 import Magnetic from '@/components/Magnetic'
-import RobotDockZone from '@/components/RobotDockZone'
 import { useUnlock } from '@/lib/unlock'
 
 export default function Home() {
@@ -21,35 +20,21 @@ export default function Home() {
 
       {/* ── Room 1: Identity ─────────────────────────────────── */}
       <section className="room max-w-[58rem] mx-auto px-6 pt-28 sm:pt-36">
-        <div className="grid grid-cols-1 lg:grid-cols-[1fr_15rem] gap-10">
-          <div className="max-w-[38rem]">
-            <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
-              <AnimatedName name="Simba Shi" />
-            </h1>
-            <AnimatedBio paragraphs={[
-              "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
-              "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
-              "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
-              "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
-            ]} />
-          </div>
-          {/* All three companions rest here beside the intro on wide screens.
-              They stack vertically in the right column — humanoid up top,
-              quadruped and arm below it. On narrow screens they fall back
-              to small corners. */}
-          <div className="hidden lg:flex lg:flex-col lg:gap-3 lg:h-[26rem]">
-            <RobotDockZone slot="humanoid" size={200} className="flex-1 w-full" />
-            <RobotDockZone slot="quadruped" size={80} className="h-24 w-full" />
-            <RobotDockZone slot="arm" size={80} className="h-24 w-full" />
-          </div>
+        <div className="max-w-[38rem]">
+          <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
+            <AnimatedName name="Simba Shi" />
+          </h1>
+          <AnimatedBio paragraphs={[
+            "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
+            "Previously, I cofounded ReefSound, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
+            "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
+            "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
+          ]} />
         </div>
       </section>
 
       {/* ── Room 2: Experience ───────────────────────────────── */}
-      <section className="room relative">
-        <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone slot="humanoid" size={64} className="w-16 h-16" />
-        </div>
+      <section className="room">
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">01 — where I&apos;ve built</p>
         <h2 className="room-title">Experience</h2>
@@ -107,10 +92,7 @@ export default function Home() {
       </section>
 
       {/* ── Room 3: Research ─────────────────────────────────── */}
-      <section className="room relative">
-        <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone slot="arm" size={64} className="w-16 h-16" />
-        </div>
+      <section className="room">
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">02 — what I&apos;ve discovered</p>
         <h2 className="room-title">Research</h2>
@@ -169,10 +151,7 @@ export default function Home() {
       </section>
 
       {/* ── Room 4: Writing ──────────────────────────────────── */}
-      <section className="room relative pb-32">
-        <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
-          <RobotDockZone slot="quadruped" size={64} className="w-16 h-16" />
-        </div>
+      <section className="room pb-32">
         <div className="max-w-[42rem] mx-auto px-6">
         <p className="room-kicker">03 — what I write</p>
         <h2 className="room-title">Writing</h2>
