@@ -1,16 +1,19 @@
 'use client'
 
 import { useEffect, useState, ReactNode } from 'react'
+import { useBootReady } from '@/lib/bootContext'
 
 type Paragraph = string | { node: ReactNode; words?: number }
 
 export default function AnimatedBio({ paragraphs }: { paragraphs: Paragraph[] }) {
   const [revealed, setRevealed] = useState(false)
+  const { bootReady } = useBootReady()
 
   useEffect(() => {
+    if (!bootReady) return
     const t = setTimeout(() => setRevealed(true), 320)
     return () => clearTimeout(t)
-  }, [])
+  }, [bootReady])
 
   let globalWordIndex = 0
 
@@ -18,15 +21,13 @@ export default function AnimatedBio({ paragraphs }: { paragraphs: Paragraph[] })
     <div className="space-y-4 max-w-lg">
       {paragraphs.map((para, pi) => {
         if (typeof para !== 'string') {
-          // Rich paragraph (contains links etc.) — fades in as one unit
           const delay = globalWordIndex * 20
-          globalWordIndex += para.words ?? 20  // advance counter by estimated length
+          globalWordIndex += para.words ?? 20
           return (
             <p
               key={pi}
               className="text-muted text-[0.9375rem] leading-[1.9]"
               style={{
-                transitionDelay: `${delay}ms`,
                 opacity: revealed ? 1 : 0,
                 filter: revealed ? 'blur(0px)' : 'blur(4px)',
                 transition: `opacity 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms, filter 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,

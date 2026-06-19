@@ -20,10 +20,10 @@ export default function Home() {
     <div>
 
       {/* ── Room 1: Identity ─────────────────────────────────── */}
-      <section className="room max-w-[58rem] mx-auto px-8 sm:px-12 pt-24 sm:pt-36">
+      <section className="room-hero max-w-[58rem] mx-auto px-8 sm:px-12">
         <div className="grid grid-cols-1 lg:grid-cols-[1fr_15rem] gap-10">
           <div className="max-w-[38rem]">
-            <h1 className="hero-name text-fg text-[2.1rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
+            <h1 className="hero-name text-fg text-[1.75rem] sm:text-[2.6rem] font-semibold tracking-[-0.01em] mb-7 overflow-hidden">
               <AnimatedName name="Simba Shi" />
             </h1>
             <AnimatedBio paragraphs={[
@@ -53,7 +53,7 @@ export default function Home() {
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
         <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
-        <p className="room-kicker">01 — where I&apos;ve built</p>
+        <p className="room-kicker">01 — cool places I've worked</p>
         <h2 className="room-title">Experience</h2>
         <div className="circuit-list">
           {visibleWork.map((item, idx) => {
@@ -75,7 +75,11 @@ export default function Home() {
                   <span className="text-fg">{item.role}</span>
                   {item.note && <span className="text-muted"> · {item.note}</span>}
                 </p>
-                <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                {item.taglineHtml ? (
+                  <p className="text-[0.8125rem] text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
+                ) : (
+                  <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                )}
                 {hasLinks && (
                   <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
                     <div className="flex items-center gap-4 flex-wrap">
@@ -101,7 +105,7 @@ export default function Home() {
         <div className="mt-6">
           <Magnetic strength={0.25}>
             <Link href="/work" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
-              Full history →
+              More →
             </Link>
           </Magnetic>
         </div>
@@ -114,7 +118,7 @@ export default function Home() {
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
 <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
-        <p className="room-kicker">02 — what I&apos;ve discovered</p>
+        <p className="room-kicker">02 — some things I built</p>
         <h2 className="room-title">Research</h2>
         <div className="circuit-list">
           {visibleResearch.map((item, idx) => {
@@ -167,7 +171,7 @@ export default function Home() {
         <div className="mt-6">
           <Magnetic strength={0.25}>
             <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
-              Full archive →
+              More →
             </Link>
           </Magnetic>
         </div>
@@ -180,7 +184,7 @@ export default function Home() {
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
         <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
-        <p className="room-kicker">03 — what I write</p>
+        <p className="room-kicker">03 — fragmented memories</p>
         <h2 className="room-title">Writing</h2>
         <div className="circuit-list border-t border-line">
           {orderedEssays.map(essay => {

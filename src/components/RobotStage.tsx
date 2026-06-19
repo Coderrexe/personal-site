@@ -5,6 +5,7 @@ import { motion, useMotionValue, useSpring } from 'motion/react'
 import { usePathname } from 'next/navigation'
 import Robot from './Robot'
 import { pickActiveZone, useRobotDockRegistry, DockZoneEntry } from '@/lib/robotDock'
+import { useBootReady } from '@/lib/bootContext'
 
 const NATURAL_W = 140
 const NATURAL_H = 232
@@ -32,6 +33,7 @@ export default function RobotStage() {
   const pathname = usePathname()
   const pathnameRef = useRef(pathname)
   useEffect(() => { pathnameRef.current = pathname }, [pathname])
+  const { setBootReady } = useBootReady()
 
   const [bootDecision, setBootDecision] = useState<BootDecision>('pending')
   const [showOverlay, setShowOverlay] = useState(false)
@@ -136,6 +138,7 @@ export default function RobotStage() {
       setSettled(true)
       setRobotOpacity(0)
       setBootDecision('skip')
+      setBootReady(true)
       return
     }
 
@@ -170,6 +173,7 @@ export default function RobotStage() {
         document.body.style.overflow = ''
         setShowOverlay(false)
         setSettled(true)
+        setBootReady(true)
         // Hide robot on mobile after boot
         if (!isDesktop()) {
           setRobotOpacity(0)

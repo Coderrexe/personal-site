@@ -214,7 +214,7 @@ export const workItems: WorkItem[] = [
   },
   {
     company: "Greyparrot",
-    role: "Machine Learning Engineer Intern",
+    role: "ML Engineer Intern",
     tagline: "Computer vision and YOLOv8 inference pipelines for industrial recycling.",
     period: "Jul 2024 – Sep 2024",
     location: "London, UK",
@@ -231,11 +231,11 @@ export const workItems: WorkItem[] = [
   },
   {
     company: "CVSSP Lab, University of Surrey",
-    role: "Machine Learning Research Intern",
+    role: "Research Intern",
     tagline: "GANs for zero-shot image translation; seq2seq transformers and graph convolutional networks for audio captioning.",
     period: "Jun 2023 – Feb 2025",
     location: "Guildford, UK",
-    note: "#1 ranked computer vision lab in UK",
+    // note: "#1 ranked computer vision lab in UK",
     description: [
       "• Designed novel multi-loss CycleGAN (6 custom losses: adversarial, cycle consistency, CLIP semantics, MiDaS depth, sketch extractor) for unpaired full-to-flat-color image transformation, trained on 2,246 portrait images.",
       "• Researched graph-based audio captioning model combining BART transformer with graph convolutional network and syntax-aware dependency parsing on the Clotho benchmark.",

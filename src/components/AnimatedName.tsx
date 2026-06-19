@@ -1,14 +1,17 @@
 'use client'
 
 import { useEffect, useState } from 'react'
+import { useBootReady } from '@/lib/bootContext'
 
 export default function AnimatedName({ name }: { name: string }) {
   const [revealed, setRevealed] = useState(false)
+  const { bootReady } = useBootReady()
 
   useEffect(() => {
+    if (!bootReady) return
     const t = setTimeout(() => setRevealed(true), 80)
     return () => clearTimeout(t)
-  }, [])
+  }, [bootReady])
 
   return (
     <span aria-label={name} className="inline-flex">
