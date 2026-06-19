@@ -27,7 +27,7 @@ export default function Home() {
               <AnimatedName name="Simba Shi" />
             </h1>
             <AnimatedBio paragraphs={[
-              "Hey, I'm Simba. I'm a student at Yale, and I love building AI and robots.",
+              "I'm a student at Yale, and I love building AI and robots.",
               {
                 words: 32,
                 node: <>
