@@ -3,31 +3,31 @@
 import { useEffect, useState } from 'react'
 import { useBootReady } from '@/lib/bootContext'
 
+const NBSP = ' '
+
 export default function AnimatedName({ name }: { name: string }) {
-  const [revealed, setRevealed] = useState(false)
   const { bootReady } = useBootReady()
+  const [animate, setAnimate] = useState(false)
 
   useEffect(() => {
     if (!bootReady) return
-    const t = setTimeout(() => setRevealed(true), 80)
-    return () => clearTimeout(t)
+    const id = requestAnimationFrame(() => setAnimate(true))
+    return () => cancelAnimationFrame(id)
   }, [bootReady])
 
   return (
     <span aria-label={name} className="inline-flex">
-      {name.split('').map((char, i) => (
+      {name.split('').map((c, i) => (
         <span
           key={i}
-          className="animated-char"
-          style={{
-            transitionDelay: `${i * 48}ms`,
-            opacity: revealed ? 1 : 0,
-            transform: revealed ? 'translateY(0)' : 'translateY(0.4em)',
-            display: char === ' ' ? 'inline' : 'inline-block',
-            whiteSpace: char === ' ' ? 'pre' : undefined,
-          }}
+          className="name-char"
+          style={
+            animate
+              ? { animation: `char-in 0.5s cubic-bezier(0.22,1,0.36,1) ${i * 40}ms backwards` }
+              : { opacity: 0 }
+          }
         >
-          {char}
+          {c === ' ' ? NBSP : c}
         </span>
       ))}
     </span>

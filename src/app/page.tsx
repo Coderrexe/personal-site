@@ -28,12 +28,11 @@ export default function Home() {
             </h1>
             <AnimatedBio paragraphs={[
               "I'm a student at Yale, and I love building AI and robots.",
-              {
-                words: 32,
-                node: <>
-                  Previously, I cofounded <a href="https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html" target="_blank" rel="noopener noreferrer" className="text-accent hover:opacity-75 transition-opacity duration-150">ReefSound</a>, an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.
-                </>,
-              },
+              [
+                "Previously, I cofounded ",
+                { text: 'ReefSound', href: 'https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html' },
+                ", an AI and robotics startup for ocean monitoring scaled across 7 countries, featured by The Independent, NASA, United Nations, and National Geographic.",
+              ],
               "My current research is in machine learning and robotics, spanning multimodal LLMs, RL, mechanistic interpretability, generalist robot policies, and I'm interested broadly in intelligence in both its digital and biological forms.",
               "In another life, I'm a creative writer. Here, you'll find small, scattered fragments of my life & work.",
             ]} />

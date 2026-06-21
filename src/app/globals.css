@@ -135,10 +135,15 @@ html.cursor-fx-active button {
 /* ── Ambient cursor glow ──────────────────────────────── */
 .ambient-glow {
   position: fixed;
-  inset: 0;
+  top: 0;
+  left: 0;
+  width: 1000px;
+  height: 1000px;
+  margin-left: -500px;
+  margin-top: -500px;
   z-index: 0;
   pointer-events: none;
-  background: radial-gradient(680px circle at var(--mx, 50%) var(--my, 18%), var(--accent) 0%, transparent 65%);
+  background: radial-gradient(500px circle at center, var(--accent) 0%, transparent 70%);
   opacity: 0.05;
 }
 html.dark .ambient-glow {
@@ -215,9 +220,9 @@ html.dark .ambient-glow {
 body::before {
   content: '';
   position: fixed;
-  inset: -50%;
-  width: 200%;
-  height: 200%;
+  inset: -10%;
+  width: 120%;
+  height: 120%;
   pointer-events: none;
   z-index: 9990;
   opacity: 0.025;
@@ -260,19 +265,24 @@ body::before {
   to { left: 150%; }
 }
 
-/* ── Animated hero characters ─────────────────────────── */
-.animated-char {
-  transition: opacity 0.55s cubic-bezier(0.22, 1, 0.36, 1),
-              transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: transform, opacity;
+/* ── Word-by-word bio reveal (opacity only → compositor-friendly) ── */
+@keyframes word-in {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-/* ── Animated bio words ───────────────────────────────── */
-.animated-word {
+.word-token {
   display: inline;
-  transition: opacity 0.5s cubic-bezier(0.22, 1, 0.36, 1),
-              filter 0.5s cubic-bezier(0.22, 1, 0.36, 1);
-  will-change: opacity, filter;
+}
+
+/* ── Animated hero characters ─────────────────────────── */
+@keyframes char-in {
+  from { opacity: 0; transform: translateY(0.35em); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.name-char {
+  display: inline-block;
 }
 
 /* ── Stagger list items ───────────────────────────────── */

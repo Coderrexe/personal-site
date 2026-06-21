@@ -1,63 +1,73 @@
 'use client'
 
-import { useEffect, useState, ReactNode } from 'react'
+import { CSSProperties, useEffect, useState } from 'react'
 import { useBootReady } from '@/lib/bootContext'
 
-type Paragraph = string | { node: ReactNode; words?: number }
+// A paragraph is either plain text, or a list of segments where each segment is
+// either plain text or an inline link. Every word becomes its own token so the
+// whole bio reveals word-by-word in one continuous cascade.
+type Segment = string | { text: string; href: string }
+type Paragraph = string | Segment[]
+
+const STAGGER = 32 // ms between successive words
+const DURATION = 0.45 // s, per-word fade
 
 export default function AnimatedBio({ paragraphs }: { paragraphs: Paragraph[] }) {
-  const [revealed, setRevealed] = useState(false)
   const { bootReady } = useBootReady()
+  const [animate, setAnimate] = useState(false)
 
   useEffect(() => {
     if (!bootReady) return
-    const t = setTimeout(() => setRevealed(true), 320)
-    return () => clearTimeout(t)
+    // One frame so the hidden (opacity:0) state paints before animations start.
+    const id = requestAnimationFrame(() => setAnimate(true))
+    return () => cancelAnimationFrame(id)
   }, [bootReady])
 
-  let globalWordIndex = 0
+  // Continuous index across ALL paragraphs → no timing gap between them.
+  let idx = 0
+  const nextStyle = (): CSSProperties => {
+    if (!animate) return { opacity: 0 }
+    const delay = idx * STAGGER
+    idx += 1
+    // `backwards` holds opacity:0 during the delay, then fades in; no fill
+    // afterward so hover/opacity stays controllable on links.
+    return { animation: `word-in ${DURATION}s cubic-bezier(0.22,1,0.36,1) ${delay}ms backwards` }
+  }
+
+  const renderSegment = (seg: Segment, key: string) => {
+    if (typeof seg === 'string') {
+      // Each word carries a trailing space so wrapping + spacing stay natural.
+      return seg
+        .trim()
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((word, i) => (
+          <span key={`${key}-${i}`} className="word-token" style={nextStyle()}>
+            {word}{' '}
+          </span>
+        ))
+    }
+    return (
+      <a
+        key={key}
+        href={seg.href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="word-token text-accent hover:opacity-75 transition-opacity duration-150"
+        style={nextStyle()}
+      >
+        {seg.text}
+      </a>
+    )
+  }
 
   return (
     <div className="space-y-4 max-w-lg">
       {paragraphs.map((para, pi) => {
-        if (typeof para !== 'string') {
-          const delay = globalWordIndex * 20
-          globalWordIndex += para.words ?? 20
-          return (
-            <p
-              key={pi}
-              className="text-muted text-[0.9375rem] leading-[1.9]"
-              style={{
-                opacity: revealed ? 1 : 0,
-                filter: revealed ? 'blur(0px)' : 'blur(4px)',
-                transition: `opacity 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms, filter 0.5s cubic-bezier(0.22,1,0.36,1) ${delay}ms`,
-              }}
-            >
-              {para.node}
-            </p>
-          )
-        }
-
-        const words = para.split(' ')
-        const paraStart = globalWordIndex
-        globalWordIndex += words.length
-
+        const segs: Segment[] = typeof para === 'string' ? [para] : para
         return (
           <p key={pi} className="text-muted text-[0.9375rem] leading-[1.9]">
-            {words.map((word, wi) => (
-              <span
-                key={wi}
-                className="animated-word"
-                style={{
-                  transitionDelay: `${(paraStart + wi) * 20}ms`,
-                  opacity: revealed ? 1 : 0,
-                  filter: revealed ? 'blur(0px)' : 'blur(4px)',
-                }}
-              >
-                {word}
-                {wi < words.length - 1 ? ' ' : ''}
-              </span>
-            ))}
+            {segs.map((s, si) => renderSegment(s, `${pi}-${si}`))}
           </p>
         )
       })}

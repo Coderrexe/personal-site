@@ -23,6 +23,34 @@ export default function CursorFX() {
     if (!dot || !ring) return
 
     let visible = false
+    let running = false
+
+    const tick = () => {
+      const now = performance.now()
+      const dt = Math.min((now - last.current) / 1000, 0.05)
+      last.current = now
+
+      ringX.current = springStep(ringX.current, mouse.current.x, dt)
+      ringY.current = springStep(ringY.current, mouse.current.y, dt)
+      ring.style.transform = `translate(${ringX.current.value}px, ${ringY.current.value}px)`
+
+      // Idle-stop: halt the loop once the ring has caught up and is at rest.
+      const dx = mouse.current.x - ringX.current.value
+      const dy = mouse.current.y - ringY.current.value
+      const speed = Math.hypot(ringX.current.velocity, ringY.current.velocity)
+      if (Math.abs(dx) < 0.5 && Math.abs(dy) < 0.5 && speed < 0.5) {
+        running = false
+        return
+      }
+      raf.current = requestAnimationFrame(tick)
+    }
+
+    const startLoop = () => {
+      if (running) return
+      running = true
+      last.current = performance.now()
+      raf.current = requestAnimationFrame(tick)
+    }
 
     const onMove = (e: MouseEvent) => {
       mouse.current = { x: e.clientX, y: e.clientY }
@@ -34,6 +62,7 @@ export default function CursorFX() {
         ringY.current.value = e.clientY
       }
       dot.style.transform = `translate(${e.clientX}px, ${e.clientY}px)`
+      startLoop()
     }
 
     const onOver = (e: MouseEvent) => {
@@ -41,21 +70,8 @@ export default function CursorFX() {
       ring.classList.toggle('cursor-fx-hover', interactive)
     }
 
-    const tick = () => {
-      const now = performance.now()
-      const dt = Math.min((now - last.current) / 1000, 0.05)
-      last.current = now
-
-      ringX.current = springStep(ringX.current, mouse.current.x, dt)
-      ringY.current = springStep(ringY.current, mouse.current.y, dt)
-      ring.style.transform = `translate(${ringX.current.value}px, ${ringY.current.value}px)`
-
-      raf.current = requestAnimationFrame(tick)
-    }
-
     window.addEventListener('mousemove', onMove)
     document.addEventListener('mouseover', onOver)
-    raf.current = requestAnimationFrame(tick)
 
     return () => {
       document.documentElement.classList.remove('cursor-fx-active')
