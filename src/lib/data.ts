@@ -137,7 +137,7 @@ export const workItems: WorkItem[] = [
     role: "Machine Learning Intern",
     tagline: "Scaling ML edge inference for hardware at one of UK's top computer vision unicorns.",
     period: "May 2026 – Present",
-    note: "Series E, $1B valuation",
+    note: "$1B valuation, Series E",
     location: "London, UK",
     description: [
       "• Scaling ML edge inference for hardware at one of UK's top computer vision unicorns.",
