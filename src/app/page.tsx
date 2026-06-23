@@ -67,17 +67,17 @@ export default function Home() {
               >
                 <span className="circuit-node" />
                 <div className="flex items-baseline justify-between gap-4 mb-1">
-                  <p className="text-[0.9375rem] text-fg font-medium">{item.company}</p>
+                  <p className="text-base text-fg font-medium">{item.company}</p>
                   <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap">{item.period}</span>
                 </div>
-                <p className="text-sm mb-1">
+                <p className="text-[0.9375rem] mb-1">
                   <span className="text-fg">{item.role}</span>
                   {item.note && <span className="text-muted"> · {item.note}</span>}
                 </p>
                 {item.taglineHtml ? (
-                  <p className="text-[0.8125rem] text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
+                  <p className="text-sm text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
                 ) : (
-                  <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                  <p className="text-sm text-muted leading-relaxed">{item.tagline}</p>
                 )}
                 {hasLinks && (
                   <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
@@ -136,14 +136,14 @@ export default function Home() {
                   <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums whitespace-nowrap mt-0.5">{item.period}</span>
                 </div>
                 {item.titleHtml ? (
-                  <p className="text-[0.9375rem] text-fg font-medium mb-1" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+                  <p className="text-base text-fg font-medium mb-1" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
                 ) : (
-                  <p className="text-[0.9375rem] text-fg font-medium mb-1">{item.title}</p>
+                  <p className="text-base text-fg font-medium mb-1">{item.title}</p>
                 )}
                 {item.taglineHtml ? (
-                  <p className="text-[0.8125rem] text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
+                  <p className="text-sm text-muted leading-relaxed" dangerouslySetInnerHTML={{ __html: item.taglineHtml }} />
                 ) : (
-                  <p className="text-[0.8125rem] text-muted leading-relaxed">{item.tagline}</p>
+                  <p className="text-sm text-muted leading-relaxed">{item.tagline}</p>
                 )}
                 {hasLinks && (
                   <div className={`overflow-hidden transition-all duration-300 ${isOpen ? 'max-h-8 opacity-100 mt-2.5' : 'max-h-0 opacity-0'}`}>
@@ -198,7 +198,7 @@ export default function Home() {
               >
                 <span className="circuit-node" />
                 <div>
-                  <span className="text-fg text-sm group-hover:text-accent transition-colors duration-150">{essay.title}</span>
+                  <span className="text-fg text-[0.9375rem] group-hover:text-accent transition-colors duration-150">{essay.title}</span>
                   {essay.description && <p className="text-xs text-muted mt-0.5">{essay.description}</p>}
                 </div>
                 {essay.comingSoon ? (

@@ -31,15 +31,15 @@ export default function Work() {
           <div className="space-y-6">
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-fg font-medium text-sm mb-0.5">Yale University</p>
-                <p className="text-muted text-sm mb-1.5">B.S. Computer Science &amp; Mathematics</p>
+                <p className="text-fg font-medium text-base mb-0.5">Yale University</p>
+                <p className="text-muted text-[0.9375rem] mb-1.5">B.S. Computer Science &amp; Mathematics</p>
               </div>
               {/* <span className="font-mono text-xs text-muted flex-shrink-0 tabular-nums">2025–2029</span> */}
             </div>
             <div className="flex items-start justify-between gap-4">
               <div>
-                <p className="text-fg font-medium text-sm mb-0.5">Eton College</p>
-                <p className="text-muted text-sm">
+                <p className="text-fg font-medium text-base mb-0.5">Eton College</p>
+                <p className="text-muted text-[0.9375rem]">
                   King&apos;s Scholar · Sixth Form Select · A-Levels (Math, Further Math, Physics, CS)
                 </p>
               </div>
@@ -92,8 +92,8 @@ export default function Work() {
                     {/* Header: stacks on very narrow screens */}
                     <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-1 mb-3 sm:mb-4">
                       <div>
-                        <p className="text-fg font-medium text-sm mb-0.5">{item.company}</p>
-                        <p className="text-sm">
+                        <p className="text-fg font-medium text-base mb-0.5">{item.company}</p>
+                        <p className="text-[0.9375rem]">
                           <span className="text-fg">{item.role}</span>
                           {item.note && <span className="text-muted"> · {item.note}</span>}
                         </p>
@@ -111,14 +111,14 @@ export default function Work() {
                       {item.description.map((bullet, i) => {
                         if (typeof bullet === 'string') {
                           return (
-                            <li key={i} className="text-[0.8125rem] text-muted leading-relaxed">
+                            <li key={i} className="text-sm text-muted leading-relaxed">
                               {bullet}
                             </li>
                           )
                         }
                         const [before, after] = bullet.text.split(bullet.link.text)
                         return (
-                          <li key={i} className="text-[0.8125rem] text-muted leading-relaxed">
+                          <li key={i} className="text-sm text-muted leading-relaxed">
                             {before}
                             <a
                               href={bullet.link.href}
@@ -169,7 +169,7 @@ export default function Work() {
                 ].map(({ label, items }) => (
                   <div key={label} className="flex flex-col sm:flex-row sm:items-baseline gap-1 sm:gap-8">
                     <span className="font-mono text-xs text-muted sm:w-20 flex-shrink-0">{label}</span>
-                    <span className="text-[0.8125rem] text-muted leading-relaxed">{items}</span>
+                    <span className="text-sm text-muted leading-relaxed">{items}</span>
                   </div>
                 ))}
               </div>
@@ -192,16 +192,16 @@ export default function Work() {
                         <span className={`tag ${item.tagAccent ? 'tag-accent' : ''}`}>{item.tag}</span>
                       </div>
                       {item.titleHtml ? (
-                        <p className="text-fg font-medium text-sm" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
+                        <p className="text-fg font-medium text-base" dangerouslySetInnerHTML={{ __html: item.titleHtml }} />
                       ) : (
-                        <p className="text-fg font-medium text-sm">{item.title}</p>
+                        <p className="text-fg font-medium text-base">{item.title}</p>
                       )}
                     </div>
                     <span className="font-mono text-xs text-muted tabular-nums flex-shrink-0 whitespace-nowrap mt-0.5">{item.period}</span>
                   </div>
                   <ul className="space-y-2 mt-3">
                     {item.description.map((bullet, i) => (
-                      <li key={i} className="text-[0.8125rem] text-muted leading-relaxed">{bullet}</li>
+                      <li key={i} className="text-sm text-muted leading-relaxed">{bullet}</li>
                     ))}
                   </ul>
                   {item.links && item.links.length > 0 && (

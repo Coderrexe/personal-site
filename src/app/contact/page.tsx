@@ -16,7 +16,7 @@ function RevealEmail() {
     return (
       <button
         onClick={() => setReveal(true)}
-        className="text-sm text-muted hover:text-fg transition-colors duration-150 cursor-pointer"
+        className="text-[0.9375rem] text-muted hover:text-fg transition-colors duration-150 cursor-pointer"
       >
         reveal email →
       </button>
@@ -27,7 +27,7 @@ function RevealEmail() {
   return (
     <a
       href={`mailto:${email}`}
-      className="text-sm text-fg hover:text-accent transition-colors duration-150"
+      className="text-[0.9375rem] text-fg hover:text-accent transition-colors duration-150"
     >
       {email} →
     </a>
@@ -58,7 +58,7 @@ export default function Contact() {
             className="group flex items-center justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">GitHub</span>
-            <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
+            <span className="text-[0.9375rem] text-muted group-hover:text-accent transition-colors duration-150">
               Coderrexe →
             </span>
           </a>
@@ -70,7 +70,7 @@ export default function Contact() {
             className="group flex items-center justify-between py-5 -mx-3 px-3 rounded-lg border-b border-line hover:bg-hover transition-colors duration-300"
           >
             <span className="font-mono text-xs text-muted tracking-wider uppercase">LinkedIn</span>
-            <span className="text-sm text-muted group-hover:text-accent transition-colors duration-150">
+            <span className="text-[0.9375rem] text-muted group-hover:text-accent transition-colors duration-150">
               simba-shi →
             </span>
           </a>

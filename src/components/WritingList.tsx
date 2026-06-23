@@ -48,7 +48,7 @@ export default function WritingList({ essays }: { essays: Essay[] }) {
             <Link href={href} className={rowClass}>
               <span className="circuit-node" />
               <div>
-                <span className="text-fg text-sm group-hover:text-accent transition-colors duration-150">{essay.title}</span>
+                <span className="text-fg text-[0.9375rem] group-hover:text-accent transition-colors duration-150">{essay.title}</span>
                 {essay.description && (
                   <p className="text-xs text-muted mt-0.5">{essay.description}</p>
                 )}

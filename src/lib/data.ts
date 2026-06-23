@@ -43,7 +43,7 @@ export const researchItems: ResearchItem[] = [
       "• Extracted activation steering vectors in MiniMax-M2.5 that causally induce and suppress chain-of-thought disclosure; benign and malign vectors are highly similar (cosine 0.804), implying a shared hiding mechanism.",
     ],
     links: [
-      { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
+      { label: "Paper", href: "https://drive.google.com/file/d/10nsKfPsbGsHqdVW952fqyX-FNsocaaVP/view?usp=sharing" },
     ],
   },
   {
