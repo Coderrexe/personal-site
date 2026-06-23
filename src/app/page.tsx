@@ -27,7 +27,7 @@ export default function Home() {
               <AnimatedName name="Simba Shi" />
             </h1>
             <AnimatedBio paragraphs={[
-              "I'm a student at Yale, and I love building AI and robots.",
+              "I study CS and Math at Yale, and I love building AI and robots.",
               [
                 "Previously, I cofounded ",
                 { text: 'ReefSound', href: 'https://www.independent.co.uk/news/uk/home-news/nasa-climate-reefsound-technology-eton-schoolboys-b2610861.html' },

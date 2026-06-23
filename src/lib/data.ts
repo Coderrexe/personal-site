@@ -39,8 +39,8 @@ export const researchItems: ResearchItem[] = [
     tagline: "Activation steering and chain-of-thought monitoring to show reasoning models leak malign hidden system-prompt directives in chain-of-thought more than benign equivalents.",
     period: "Feb 2026 – Jun 2026",
     description: [
-      "• Showed 5 models across 3 families (Qwen3, MiniMax, DeepSeek) selectively leak malign hidden system prompts in chain-of-thought significantly more than benign equivalents, with +8.2pp cross-family gap (n = 460, p < 0.0001).",
-      "• Extracted causal steering vectors in MiniMax-M2.5 that reliably induce and suppress chain-of-thought disclosure.",
+      "• Introduced the Instruction-Compliance Gap (ICG) metric across 8 frontier reasoning models (incl. Qwen, MiniMax, DeepSeek); found malign hidden directives leak in chain-of-thought +8.2pp more than benign (n = 460, p < 0.0001).",
+      "• Extracted activation steering vectors in MiniMax-M2.5 that causally induce and suppress chain-of-thought disclosure; benign and malign vectors are highly similar (cosine 0.804), implying a shared hiding mechanism.",
     ],
     links: [
       { label: "Paper", href: "https://drive.google.com/file/d/1kw-1LELxohkOyXoFWw3xoJxcbRSo5Yyz/view?usp=sharing" },
@@ -48,15 +48,13 @@ export const researchItems: ResearchItem[] = [
   },
   {
     title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
-    tag: "arXiv",
+    tag: "Preprint (arXiv)",
     // tagAccent: true,
     tagline: "Trained neural nets to discover Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
-    period: "May 2026",
+    period: "Jan 2026 – May 2026",
     description: [
-      "• Demonstrated that diffusion models with low prediction error (MSE near 10⁻³) can still violate fundamental physics, exhibiting energy variance up to 36,000× greater than ground-truth trajectories.",
-      "• Designed and tested three neural network architectures — Structured Energy Network, black-box Conservation Discovery Network (CDN), and Polynomial CDN — to extract globally conserved quantities directly from state observations of Hamiltonian systems.",
-      "• Revealed that while hard-coded structured models (T(v) + V(q)) achieve near-perfect accuracy (R² ≥ 0.9999) on clean data, black-box CDNs are more robust and outperform them when subjected to 1% additive Gaussian state noise.",
-      "• Proved that temporal consistency objectives require weak standardized energy alignment to reliably select true physical energy, and showed that extending training schedules can rescue models from poor optimization landscapes (improving R² from 0.78 to 0.9998).",
+      "• Benchmarked 4 model classes (incl. diffusion model) across 3 Hamiltonian systems; found a diffusion model with near-SOTA rollout MSE (10⁻³) still shows 7,500–36,000×larger energy drift than ground truth.",
+      "• Built Conservation Discovery Network (CDN) reaching R² ≥ 0.996 vs. analytical energy via weak alignment supervision, collapsing to R² < 10⁻³ without it; recovered polynomial-CDN R² to 0.9998 via longer training.",
     ],
     links: [
       { label: "Paper (arXiv)", href: "https://arxiv.org/abs/2605.18883" },
@@ -99,12 +97,11 @@ export const researchItems: ResearchItem[] = [
     title: "Towards a Novel Multi-Loss CycleGAN for Full-to-Flat Colour Transformation",
     tag: "Research",
     tagline: "GAN pipeline for zero-shot full-to-flat colour image transformation; CycleGAN augmented with depth geometry (InceptionV3), sketch extractor, and CLIP semantics losses.",
-    period: "Aug 2023",
+    period: "Jun 2023 – Sep 2023",
     description: [
       "• Proposed a CycleGAN architecture with three auxiliary loss functions — depth geometry loss (InceptionV3-based MIDOS network), sketch extractor loss (pretrained line extractor), and semantics loss (OpenAI CLIP ViT-B/32) — on top of standard adversarial, discriminant, and cycle-consistency losses.",
       "• Trained on a hand-picked unpaired dataset of full-colour and flat-colour images drawn from DanbooruDataset (~5M images), Guy Fictional Comics, Tiny-ThryElph, and Comic Characters Dataset; trained 100 epochs on a single NVIDIA GeForce GTX TITAN X.",
       "• Model generalises across portrait, anime, and cartoon styles without human input, preserving structural integrity, depth geometry, and semantic content while eliminating gradients and complex textures.",
-      "• Identified and analysed a sudden GAN loss spike at epoch 31 attributable to discriminator learning-rate changes; model recovered and continued improving, demonstrating robustness of the multi-loss weighting scheme.",
     ],
     links: [
       { label: "Repository", href: "https://github.com/Coderrexe/full2flat" },
@@ -116,7 +113,7 @@ export const researchItems: ResearchItem[] = [
     titleHtml: "Mycoflo: <em>Pleurotus tuber-regium</em> in Heavy Metal Filtration and Machine Learning for Water Potability Testing",
     tag: "Research",
     tagline: "Mycofiltration using native Nigerian fungi + XGBoost/Random Forest ensemble for water potability; 63.75% copper reduction, 94% classification accuracy. Featured by United Nations; The Earth Prize 2024 Finalist (Top 10 of 1000+).",
-    period: "Feb 2024",
+    period: "Sep 2022 – Feb 2024",
     award: "Featured by United Nations; The Earth Prize 2024 Finalist (Top 10 of 1000+)",
     description: [
       "• Designed MycoSacks — layered hessian sacks of straw, wood chips, and Pleurotus tuber-regium spores — that grow a full mycelial network within five weeks; biosorption at chitin cell walls chelates metal ions, achieving a 63.75% reduction in copper (II) ion concentration (iodometric titration).",
@@ -140,8 +137,7 @@ export const workItems: WorkItem[] = [
     note: "$1B valuation, Series E",
     location: "London, UK",
     description: [
-      "• Scaling ML edge inference for hardware at one of UK's top computer vision unicorns.",
-      "• Led TensorRT/Triton pipeline for computer vision models for vehicle damage assessment (Mask2Former, RAFT optical flow) on NVIDIA A10G/Jetson GPUs on Linux; achieved 100% claim completions at zero error rate.",
+      "• Built TensorRT/Triton inference pipeline for computer vision models for vehicle assessment (Mask2Former, RAFT optical flow) on NVIDIA A10G/Jetson GPUs running Linux; achieved 100% claim completions at zero error rate.",
       "• Validated ML inference optimizations via A/B benchmarking: Valkey distributed image cache (42% latency reduction) and asyncio batch dispatch (22.1% throughput gain)."
     ],
     links: [
@@ -167,7 +163,7 @@ export const workItems: WorkItem[] = [
           href: "https://scholar.google.com/citations?user=6fqNXooAAAAJ&hl=en",
         },
       },
-      "• Built GPT-4o-mini RAG pipeline synthesizing 12,216 structured market briefings across 524 S&P 500 tickers with 4-layer anti-leakage system; produced 9,843 clean training samples for fine-tuning.",
+      "• Built LLM-based RAG pipeline synthesizing 12,216 structured market briefings across 524 S&P 500 tickers with 4-layer anti-leakage system; produced 9,843 clean training samples for fine-tuning.",
     ],
     links: [
       { label: "Lab Page", href: "https://graph-and-geometric-learning.github.io/" },

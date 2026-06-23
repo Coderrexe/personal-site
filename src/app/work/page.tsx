@@ -159,7 +159,7 @@ export default function Work() {
             </section>
           </FadeIn>
 
-          <FadeIn delay={160}>
+          {/* <FadeIn delay={160}>
             <section className="pb-24">
               <SectionHead index="02">Technical</SectionHead>
               <div className="space-y-4 sm:space-y-5">
@@ -174,7 +174,7 @@ export default function Work() {
                 ))}
               </div>
             </section>
-          </FadeIn>
+          </FadeIn> */}
         </>
       )}
 
