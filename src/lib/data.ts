@@ -32,7 +32,7 @@ export interface ResearchItem {
 
 export const researchItems: ResearchItem[] = [
   {
-    title: "Activation Steering and Chain-of-Thought Disclosure in Reasoning Models",
+    title: "Selective Disclosure of Hidden Chain-of-Thought Directives in Reasoning Models",
     tag: "Research",
     // tagAccent: true,
     hidden: true,
@@ -47,7 +47,7 @@ export const researchItems: ResearchItem[] = [
     ],
   },
   {
-    title: "Learning Conserved Quantities in Neural Simulators and Diffusion Models",
+    title: "Prediction Is Not Physics: Learning Conserved Quantities in Neural Simulators",
     tag: "Preprint (arXiv)",
     // tagAccent: true,
     tagline: "Trained neural nets to discover Hamiltonian physics; showed that low rollout MSE and physical conservation are orthogonal: diffusion energy drift is 7,500–36,000× ground truth.",
