@@ -53,7 +53,7 @@ export default function CollectionPage({ params }: Props) {
       )}
 
       <FadeIn delay={160}>
-        <h1 className="font-serif text-[1.9rem] sm:text-[2.2rem] text-fg tracking-[-0.02em] leading-tight mb-3">
+        <h1 className="page-title mb-3">
           {collection.name}
         </h1>
         {collection.description && (

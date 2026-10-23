@@ -39,7 +39,7 @@ export default function Contact() {
     <div className="max-w-[60rem] mx-auto px-8 sm:px-10">
       <FadeIn>
         <section className="pt-20 sm:pt-24 pb-10 sm:pb-14">
-          <h1 className="font-serif text-[1.9rem] sm:text-[2.2rem] text-fg tracking-[-0.02em] leading-tight">Contact</h1>
+          <h1 className="page-title">Contact</h1>
         </section>
       </FadeIn>
 

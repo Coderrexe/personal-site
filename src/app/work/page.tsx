@@ -8,6 +8,10 @@ import { useUnlock } from '@/lib/unlock'
 
 type Tab = 'experience' | 'research'
 
+// Research now lives on its own page (/research). Flip this to true to bring
+// back the Experience / Research & Projects tab switcher below Education.
+const SHOW_RESEARCH_TAB = false
+
 export default function Work() {
   const [tab, setTab] = useState<Tab>('experience')
   const [expandedExp, setExpandedExp] = useState<number | null>(null)
@@ -20,7 +24,7 @@ export default function Work() {
 
       <FadeIn>
         <section className="pt-20 sm:pt-24 pb-10 sm:pb-14">
-          <h1 className="font-serif text-[1.9rem] sm:text-[2.2rem] text-fg tracking-[-0.02em] leading-tight">Work</h1>
+          <h1 className="page-title">Work</h1>
         </section>
       </FadeIn>
 
@@ -49,7 +53,8 @@ export default function Work() {
         </section>
       </FadeIn>
 
-      {/* ── Tab switcher ───────────────────────────────────── */}
+      {/* ── Tab switcher (disabled — see SHOW_RESEARCH_TAB) ─── */}
+      {SHOW_RESEARCH_TAB && (
       <FadeIn delay={120}>
         <div className="flex items-center gap-5 sm:gap-6 pb-6">
           <button
@@ -74,6 +79,7 @@ export default function Work() {
           </button>
         </div>
       </FadeIn>
+      )}
 
       {tab === 'experience' && (
         <>

@@ -9,6 +9,10 @@ import Magnetic from '@/components/Magnetic'
 import RobotDockZone from '@/components/RobotDockZone'
 import { useUnlock } from '@/lib/unlock'
 
+// Research now lives on its own page (/research). Flip this to true to bring
+// back the Research room between Experience and Writing on the homepage.
+const SHOW_RESEARCH = false
+
 export default function Home() {
   const { unlocked } = useUnlock()
   const visibleWork = workItems.filter(item => !item.hidden || unlocked)
@@ -111,7 +115,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* ── Room 3: Research ─────────────────────────────────── */}
+      {/* ── Room 3: Research (disabled — see SHOW_RESEARCH) ─── */}
+      {SHOW_RESEARCH && (
       <section className="room relative">
         <div className="hidden lg:block absolute top-1/2 -translate-y-1/2 right-[6%] xl:right-[10%]">
           <RobotDockZone size={110} className="w-24 h-28" />
@@ -169,13 +174,14 @@ export default function Home() {
         </div>
         <div className="mt-6">
           <Magnetic strength={0.25}>
-            <Link href="/work#research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
+            <Link href="/research" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
               More →
             </Link>
           </Magnetic>
         </div>
         </div>
       </section>
+      )}
 
       {/* ── Room 4: Writing ──────────────────────────────────── */}
       <section className="room relative pb-32">
@@ -183,7 +189,7 @@ export default function Home() {
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
         <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
-        <p className="room-kicker">03 — fragmented memories</p>
+        <p className="room-kicker">{SHOW_RESEARCH ? '03' : '02'} — fragmented memories</p>
         <h2 className="room-title">Writing</h2>
         <div className="circuit-list border-t border-line">
           {orderedEssays.map(essay => {

@@ -49,7 +49,7 @@ export default function EssayPage({ params }: Props) {
 
         <FadeIn delay={80}>
           <header className="mb-12 sm:mb-14 text-center">
-            <h1 className="font-serif text-[1.75rem] sm:text-[2rem] text-fg leading-[1.2] mb-4">
+            <h1 className="page-title mb-4">
               {essay.title}
             </h1>
             <p className="font-mono text-xs text-muted tabular-nums">{essay.displayDate}</p>

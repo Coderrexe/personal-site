@@ -128,6 +128,75 @@ export const researchItems: ResearchItem[] = [
   },
 ];
 
+export interface PublicationAuthor {
+  name: string;
+  me?: boolean;    // highlight as the site owner
+  equal?: boolean; // equal-contribution marker (rendered as *)
+}
+
+export interface Publication {
+  title: string;
+  venue: string;
+  authors: PublicationAuthor[];
+  date: string;
+  href: string; // primary link — the title points here
+  note?: string; // e.g. an award
+  links?: { label: string; href: string }[];
+  hidden?: boolean;
+}
+
+// Publications shown on /research, in display order.
+export const publications: Publication[] = [
+  {
+    title: "Selective Disclosure of Hidden Directives in Reasoning Models: Behavioral Asymmetry and Steering",
+    venue: "NeurIPS 2026 Workshop on Trustworthy AI Evaluation (TAE)",
+    authors: [
+      { name: "Zimo Shi", me: true },
+      { name: "Xander Tifft" },
+      { name: "Wen Xing" },
+    ],
+    date: "Aug 2026",
+    href: "https://arxiv.org/abs/2608.29070",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2608.29070" },
+    ],
+  },
+  {
+    title: "Biased-Noise Quantum Reed-Solomon Codes and a Tornado Concatenation for Cat Qubits",
+    venue: "arXiv preprint",
+    authors: [
+      { name: "Cheng-You Ho", equal: true },
+      { name: "Daniel Wang", equal: true },
+      { name: "Simba Shi", me: true, equal: true },
+      { name: "Justin Luo", equal: true },
+      { name: "Henry Ng", equal: true },
+    ],
+    date: "Jul 2026",
+    href: "https://arxiv.org/abs/2607.13105",
+    note: "Winning project of MIT iQuHACK 2026 (Alice & Bob track)",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2607.13105" },
+      { label: "Code", href: "https://github.com/Coderrexe/MIT-iQuHACK-Winner-2026" },
+    ],
+  },
+  {
+    title: "Prediction Is Not Physics: Learning and Evaluating Conserved Quantities in Neural Simulators",
+    venue: "arXiv preprint",
+    authors: [
+      { name: "Andrew Bukowski" },
+      { name: "Aditya Kothari" },
+      { name: "Simba Shi", me: true },
+      { name: "Ishir Rao" },
+    ],
+    date: "May 2026",
+    href: "https://arxiv.org/abs/2605.18883",
+    links: [
+      { label: "arXiv", href: "https://arxiv.org/abs/2605.18883" },
+      { label: "Code", href: "https://github.com/Coderrexe/physics-neural-net" },
+    ],
+  },
+];
+
 export const workItems: WorkItem[] = [
   {
     company: "Tractable",
