@@ -140,8 +140,8 @@ export interface Publication {
   authors: PublicationAuthor[];
   date: string;
   href: string; // primary link — the title points here
-  note?: string; // e.g. an award
-  links?: { label: string; href: string }[];
+  note?: string; // e.g. an award — shown on the venue line
+  links?: { label: string; href: string }[]; // kept for reference; not rendered on /research
   hidden?: boolean;
 }
 
@@ -173,7 +173,7 @@ export const publications: Publication[] = [
     ],
     date: "Jul 2026",
     href: "https://arxiv.org/abs/2607.13105",
-    note: "Winning project of MIT iQuHACK 2026 (Alice & Bob track)",
+    note: "MIT iQuHACK Winner 2026",
     links: [
       { label: "arXiv", href: "https://arxiv.org/abs/2607.13105" },
       { label: "Code", href: "https://github.com/Coderrexe/MIT-iQuHACK-Winner-2026" },
