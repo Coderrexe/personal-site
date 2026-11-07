@@ -14,8 +14,17 @@ const links = [
 export default function NavClient() {
   const pathname = usePathname()
 
+  // The nav is sticky (iOS Safari keeps sticky elements pinned while its chrome
+  // collapses) and grows by the status-bar inset so it also covers the notch
+  // corners on iPhones; the solid strip behind the status bar keeps text from
+  // showing through there. The negative margin keeps page layout unchanged.
   return (
-    <nav className="sticky top-0 -mb-14 z-50 h-14 flex items-center justify-between px-6 sm:px-8 nav-bg">
+    <>
+      <div
+        aria-hidden
+        className="fixed top-0 inset-x-0 z-[60] h-[env(safe-area-inset-top)] bg-bg pointer-events-none"
+      />
+    <nav className="sticky top-0 z-50 flex items-center justify-between px-6 sm:px-8 nav-bg h-[calc(3.5rem+env(safe-area-inset-top))] pt-[env(safe-area-inset-top)] -mb-[calc(3.5rem+env(safe-area-inset-top))]">
       <Magnetic strength={0.35}>
         <Link href="/" className="font-mono text-xs text-fg hover:text-accent transition-colors duration-200">
           simba shi
@@ -38,5 +47,6 @@ export default function NavClient() {
         <ThemeToggle />
       </div>
     </nav>
+    </>
   )
 }

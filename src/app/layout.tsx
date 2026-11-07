@@ -28,6 +28,8 @@ const mono = JetBrains_Mono({
 })
 
 export const viewport: Viewport = {
+  // Let the page extend under the iPhone status bar so the nav can cover it.
+  viewportFit: 'cover',
   themeColor: [
     { media: '(prefers-color-scheme: light)', color: '#FAF8F4' },
     { media: '(prefers-color-scheme: dark)', color: '#0B0A08' },
@@ -61,7 +63,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="bg-bg text-fg font-sans antialiased min-h-screen flex flex-col">
         <Providers>
           <NavClient />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pt-[env(safe-area-inset-top)]">{children}</main>
           <Footer />
         </Providers>
       </body>
