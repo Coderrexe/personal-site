@@ -45,7 +45,7 @@ export default function Research() {
                     href={pub.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-lg text-fg font-medium leading-snug hover:text-accent transition-colors duration-150"
+                    className="text-[1.0625rem] text-fg font-medium leading-snug hover:text-accent transition-colors duration-150"
                   >
                     {pub.title}
                   </a>
@@ -54,7 +54,7 @@ export default function Research() {
                   </span>
                 </div>
 
-                <p className="text-base text-fg mb-1">
+                <p className="text-[0.9375rem] text-fg mb-1">
                   {pub.venue}
                   {pub.note && (
                     <>
@@ -64,7 +64,7 @@ export default function Research() {
                   )}
                 </p>
 
-                <p className="text-base text-muted leading-relaxed">
+                <p className="text-[0.9375rem] text-muted leading-relaxed">
                   {pub.authors.map((author, i) => (
                     <span key={author.name}>
                       <span className={author.me ? 'text-fg underline decoration-subtle underline-offset-4' : undefined}>

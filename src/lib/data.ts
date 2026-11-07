@@ -355,10 +355,7 @@ export const essays: Essay[] = [
     date: "2026-11-07",
     displayDate: "November 7, 2026",
     collectionSlug: "essays",
-    lede: [
-      "The terrifying dystopia of successful AI alignment.",
-      "An odyssey through Dostoevsky, Kant, Hegel, Lucretius, and 2000 years of human history.",
-    ],
+    lede: ["The terrifying dystopia of successful AI alignment."],
     wide: true,
     footnotes: rentierFootnotes,
     sections: [
