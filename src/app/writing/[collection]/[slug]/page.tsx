@@ -31,10 +31,10 @@ export default function EssayPage({ params }: Props) {
   const essay = essays.find((e) => e.slug === params.slug)
   if (!essay || !collection.essaySlugs.includes(essay.slug)) notFound()
 
-  // Poems: narrow, centred header. Long-form essays: wider column, left-aligned
-  // header with the lede sitting under the byline like a standfirst.
-  const wide = Boolean(essay.wide)
-  const column = wide ? 'max-w-[52rem]' : 'max-w-[38rem]'
+  // Poems sit in a narrow column; long-form essays get a wider reading measure.
+  // The title, name and date are always centred; an essay's lede sits left-aligned
+  // above the body like a quiet standfirst.
+  const column = essay.wide ? 'max-w-[52rem]' : 'max-w-[38rem]'
 
   return (
     <div className={`${column} mx-auto px-8 sm:px-10`}>
@@ -51,7 +51,7 @@ export default function EssayPage({ params }: Props) {
 
         <article className="pb-28">
 
-          <header className={`mb-12 sm:mb-14 ${wide ? '' : 'text-center'}`}>
+          <header className="mb-12 sm:mb-14 text-center">
             <h1 className="page-title mb-4">
               {essay.title}
             </h1>
@@ -59,17 +59,17 @@ export default function EssayPage({ params }: Props) {
               <p className="text-[0.9375rem] text-fg">{essay.author}</p>
             )}
             <p className="font-mono text-xs text-muted tabular-nums mt-1.5">{essay.displayDate}</p>
-
-            {essay.lede && essay.lede.length > 0 && (
-              <div className="mt-7 max-w-[36rem]">
-                {essay.lede.map((line, i) => (
-                  <p key={i} className="text-[0.9375rem] text-muted leading-[1.7]">
-                    {line}
-                  </p>
-                ))}
-              </div>
-            )}
           </header>
+
+          {essay.lede && essay.lede.length > 0 && (
+            <div className="mb-10 sm:mb-12 max-w-[36rem]">
+              {essay.lede.map((line, i) => (
+                <p key={i} className="text-[0.9375rem] text-muted leading-[1.7]">
+                  {line}
+                </p>
+              ))}
+            </div>
+          )}
 
           <div className="space-y-8 sm:space-y-10">
             {essay.sections.map((section, i) => (
