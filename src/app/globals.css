@@ -57,7 +57,7 @@ html {
 
 * { box-sizing: border-box; }
 a { color: inherit; text-decoration: none; }
-::selection { background-color: var(--accent); color: #080706; }
+/* Text selection uses the browser default (an amber ::selection was removed 2026-11-07). */
 
 /* ── Fade-in animation ────────────────────────────────── */
 .fade-in {
@@ -368,13 +368,13 @@ body::before {
 
 /* ── Essay prose (long-form pieces on /writing) ───────────── */
 .essay-prose p {
-  font-size: 1.125rem;
-  line-height: 1.8;
+  font-size: 0.9375rem;
+  line-height: 1.9;
   color: var(--fg);
-  letter-spacing: 0.002em;
+  letter-spacing: 0.005em;
   margin-bottom: 1.5em;
 }
-.essay-prose > :last-child p { margin-bottom: 0; }
+.essay-prose p:last-child { margin-bottom: 0; }
 .essay-prose a:not(.fn-ref a) {
   text-decoration: underline;
   text-decoration-color: var(--subtle);

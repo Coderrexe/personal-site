@@ -1,6 +1,5 @@
 import type { Metadata } from 'next'
 import { orderedEssays } from '@/lib/data'
-import FadeIn from '@/components/FadeIn'
 import WritingList from '@/components/WritingList'
 
 export const metadata: Metadata = {
@@ -11,24 +10,24 @@ export default function Writing() {
   return (
     <div className="max-w-[60rem] mx-auto px-8 sm:px-10">
 
-      <FadeIn>
+      <div>
         <section className="pt-20 sm:pt-24 pb-10 sm:pb-14">
           <h1 className="page-title">Writing</h1>
         </section>
-      </FadeIn>
+      </div>
 
-      <FadeIn delay={80}>
+      <div>
         <blockquote className="mb-12 sm:mb-14 max-w-lg">
           <p className="text-muted text-[0.9375rem] leading-[1.85] whitespace-pre-line mb-3">{`But let me see if – using these words as a little plot of land\nand my life as a cornerstone –\nI can build you a center.`}</p>
           <cite className="font-mono text-xs text-muted not-italic">— Qiu Miaojin</cite>
         </blockquote>
-      </FadeIn>
+      </div>
 
-      <FadeIn delay={160}>
+      <div>
         <div className="pb-24">
           <WritingList essays={orderedEssays} />
         </div>
-      </FadeIn>
+      </div>
 
     </div>
   )
