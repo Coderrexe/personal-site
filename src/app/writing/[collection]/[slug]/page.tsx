@@ -62,7 +62,7 @@ export default function EssayPage({ params }: Props) {
           </header>
 
           {essay.lede && essay.lede.length > 0 && (
-            <p className="mb-10 sm:mb-12 max-w-[40rem] text-[0.9375rem] text-muted leading-[1.7]">
+            <p className="mb-10 sm:mb-12 max-w-[40rem] font-mono text-[0.8125rem] text-muted leading-[1.8]">
               {essay.lede.join(' ')}
             </p>
           )}
