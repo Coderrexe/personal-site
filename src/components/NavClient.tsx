@@ -15,7 +15,7 @@ export default function NavClient() {
   const pathname = usePathname()
 
   return (
-    <nav className="fixed top-0 inset-x-0 z-50 h-14 flex items-center justify-between px-6 sm:px-8 nav-bg">
+    <nav className="sticky top-0 -mb-14 z-50 h-14 flex items-center justify-between px-6 sm:px-8 nav-bg">
       <Magnetic strength={0.35}>
         <Link href="/" className="font-mono text-xs text-fg hover:text-accent transition-colors duration-200">
           simba shi

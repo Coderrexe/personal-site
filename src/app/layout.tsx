@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { DM_Serif_Display, Inter, JetBrains_Mono } from 'next/font/google'
 import './globals.css'
 import NavClient from '@/components/NavClient'
@@ -26,6 +26,13 @@ const mono = JetBrains_Mono({
   variable: '--font-mono',
   display: 'swap',
 })
+
+export const viewport: Viewport = {
+  themeColor: [
+    { media: '(prefers-color-scheme: light)', color: '#FAF8F4' },
+    { media: '(prefers-color-scheme: dark)', color: '#0B0A08' },
+  ],
+}
 
 export const metadata: Metadata = {
   title: 'Simba Shi',

@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { notFound, redirect } from 'next/navigation'
 import Link from 'next/link'
 import { collections } from '@/lib/data'
+import PageFade from '@/components/PageFade'
 
 interface Props {
   params: { collection: string }
@@ -25,17 +26,15 @@ export default function CollectionPage({ params }: Props) {
 
   return (
     <div className="max-w-[60rem] mx-auto px-8 sm:px-10">
+      <PageFade>
 
-      <div>
         <div className="pt-12 sm:pt-14 pb-10 sm:pb-12">
           <Link href="/writing" className="font-mono text-xs text-muted hover:text-fg transition-colors duration-150">
             ← Writing
           </Link>
         </div>
-      </div>
 
-      {collection.quote && (
-        <div>
+        {collection.quote && (
           <blockquote className="mb-14 sm:mb-16 max-w-lg">
             <p className="text-muted text-[0.9375rem] leading-[1.85] mb-3">
               &ldquo;{collection.quote.text}&rdquo;
@@ -48,22 +47,18 @@ export default function CollectionPage({ params }: Props) {
               )}
             </cite>
           </blockquote>
-        </div>
-      )}
+        )}
 
-      <div>
         <h1 className="page-title mb-3">
           {collection.name}
         </h1>
         {collection.description && (
           <p className="text-muted text-sm mb-12">{collection.description}</p>
         )}
-      </div>
 
-      <div>
         <p className="font-mono text-xs text-muted mt-4 pb-28">coming soon</p>
-      </div>
 
+      </PageFade>
     </div>
   )
 }
