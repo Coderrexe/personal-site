@@ -55,17 +55,16 @@ export default function EssayPage({ params }: Props) {
             <h1 className="page-title mb-4">
               {essay.title}
             </h1>
+            {essay.lede && essay.lede.length > 0 && (
+              <p className="mx-auto max-w-[34rem] mb-6 font-mono text-[0.8125rem] text-muted leading-[1.8] [text-wrap:balance]">
+                {essay.lede.join(' ')}
+              </p>
+            )}
             {essay.author && (
               <p className="text-[0.9375rem] text-fg">{essay.author}</p>
             )}
             <p className="font-mono text-xs text-muted tabular-nums mt-1.5">{essay.displayDate}</p>
           </header>
-
-          {essay.lede && essay.lede.length > 0 && (
-            <p className="mb-10 sm:mb-12 max-w-[40rem] font-mono text-[0.8125rem] text-muted leading-[1.8]">
-              {essay.lede.join(' ')}
-            </p>
-          )}
 
           <div className="space-y-8 sm:space-y-10">
             {essay.sections.map((section, i) => (
