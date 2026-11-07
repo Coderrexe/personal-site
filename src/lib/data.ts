@@ -1,3 +1,5 @@
+import { rentierParagraphs, rentierFootnotes } from "@/content/superintelligence-rentier";
+
 export interface BulletLink {
   text: string;
   href: string;
@@ -315,15 +317,22 @@ export interface EssaySection {
   heading?: string;
   body: string;
   html?: boolean;
+  // Long-form prose: one HTML string per paragraph (with <em>, links and
+  // <sup class="fn-ref"> footnote markers). Takes precedence over `body`.
+  paragraphs?: string[];
 }
 
 export interface Essay {
   slug: string;
   title: string;
+  author?: string;      // shown under the title
   date: string;
   displayDate: string;
   collectionSlug: string;
-  description?: string;
+  description?: string; // shown under the title in the writing list
+  lede?: string[];      // short hook lines shown between the header and the body
+  wide?: boolean;       // essay-width column instead of the narrow poetry column
+  footnotes?: string[]; // HTML, numbered from 1, rendered as endnotes
   comingSoon?: boolean;
   sections: EssaySection[];
 }
@@ -340,8 +349,30 @@ export interface Collection {
 // Essays sorted newest first
 export const essays: Essay[] = [
   {
+    slug: "the-superintelligence-rentier",
+    title: "The Superintelligence Rentier",
+    author: "Simba Shi",
+    date: "2026-11-07",
+    displayDate: "November 7, 2026",
+    collectionSlug: "essays",
+    description: "The terrifying dystopia of successful AI alignment.",
+    lede: [
+      "The terrifying dystopia of successful AI alignment.",
+      "An odyssey through Dostoevsky, Kant, Hegel, Lucretius, and 2000 years of human history.",
+    ],
+    wide: true,
+    footnotes: rentierFootnotes,
+    sections: [
+      {
+        body: "",
+        paragraphs: rentierParagraphs,
+      },
+    ],
+  },
+  {
     slug: "apophenia",
     title: "apophenia",
+    author: "Simba Shi",
     date: "2025-05-08",
     displayDate: "May 8, 2025",
     collectionSlug: "poetry",
@@ -409,6 +440,7 @@ i think about visiting someday.`,
   {
     slug: "coronado",
     title: "Coronado",
+    author: "Simba Shi",
     date: "2025-06-25",
     displayDate: "June 25, 2025",
     collectionSlug: "poetry",
@@ -421,6 +453,7 @@ i think about visiting someday.`,
   {
     slug: "someday",
     title: "someday i\u2019ll love simba shi",
+    author: "Simba Shi",
     date: "2025-07-14",
     displayDate: "July 14, 2025",
     collectionSlug: "poetry",
@@ -455,8 +488,9 @@ i think about visiting someday.`,
   },
 ];
 
-// Flat ordered list for writing page: apophenia, Coronado, someday, world-of-einsteins
+// Flat ordered list for writing page: the essay first, then apophenia, Coronado, someday, world-of-einsteins
 export const orderedEssays: Essay[] = [
+  essays.find(e => e.slug === 'the-superintelligence-rentier')!,
   essays.find(e => e.slug === 'apophenia')!,
   essays.find(e => e.slug === 'coronado')!,
   essays.find(e => e.slug === 'someday')!,
@@ -464,6 +498,11 @@ export const orderedEssays: Essay[] = [
 ];
 
 export const collections: Collection[] = [
+  {
+    slug: "essays",
+    name: "essays",
+    essaySlugs: ["the-superintelligence-rentier"],
+  },
   {
     slug: "poetry",
     name: "poetry",

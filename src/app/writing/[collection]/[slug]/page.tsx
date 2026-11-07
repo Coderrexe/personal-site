@@ -31,8 +31,11 @@ export default function EssayPage({ params }: Props) {
   const essay = essays.find((e) => e.slug === params.slug)
   if (!essay || !collection.essaySlugs.includes(essay.slug)) notFound()
 
+  // Poems sit in a narrow column; long-form essays get a proper reading measure.
+  const column = essay.wide ? 'max-w-[46rem]' : 'max-w-[38rem]'
+
   return (
-    <div className="max-w-[38rem] mx-auto px-8 sm:px-10">
+    <div className={`${column} mx-auto px-8 sm:px-10`}>
 
       <FadeIn>
         <div className="pt-20 sm:pt-22 pb-10 sm:pb-12">
@@ -52,12 +55,48 @@ export default function EssayPage({ params }: Props) {
             <h1 className="page-title mb-4">
               {essay.title}
             </h1>
+            {essay.author && (
+              <p className="text-sm text-fg mb-2">{essay.author}</p>
+            )}
             <p className="font-mono text-xs text-muted tabular-nums">{essay.displayDate}</p>
+
+            {essay.lede && essay.lede.length > 0 && (
+              <div className="mt-10 sm:mt-12 mx-auto max-w-[34rem]">
+                <span className="block w-8 border-t border-subtle mx-auto mb-7" />
+                {essay.lede.map((line, i) => (
+                  <p
+                    key={i}
+                    className={
+                      i === 0
+                        ? 'text-fg text-[1.125rem] leading-[1.6] mb-3'
+                        : 'text-muted text-[0.9375rem] leading-[1.7]'
+                    }
+                  >
+                    {line}
+                  </p>
+                ))}
+                <span className="block w-8 border-t border-subtle mx-auto mt-7" />
+              </div>
+            )}
           </header>
         </FadeIn>
 
         <div className="space-y-8 sm:space-y-10">
           {essay.sections.map((section, i) => (
+            section.paragraphs ? (
+              // Long-form prose: each paragraph fades in on its own, so landing
+              // mid-essay (e.g. from a footnote back-link) never leaves it blank.
+              <div key={i} className="essay-prose">
+                {section.heading && (
+                  <p className="font-mono text-xs text-muted mb-4">{section.heading}</p>
+                )}
+                {section.paragraphs.map((para, j) => (
+                  <FadeIn key={j} delay={j === 0 ? 160 : 0}>
+                    <p dangerouslySetInnerHTML={{ __html: para }} />
+                  </FadeIn>
+                ))}
+              </div>
+            ) : (
             <FadeIn key={i} delay={160 + i * 60}>
               <div>
                 {section.heading && (
@@ -75,8 +114,23 @@ export default function EssayPage({ params }: Props) {
                 )}
               </div>
             </FadeIn>
+            )
           ))}
         </div>
+
+        {essay.footnotes && essay.footnotes.length > 0 && (
+            <footer className="mt-16 sm:mt-20 pt-8 border-t border-line">
+              <p className="font-mono text-xs text-muted mb-6">Notes</p>
+              <ol className="essay-notes">
+                {essay.footnotes.map((note, i) => (
+                  <li key={i} id={`fn${i + 1}`}>
+                    <span dangerouslySetInnerHTML={{ __html: note }} />
+                    <a href={`#fnref${i + 1}`} className="note-back" aria-label={`Back to note ${i + 1} in the text`}>↩</a>
+                  </li>
+                ))}
+              </ol>
+            </footer>
+        )}
 
       </article>
     </div>

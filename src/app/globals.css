@@ -366,6 +366,80 @@ body::before {
   transform: translateX(3px);
 }
 
+/* ── Essay prose (long-form pieces on /writing) ───────────── */
+.essay-prose p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  color: var(--fg);
+  letter-spacing: 0.002em;
+  margin-bottom: 1.5em;
+}
+.essay-prose > :last-child p { margin-bottom: 0; }
+.essay-prose a:not(.fn-ref a) {
+  text-decoration: underline;
+  text-decoration-color: var(--subtle);
+  text-underline-offset: 4px;
+  transition: text-decoration-color 0.15s ease;
+}
+.essay-prose a:not(.fn-ref a):hover { text-decoration-color: var(--accent); }
+.fn-ref {
+  font-family: var(--font-mono);
+  font-size: 0.68em;
+  line-height: 0;
+  vertical-align: super;
+  margin-left: 0.08em;
+}
+.fn-ref a {
+  color: var(--accent);
+  padding: 0 0.1em;
+  transition: color 0.15s ease;
+}
+.fn-ref a:hover { color: var(--fg); }
+.fn-ref:target a { color: var(--fg); }
+
+.essay-notes {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  counter-reset: note;
+}
+.essay-notes li {
+  counter-increment: note;
+  position: relative;
+  padding-left: 2.25rem;
+  font-size: 0.9375rem;
+  line-height: 1.7;
+  color: var(--muted);
+  margin-bottom: 0.85rem;
+  scroll-margin-top: 6rem;
+  transition: color 0.3s ease;
+}
+.essay-notes li::before {
+  content: counter(note);
+  position: absolute;
+  left: 0;
+  top: 0.2em;
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--accent);
+}
+.essay-notes li:target { color: var(--fg); }
+.essay-notes li a {
+  text-decoration: underline;
+  text-decoration-color: var(--subtle);
+  text-underline-offset: 3px;
+  overflow-wrap: anywhere;
+}
+.essay-notes li a:hover { text-decoration-color: var(--accent); }
+.essay-notes .note-back {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  text-decoration: none;
+  margin-left: 0.4rem;
+  color: var(--muted);
+}
+.essay-notes .note-back:hover { color: var(--accent); }
+
 /* Robot entrance/pulse animation now lives entirely in Robot.tsx via the
    `motion` library's spring engine — no CSS keyframes needed. */
 
