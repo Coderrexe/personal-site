@@ -189,7 +189,7 @@ export default function Home() {
           <RobotDockZone size={110} className="w-24 h-28" />
         </div>
         <div className="max-w-[42rem] mx-auto px-8 sm:px-10">
-        <p className="room-kicker">{SHOW_RESEARCH ? '03' : '02'} — fragmented memories</p>
+        <p className="room-kicker">{SHOW_RESEARCH ? '03' : '02'} — my fragmented memories</p>
         <h2 className="room-title">Writing</h2>
         <div className="circuit-list border-t border-line">
           {orderedEssays.map(essay => {
