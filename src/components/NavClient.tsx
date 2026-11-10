@@ -6,9 +6,9 @@ import ThemeToggle from './ThemeToggle'
 import Magnetic from './Magnetic'
 
 const links = [
-  { href: '/work', label: 'work' },
-  { href: '/research', label: 'research' },
-  { href: '/writing', label: 'writing' },
+  { href: '/work', label: 'Work' },
+  { href: '/research', label: 'Research' },
+  { href: '/writing', label: 'Writing' },
 ]
 
 export default function NavClient() {
@@ -39,7 +39,7 @@ export default function NavClient() {
                 href={href}
                 className={`font-mono text-xs transition-colors duration-200 ${active ? 'text-accent' : 'text-muted hover:text-fg'}`}
               >
-                /{label}
+                {label}
               </Link>
             </Magnetic>
           )
